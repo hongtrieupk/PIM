@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - PIM</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+</head>
+@using PIMWebMVC.Resources
+<body>
+    <div class="col-md-2 sidebar">
+        <img src="/Images/elca-logo.jpg" class="img-responsive pim-logo" alt="ELCA" width="300" height="300">
+        <ul class="pim-sidebar">
+            <li>
+                <a href="#">@PIMResource.LAYOUT_SIDE_BAR_MY_PROJECTS</a>
+            </li>
+            <li>
+                <a></a>
+            </li>
+            <li>
+                <b>@PIMResource.LAYOUT_SIDE_BAR_SEARCH</b>
+            </li>
+            <li>
+                <a href="/Projects/Index">@PIMResource.LAYOUT_SIDE_BAR_PROJECT</a>
+            </li>
+            <li>
+                <a href="/Affair">@PIMResource.LAYOUT_SIDE_BAR_AFFAIR</a>
+            </li>
+            <li>
+                <a href="/Customer">@PIMResource.LAYOUT_SIDE_BAR_CUSTOMER</a>
+            </li>
+            <li>
+                <a href="/Account">@PIMResource.LAYOUT_SIDE_BAR_ACCOUNT</a>
+            </li>
+            <li>
+                <a href="/Supplier">@PIMResource.LAYOUT_SIDE_BAR_SUPPLIER</a>
+            </li>
+            <li>
+                <a></a>
+            </li>
+            <li>
+                <b>@PIMResource.LAYOUT_SIDE_BAR_NEW</b>
+            </li>
+            <li>
+                <a href="/Projects/Project">@PIMResource.LAYOUT_SIDE_BAR_PROJECT</a>
+            </li>
+            <li>
+                <a href="#">@PIMResource.LAYOUT_SIDE_BAR_CUSTOMER</a>
+            </li>
+            <li>
+                <a href="#">@PIMResource.LAYOUT_SIDE_BAR_SUPPLIER</a>
+            </li>
+        </ul>
+    </div>
+    <div class="col-md-10 right-content">
+        <div class="pim-navbar">
+            <ul class="title">
+                <li><a>Project Infomation Management</a></li>
+            </ul>
+            <ul class="menu">
+                <li><a href="#">@PIMResource.LAYOUT_NAV_HELP</a></li>
+                <li><a href="#">@PIMResource.LAYOUT_NAV_LOG_OUT</a></li>
+            </ul>
+            <div class="clear-fix"></div>
+        </div>
+        <div class="container body-content">
+            @RenderBody()
+            <hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year - PIM</p>
+            </footer>
+        </div>
+    </div>
+    
+    @RenderSection("scripts", required: false)
+</body>
+</html>

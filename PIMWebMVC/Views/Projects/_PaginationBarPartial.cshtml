@@ -1,0 +1,34 @@
+﻿@using PIMWebMVC.Resources
+@{
+    Layout = null;
+    var startPage = 1;
+}
+@model PIMWebMVC.Models.Common.PaginationBarModel
+
+<div class="col-md-1 float-right">
+    @Model.CurrentPage / @Model.TotalPages
+</div>
+<div class="col-md-1 float-right">
+    @if (Model.CurrentPage != Model.TotalPages)
+    {
+        <a name="paging-button">@PIMResource.PAGINATION_LAST</a>
+    }
+</div>
+<div class="col-md-1 float-right">
+    @if (Model.CurrentPage < Model.TotalPages)
+    {
+    <a name="paging-button">@PIMResource.PAGINATION_NEXT</a>
+    }
+</div>
+<div class="col-md-1 float-right">
+    @if (Model.CurrentPage > startPage)
+    {
+        <a name="paging-button">@PIMResource.PAGINATION_PREVIOUS</a>
+    }
+</div>
+<div class="col-md-1 float-right">
+    @if (Model.CurrentPage != startPage)
+    {
+    <a name="paging-button">@PIMResource.PAGINATION_FIRST</a>
+    }
+</div>

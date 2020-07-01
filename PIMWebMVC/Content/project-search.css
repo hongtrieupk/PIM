@@ -1,0 +1,17 @@
+﻿.headerSortDown:after {
+    content: ' ';
+    position: relative;
+    left: 2px;
+    border: 8px solid transparent;
+}
+
+.headerSortDown:after {
+    top: 10px;
+    border-top-color: silver;
+}
+#delete-projects-btn {
+    margin-bottom: 10px;
+}
+#missing-criteria-lbl {
+    display: none;
+}

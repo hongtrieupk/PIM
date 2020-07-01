@@ -1,0 +1,40 @@
+﻿@using PIMWebMVC.Resources
+@{
+    Layout = null;
+}
+@model PIMWebMVC.Models.Projects.ProjectsPaginationResult
+    <div class="row">
+        <div class="col-md-2"><button id="delete-projects-btn" class="btn btn-danger">Delete</button></div>
+        @Html.Partial("_PaginationBarPartial", new PIMWebMVC.Models.Common.PaginationBarModel(Model.CurrentPage, Model.TotalPages))
+    </div>
+<input hidden id="total-page" value="@Model.TotalPages" />
+<table class="table table-striped table-bordered" cellspacing="0" cellpadding="4" rules="cols" border="1" style="border-collapse:collapse;">
+    <thead>
+        <tr>
+            <th></th>
+            <th class="headerSortDown" scope="col">N°</th>
+            <th scope="col">@PIMResource.PROJECT_LBL_NAME</th>
+            <th scope="col">@PIMResource.PROJECT_LBL_STATUS</th>
+            <th scope="col">@PIMResource.PROJECT_LBL_CUSTOMER</th>
+            <th scope="col">@PIMResource.PROJECT_LBL_START_DATE</th>
+        </tr>
+    </thead>
+    <tbody id="projects-table-body">
+        @foreach (var project in Model.Projects)
+        {
+            <tr>
+                <td>
+                    <input type="checkbox" value="@project.ProjectID" />
+                </td>
+                <td><a href="/Projects/Project/@project.ProjectID">@project.ProjectNumber</a></td>
+                <td>@project.ProjectName</td>
+                <td>@project.StatusDisplay</td>
+                <td>@project.Customer</td>
+                <td>@project.StartDate.Value.ToString("dd.mm.yyyy")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div class="row">
+    @Html.Partial("_PaginationBarPartial", new PIMWebMVC.Models.Common.PaginationBarModel(Model.CurrentPage, Model.TotalPages))
+</div>

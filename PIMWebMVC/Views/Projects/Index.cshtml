@@ -1,0 +1,42 @@
+﻿@using PIMWebMVC.Resources
+@{
+    ViewBag.Title = PIMResource.PROJECT_SEARCH_PAGE_TITLE;
+}
+<hr />
+<h3>Search Projects</h3>
+<hr />
+<div class="form-horizontal">
+    <p id="missing-criteria-lbl" class="error">PIMResource.MESSAGE_INVALID_CRITERIA</p>
+    <div class="form-group">
+        <div class="col-md-6">
+            <label class="control-label col-md-4">@PIMResource.PROJECT_LBL_NUMBER</label>
+            <input id="number-search-txt" type="number" class="col-md-8 form-control" />
+        </div>
+        <div class="col-md-6">
+            <label class="control-label col-md-4">@PIMResource.PROJECT_LBL_CUSTOMER</label>
+            <input id="customer-search-txt" class="col-md-8 form-control" />
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-6">
+            <label class="control-label col-md-4">@PIMResource.PROJECT_LBL_NAME</label>
+            <input id="name-search-txt" class="col-md-8 form-control" />
+        </div>
+        <div class="col-md-6">
+            <label class="control-label col-md-4">@PIMResource.PROJECT_LBL_STATUS</label>
+            @Html.DropDownList("status-search-cbb", new SelectList(PIMWebMVC.Constants.ProjectConstant.PROJECT_STATUSES, "key", "value"),
+           "Select Status", htmlAttributes: new { @class = "form-control", @id = "status-search-cbb" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-5">
+        </div>
+        <div class="col-md-7">
+            <button id="search-projects-btn" class="btn btn-success">@PIMResource.BTN_SEARCH</button>
+            <button id="reset-criteria-btn" class="btn btn-warning">@PIMResource.BTN_RESET_SEARCH</button>
+        </div>
+    </div>
+    <div id="projects-search-result">
+    </div>
+</div>
+@Scripts.Render("~/bundles/projectSearch")

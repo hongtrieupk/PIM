@@ -1,0 +1,12 @@
+﻿@using PIMWebMVC.Resources
+@using PIMWebMVC.Constants
+@{
+    ViewBag.Title = PIMResource.ERROR_SERVER_ERROR_TITLE;
+    var currentErrorMessage = Session[ErrorActionsConstant.ERROR_MESSAGE_SESSION_KEY];
+    Session.Remove(ErrorActionsConstant.ERROR_MESSAGE_SESSION_KEY);
+}
+
+<div class="text-center error-global">
+    <h3>@PIMResource.ERROR_SERVER_ERROR_UNEXPECTED_MESSAGE: @currentErrorMessage .@PIMResource.ERROR_SERVER_ERROR_PLEASE_CONTACT</h3>
+    <span class="pim-orange">5</span><span>0</span><span class="pim-orange">0</span>
+</div>

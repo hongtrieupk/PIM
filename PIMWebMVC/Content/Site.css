@@ -1,0 +1,135 @@
+﻿body {
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+.float-right {
+    float: right;
+}
+
+.hiddencol {
+    display: none;
+}
+
+.clear-fix {
+    clear: both;
+}
+.clearfix:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+.right-content {
+    padding-right: 0px;
+}
+
+.sidebar {
+}
+
+    .sidebar ul {
+        list-style-type: none;
+        padding: 20px;
+        margin-left: 5px;
+        border: 1px solid black;
+    }
+
+        .sidebar ul li {
+            margin-top: 10px;
+        }
+
+            .sidebar ul li a {
+                text-decoration: underline;
+            }
+
+.pim-navbar {
+    background-color: #d04936;
+    border-color: #000000;
+}
+
+    .pim-navbar ul {
+        margin-top: 10px;
+        list-style-type: none;
+    }
+
+    .pim-navbar a {
+        color: azure;
+    }
+
+    .pim-navbar ul.title {
+        float: left;
+        font-size: 22px;
+        text-decoration: none;
+    }
+
+        .pim-navbar ul.title a:hover {
+            text-decoration: none;
+        }
+
+    .pim-navbar ul.menu {
+        float: right;
+    }
+
+        .pim-navbar ul.menu > li {
+            margin-right: 10px;
+            margin-left: 10px;
+            float: left;
+        }
+
+            .pim-navbar ul.menu > li > a {
+                text-decoration: underline;
+            }
+
+.pim-logo {
+    margin-top: 20px;
+}
+
+
+.pim-orange {
+    color: #d04936;
+}
+.pim-dark-blue {
+    color: #023267;
+}
+
+.error {
+    color: red;
+}
+.project-max-width {
+    max-width: 600px;
+}
+
+.input-validation-error {
+    border: 1px solid #a94442 !important;
+}
+
+.error-global {
+    font-family: 'Love Ya Like A Sister', cursive;
+    margin-top: 50px;
+}
+
+    .error-global span {
+        font-size: 250px;
+    }
+.custom-validation-message {
+    display: block;
+    margin-bottom: 10px;
+}
