@@ -8,6 +8,8 @@ using PIM.Object.GenericRepositories;
 using PIM.Object.UnitOfWork;
 using PIM.Object.UnitOfWork.GenericTransactions;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.ServiceModel.Configuration;
 using System.Threading.Tasks;
 
@@ -69,7 +71,7 @@ namespace PIM.Test
 
         #region Test Methods     
         [Test]
-        public async Task GetById__GetProjectTest1__ShouldReturnCorrectProjectName()
+        public async Task GetById__GetProjectTest1__ShouldReturnProject1Name()
         {
             // Arrange
             int projectTest1Id = _projectTest1.ProjectID;
@@ -108,7 +110,6 @@ namespace PIM.Test
             Assert.IsNotNull(insertedProject);
             Assert.AreEqual(insertedProject.ProjectName, insertedProject.ProjectName);
         }
-    
         [Test]
         public async Task Update__UpdateProjectTest1_Name_Customer___ShouldStoreInDatabase()
         {
@@ -121,7 +122,7 @@ namespace PIM.Test
             using (IGenericTransaction transaction = _currentUnitOfWork.BeginTransaction())
             {
                 await _projectRepository.UpdateAsync(_projectTest1);
-                transaction.Commit();
+                await transaction.CommitAsync();
                 updatedProjectFromDb = await _projectRepository.GetByIdAsync(_projectTest1.ProjectID);
             }
 
@@ -140,8 +141,8 @@ namespace PIM.Test
             // Action
             using (IGenericTransaction transaction = _currentUnitOfWork.BeginTransaction())
             {
-                _projectRepository.DeleteAsync(existedProject);
-                transaction.Commit();
+                await _projectRepository.DeleteAsync(existedProject);
+                await transaction.CommitAsync();
                 deletedProject = await _projectRepository.GetByIdAsync(existedProject.ProjectID);
             }
 
@@ -149,7 +150,21 @@ namespace PIM.Test
             Assert.IsNull(deletedProject);
         }
         [Test]
-        public void Delete__DeleteNotExistedProject__ShouldThrowStaleStateException()
+        public void FilterBy__SearchContainsProjectName__ShouldReturnCorrectResult()
+        {
+            // Arrange
+            string searchValue = "Test 1";
+            int pageIndex = 1, pageSize = 10;
+
+            // Action
+            IList<Project> projectsResult = _projectRepository.FilterBy((x) => x.ProjectName.Contains(searchValue), pageIndex, pageSize).ToList();
+
+            //Assert
+            Assert.IsTrue(projectsResult.Count() > 0);
+
+        }
+        [Test]
+        public async Task Delete__DeleteNotExistedProject__ShouldThrowStaleStateException()
         {
             // Arrange
             // a Project, which does not existed in the database
@@ -163,7 +178,7 @@ namespace PIM.Test
                 GenericRepository<Project> projectRepo = new GenericRepository<Project>(unitOfworkForExceptionTest.Session);
                 using (IGenericTransaction transaction = unitOfworkForExceptionTest.BeginTransaction())
                 {
-                    projectRepo.DeleteAsync(notExistedProject);
+                    await projectRepo.DeleteAsync(notExistedProject);
                     staleStateException = Assert.Throws<StaleStateException>(() => transaction.Commit());
                 }
             }
@@ -192,7 +207,7 @@ namespace PIM.Test
             Assert.IsNotNull(genericADOException);
         }
         [Test]
-        public async Task Update__UpdateNotExistedProject___ShouldThrowException()
+        public async Task Update__UpdateNotExistedProject___ShouldThrowStaleStateException()
         {
             // Arrange
             Project notExistedProject = new Project()

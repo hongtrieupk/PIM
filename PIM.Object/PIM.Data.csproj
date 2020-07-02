@@ -62,7 +62,6 @@
     <Compile Include="GenericRepositories\GenericRepository.cs" />
     <Compile Include="GenericRepositories\IGenericRepository.cs" />
     <Compile Include="Maps\ProjectMap.cs" />
-    <Compile Include="NHibernateConfiguration\ApplicationContext.cs" />
     <Compile Include="Objects\Project.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitOfWork\GenericTransactions\GenericTransaction.cs" />
