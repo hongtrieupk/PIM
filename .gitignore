@@ -5,3 +5,6 @@ PIMWebMVC/obj/
 .vs/
 PIM.Common/bin/
 PIMWebMVC/bin/
+PIM.Object/bin/
+PIM.Test/bin/
+PIM.Test/obj/

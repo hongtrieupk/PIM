@@ -2,9 +2,12 @@
 
 using NHibernate;
 using NHibernate.Cfg;
+using NHibernate.Cfg.MappingSchema;
 using NHibernate.Dialect;
 using NHibernate.Driver;
+using NHibernate.Mapping.ByCode;
 using NHibernate.Tool.hbm2ddl;
+using PIM.Object.Maps;
 using System.Data;
 
 namespace PIM.Object.NHibernateConfiguration
@@ -60,6 +63,15 @@ namespace PIM.Object.NHibernateConfiguration
             SchemaMetadataUpdater.QuoteTableAndColumns(configure, DB2400Dialect.GetDialect());
 
             return configure;
+        }
+        private static HbmMapping GetMappings()
+        {
+            ModelMapper mapper = new ModelMapper();
+
+            mapper.AddMapping<ProjectMap>();
+            var mapping = mapper.CompileMappingForAllExplicitlyAddedEntities();
+
+            return mapping;
         }
         #endregion
 

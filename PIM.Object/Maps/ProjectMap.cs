@@ -20,6 +20,7 @@ namespace PIM.Object.Maps
             {
                 m.Column("ProjectNumber");
                 m.NotNullable(true);
+                m.Unique(true);
             });
             Property(x => x.ProjectName, m =>
             {
@@ -35,7 +36,7 @@ namespace PIM.Object.Maps
             });
             Property(x => x.Status, m =>
             {
-                m.Column("Customer");
+                m.Column("Status");
                 m.NotNullable(true);
                 m.Length(3);
             });
