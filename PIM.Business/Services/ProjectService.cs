@@ -60,8 +60,8 @@ namespace PIM.Business.Services
         }
         public bool IsDuplicateProjectNumber(int? projectId, int newProjectNumber)
         {
-            Project projectFromDb = _projectRepository.FilterBy(p => p.ProjectNumber == newProjectNumber).FirstOrDefault();
-            return projectFromDb != null && projectFromDb.ProjectID != projectId;
+            int countDuplicatedProjects =  _projectRepository.FilterBy(p => p.ProjectNumber == newProjectNumber && p.ProjectID != projectId).Count();
+            return countDuplicatedProjects > 0;
         }
         #endregion
     }
