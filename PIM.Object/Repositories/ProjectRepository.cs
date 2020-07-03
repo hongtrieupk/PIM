@@ -8,9 +8,12 @@ namespace PIM.Data.Repositories
 {
     public class ProjectRepository : GenericRepository<Project>, IProjectRepository
     {
+        #region Constructors
         public ProjectRepository(ISession session) : base(session)
         {            
         }
+        #endregion
+        #region Methods
         public PagingResultModel<Project> SearchProject(SearchProjectParam searchParam)
         {
             PagingResultModel<Project> result = new PagingResultModel<Project>();
@@ -35,5 +38,6 @@ namespace PIM.Data.Repositories
             result.Records = query.ToList();
             return result;
         }
+        #endregion
     }
 }

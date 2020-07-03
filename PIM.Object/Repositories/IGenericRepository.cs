@@ -13,7 +13,6 @@ namespace PIM.Data.Repositories
 		Task UpdateAsync(T entity);
 		Task DeleteAsync(T entity);
 		Task<T> GetByIdAsync(object id);
-        void DeleteByIds(object[] ids);
         /// <summary>
         /// Filter with pagination function
         /// </summary>

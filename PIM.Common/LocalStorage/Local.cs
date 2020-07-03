@@ -10,14 +10,12 @@ namespace PIM.Common.LocalStorage
 
         private class LocalData : ILocalData
         {
+            #region Fields
             [ThreadStatic]
             private static Hashtable _localData = new Hashtable();
             private static readonly object LocalDataHashtableKey = new object();
-            public object this[object key]
-            {
-                get { return LocalHashtable[key]; }
-                set { LocalHashtable[key] = value; }
-            }
+            #endregion
+            #region Properties
             private static Hashtable LocalHashtable
             {
                 get
@@ -49,6 +47,14 @@ namespace PIM.Common.LocalStorage
             {
                 get { return _localData.Count; }
             }
+            #endregion
+            #region Indexer
+            public object this[object key]
+            {
+                get { return LocalHashtable[key]; }
+                set { LocalHashtable[key] = value; }
+            }
+            #endregion
         }
         public interface ILocalData
         {

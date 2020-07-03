@@ -5,13 +5,16 @@ namespace PIM.Data.UnitOfWorks.GenericTransactions
 {
     public class GenericTransaction : IGenericTransaction
     {
+        #region Fields
         private readonly ITransaction _transaction;
-
+        #endregion
+        #region Constructors
         public GenericTransaction(ITransaction transaction)
         {
             _transaction = transaction;
         }
-
+        #endregion
+        #region Methods
         public void Commit()
         {
             _transaction.Commit();
@@ -35,5 +38,6 @@ namespace PIM.Data.UnitOfWorks.GenericTransactions
         {
             _transaction.Dispose();
         }
+        #endregion
     }
 }

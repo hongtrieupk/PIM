@@ -32,10 +32,6 @@ namespace PIM.Data.Repositories
         {
             await _session.DeleteAsync(entity);
         }
-        public void DeleteByIds(object[] ids)
-        {
-           
-        }
         public async Task<T> GetByIdAsync(object id)
         {
             return await _session.GetAsync<T>(id);

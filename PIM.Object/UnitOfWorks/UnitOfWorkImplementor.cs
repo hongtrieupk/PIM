@@ -5,14 +5,18 @@ using System.Data;
 namespace PIM.Data.UnitOfWorks
 {    public class UnitOfWorkImplementor : IUnitOfWork
     {
+        #region Fields
         private readonly IUnitOfWorkFactory _factory;
         private readonly ISession _session;
-
+        #endregion
+        #region Constructors
         public UnitOfWorkImplementor(IUnitOfWorkFactory factory, ISession session)
         {
             _factory = factory;
             _session = session;
         }
+        #endregion
+        #region Properties
         public bool IsInActiveTransaction
         {
             get
@@ -30,6 +34,8 @@ namespace PIM.Data.UnitOfWorks
         {
             get { return _session; }
         }
+        #endregion
+        #region Methods
         public IGenericTransaction BeginTransaction()
         {
             return new GenericTransaction(_session.BeginTransaction());
@@ -38,27 +44,7 @@ namespace PIM.Data.UnitOfWorks
         {
             return new GenericTransaction(_session.BeginTransaction(isolationLevel));
         }
-        public void TransactionalFlush()
-        {
-            TransactionalFlush(IsolationLevel.ReadCommitted);
-        }
-        public void TransactionalFlush(IsolationLevel isolationLevel)
-        {
-            IGenericTransaction tx = BeginTransaction(isolationLevel);
-            try
-            {
-                tx.Commit();
-            }
-            catch
-            {
-                tx.Rollback();
-                throw;
-            }
-            finally
-            {
-                tx.Dispose();
-            }
-        }
+ 
         public void Flush()
         {
             _session.Flush();
@@ -68,5 +54,6 @@ namespace PIM.Data.UnitOfWorks
             _factory.DisposeUnitOfWork();
             _session.Dispose();
         }
+        #endregion
     }
 }

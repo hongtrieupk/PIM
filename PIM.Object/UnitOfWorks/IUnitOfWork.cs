@@ -9,8 +9,6 @@ namespace PIM.Data.UnitOfWorks
     {
         IGenericTransaction BeginTransaction();
         IGenericTransaction BeginTransaction(IsolationLevel isolationLevel);
-        void TransactionalFlush();
-        void TransactionalFlush(IsolationLevel isolationLevel);
         bool IsInActiveTransaction { get; }
         IUnitOfWorkFactory Factory { get; }
         ISession Session { get; }

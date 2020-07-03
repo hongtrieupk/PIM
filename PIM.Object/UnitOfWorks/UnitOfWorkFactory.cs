@@ -14,11 +14,16 @@ namespace PIM.Data.UnitOfWorks
 {
     public class UnitOfWorkFactory : IUnitOfWorkFactory
     {
+        #region Fields
         private static ISession _currentSession;
         private ISessionFactory _sessionFactory;
         private static Configuration _nhibernateConfiguration;
+        #endregion
+        #region Constructor
         internal UnitOfWorkFactory()
         { }
+        #endregion
+        #region Properties
         public Configuration Configuration
         {
             get
@@ -49,6 +54,8 @@ namespace PIM.Data.UnitOfWorks
             }
             set { _currentSession = value; }
         }
+        #endregion
+        #region Methods
         public IUnitOfWork Create()
         {
             ISession session = CreateSession();
@@ -89,10 +96,8 @@ namespace PIM.Data.UnitOfWorks
         private static HbmMapping GetMappings()
         {
             ModelMapper mapper = new ModelMapper();
-
             mapper.AddMapping<ProjectMap>();
             var mapping = mapper.CompileMappingForAllExplicitlyAddedEntities();
-
             return mapping;
         }
 
@@ -101,5 +106,6 @@ namespace PIM.Data.UnitOfWorks
             CurrentSession = null;
             UnitOfWork.DisposeUnitOfWork();
         }
+        #endregion
     }
 }

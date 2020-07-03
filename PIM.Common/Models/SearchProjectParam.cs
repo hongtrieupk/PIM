@@ -6,6 +6,7 @@ namespace PIM.Common.Models
 {
     public class SearchProjectParam
     {
+        #region Properties
         public int? ProjectNumber { get; set; }
         public string ProjectName { get; set; }
         public string Status { get; set; }
@@ -30,5 +31,6 @@ namespace PIM.Common.Models
                 return PageSize > 0;
             }
         }
+        #endregion
     }
 }

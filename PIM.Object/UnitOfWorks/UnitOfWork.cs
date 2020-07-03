@@ -8,18 +8,11 @@ namespace PIM.Data.UnitOfWorks
 {
     public static class UnitOfWork
     {
+        #region Fields
         private static IUnitOfWorkFactory _unitOfWorkFactory = new UnitOfWorkFactory();
         public const string CurrentUnitOfWorkKey = "CurrentUnitOfWork.Key";
-
-        public static IUnitOfWork Start()
-        {
-            if (CurrentUnitOfWork != null)
-                throw new InvalidOperationException("You cannot start more than one unit of work at the same time.");
-
-            var unitOfWork = _unitOfWorkFactory.Create();
-            CurrentUnitOfWork = unitOfWork;
-            return unitOfWork;
-        }
+        #endregion
+        #region Properties
         private static IUnitOfWork CurrentUnitOfWork
         {
             get { return Local.Data[CurrentUnitOfWorkKey] as IUnitOfWork; }
@@ -48,9 +41,21 @@ namespace PIM.Data.UnitOfWorks
         {
             get { return _unitOfWorkFactory.Configuration; }
         }
+        #endregion
+        #region Methods
+        public static IUnitOfWork Start()
+        {
+            if (CurrentUnitOfWork != null)
+                throw new InvalidOperationException("You cannot start more than one unit of work at the same time.");
+
+            var unitOfWork = _unitOfWorkFactory.Create();
+            CurrentUnitOfWork = unitOfWork;
+            return unitOfWork;
+        }
         public static void DisposeUnitOfWork()
         {
             CurrentUnitOfWork = null;
         }
+        #endregion
     }
 }
