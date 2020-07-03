@@ -1,9 +1,9 @@
 ﻿using NHibernate;
-using PIM.Object.UnitOfWork.GenericTransactions;
+using PIM.Data.UnitOfWorks.GenericTransactions;
 using System;
 using System.Data;
 
-namespace PIM.Object.UnitOfWork
+namespace PIM.Data.UnitOfWorks
 {
     public interface IUnitOfWork : IDisposable
     {

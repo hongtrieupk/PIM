@@ -5,12 +5,12 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace PIM.Object.GenericRepositories
+namespace PIM.Data.Repositories
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         #region Fields
-        private readonly ISession _session;
+        protected readonly ISession _session;
         #endregion
         #region Constructors
         public GenericRepository(ISession session)
@@ -47,15 +47,9 @@ namespace PIM.Object.GenericRepositories
         /// <param name="pageIndex"> must greater than 0 </param>
         /// <param name="pageSize"> must greater than 0 </param>
         /// <returns></returns>
-        public IQueryable<T> FilterBy(Expression<Func<T, bool>> criteria, int pageIndex, int pageSize)
+        public IQueryable<T> FilterBy(Expression<Func<T, bool>> criteria)
         {
-            
-            if (pageIndex < 1 || pageSize < 1)
-            {
-                throw new ArgumentNullException("Invalid pageIndex / PageSize!");
-            }
-            return _session.Query<T>().Where(criteria).Skip((pageIndex - 1) * pageSize)
-                        .Take(pageSize);
+            return _session.Query<T>().Where(criteria);
         }
         #endregion
 

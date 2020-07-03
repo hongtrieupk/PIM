@@ -22,7 +22,7 @@ else
     @Html.ValidationMessageFor(x => x.EndDate, "", new { @class = "text-danger custom-validation-message" })
     @Html.ValidationMessageFor(x => x.ProjectNumber, "", new { @class = "text-danger custom-validation-message" })
     <div class="form-group">
-        <input hidden id="ProjectId" />
+        @Html.HiddenFor(x => x.ProjectID, new { htmlAttributes = new { id = "ProjectId" } })
         <div class="col-md-2">
             <label class="control-label" for="ProjectNumber">@PIMResource.PROJECT_LBL_NUMBER*</label>
         </div>

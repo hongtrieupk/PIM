@@ -1,7 +1,7 @@
 ﻿using NHibernate;
 using System.Threading.Tasks;
 
-namespace PIM.Object.UnitOfWork.GenericTransactions
+namespace PIM.Data.UnitOfWorks.GenericTransactions
 {
     public class GenericTransaction : IGenericTransaction
     {

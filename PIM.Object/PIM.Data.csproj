@@ -7,8 +7,8 @@
     <ProjectGuid>{B0177579-9F5F-4338-BE23-FE088D3898E4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PIM.Object</RootNamespace>
-    <AssemblyName>PIM.Object</AssemblyName>
+    <RootNamespace>PIM.Data</RootNamespace>
+    <AssemblyName>PIM.Data</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -59,18 +59,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GenericRepositories\GenericRepository.cs" />
-    <Compile Include="GenericRepositories\IGenericRepository.cs" />
+    <Compile Include="Repositories\GenericRepository.cs" />
+    <Compile Include="Repositories\IGenericRepository.cs" />
     <Compile Include="Maps\ProjectMap.cs" />
     <Compile Include="Objects\Project.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UnitOfWork\GenericTransactions\GenericTransaction.cs" />
-    <Compile Include="UnitOfWork\GenericTransactions\IGenericTransaction.cs" />
-    <Compile Include="UnitOfWork\IUnitOfWork.cs" />
-    <Compile Include="UnitOfWork\IUnitOfWorkFactory.cs" />
-    <Compile Include="UnitOfWork\UnitOfWork.cs" />
-    <Compile Include="UnitOfWork\UnitOfWorkFactory.cs" />
-    <Compile Include="UnitOfWork\UnitOfWorkImplementor.cs" />
+    <Compile Include="Repositories\IProjectRepository.cs" />
+    <Compile Include="Repositories\ProjectRepository.cs" />
+    <Compile Include="UnitOfWorks\GenericTransactions\GenericTransaction.cs" />
+    <Compile Include="UnitOfWorks\GenericTransactions\IGenericTransaction.cs" />
+    <Compile Include="UnitOfWorks\IUnitOfWork.cs" />
+    <Compile Include="UnitOfWorks\IUnitOfWorkFactory.cs" />
+    <Compile Include="UnitOfWorks\UnitOfWork.cs" />
+    <Compile Include="UnitOfWorks\UnitOfWorkFactory.cs" />
+    <Compile Include="UnitOfWorks\UnitOfWorkImplementor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -80,6 +82,9 @@
       <Project>{df567e5b-a328-4027-9091-9b395445b45e}</Project>
       <Name>PIM.Common</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

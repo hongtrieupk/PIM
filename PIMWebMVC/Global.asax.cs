@@ -1,5 +1,4 @@
-﻿using PIM.Object.UnitOfWork;
-using PIMWebMVC.App_Start;
+﻿using PIMWebMVC.App_Start;
 using PIMWebMVC.Constants;
 using System;
 using System.Globalization;
@@ -9,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using PIM.Data.UnitOfWorks;
 
 namespace PIMWebMVC
 {
@@ -16,6 +16,7 @@ namespace PIMWebMVC
     {
         protected void Application_Start()
         {
+            log4net.Config.XmlConfigurator.Configure();
             AutoMapper.Mapper.Initialize(m =>
             {
                 m.AddProfile(new AutoMapperProfile());

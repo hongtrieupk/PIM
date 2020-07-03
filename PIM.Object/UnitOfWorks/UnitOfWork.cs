@@ -3,9 +3,8 @@ using NHibernate;
 using NHibernate.Cfg;
 using PIM.Common.LocalStorage;
 using System;
-using System.Net.Http.Headers;
 
-namespace PIM.Object.UnitOfWork
+namespace PIM.Data.UnitOfWorks
 {
     public static class UnitOfWork
     {

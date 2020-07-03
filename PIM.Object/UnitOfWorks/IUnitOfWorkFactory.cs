@@ -1,7 +1,7 @@
 ﻿using NHibernate;
 using NHibernate.Cfg;
 
-namespace PIM.Object.UnitOfWork
+namespace PIM.Data.UnitOfWorks
 {
     public interface IUnitOfWorkFactory
     {

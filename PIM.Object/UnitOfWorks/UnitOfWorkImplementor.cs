@@ -1,8 +1,8 @@
 ﻿using NHibernate;
-using PIM.Object.UnitOfWork.GenericTransactions;
+using PIM.Data.UnitOfWorks.GenericTransactions;
 using System.Data;
 
-namespace PIM.Object.UnitOfWork
+namespace PIM.Data.UnitOfWorks
 {    public class UnitOfWorkImplementor : IUnitOfWork
     {
         private readonly IUnitOfWorkFactory _factory;

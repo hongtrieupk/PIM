@@ -27,7 +27,8 @@ namespace PIMWebMVC.Models.Projects
         [Required]
         public int? ProjectID { get; set; }
 
-        [Required(ErrorMessage = " ")] // leave blank string, this error message is handled by ErrorActionsConstant.SUM_REQUIRED_ERROR_FIELD_NAME
+        // leave ErrorMessage blank string, this error message is handled in ProjectsControler.ValidateProjectModel() 
+        [Required(ErrorMessage = " ")]
         public int? ProjectNumber { get; set; }
 
         [StringLength(100)]

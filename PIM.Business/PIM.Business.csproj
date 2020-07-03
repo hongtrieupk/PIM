@@ -46,6 +46,10 @@
     <Compile Include="Services\ProjectService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PIM.Common\PIM.Common.csproj">
+      <Project>{DF567E5B-A328-4027-9091-9B395445B45E}</Project>
+      <Name>PIM.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PIM.Object\PIM.Data.csproj">
       <Project>{b0177579-9f5f-4338-be23-fe088d3898e4}</Project>
       <Name>PIM.Data</Name>

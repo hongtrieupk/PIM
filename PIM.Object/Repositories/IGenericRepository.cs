@@ -1,11 +1,10 @@
 ﻿
 using System;
-using System.Collections;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace PIM.Object.GenericRepositories
+namespace PIM.Data.Repositories
 {
     public interface IGenericRepository<T> where T : class
     {
@@ -22,7 +21,7 @@ namespace PIM.Object.GenericRepositories
         /// <param name="pageIndex"> must greater than 0 </param>
         /// <param name="pageSize"> must greater than 0 </param>
         /// <returns></returns>
-        IQueryable<T> FilterBy(Expression<Func<T, bool>> criteria, int pageIndex, int pageSize);
+        IQueryable<T> FilterBy(Expression<Func<T, bool>> criteria);
         #endregion
     }
 }

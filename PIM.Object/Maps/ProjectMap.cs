@@ -3,7 +3,7 @@ using NHibernate.Mapping.ByCode;
 using NHibernate.Mapping.ByCode.Conformist;
 using PIM.Data.Objects;
 
-namespace PIM.Object.Maps
+namespace PIM.Data.Maps
 {
     public class ProjectMap : ClassMapping<Project>
     {

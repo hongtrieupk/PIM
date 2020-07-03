@@ -4,9 +4,9 @@ using NHibernate.Exceptions;
 using NHibernate.Tool.hbm2ddl;
 using NUnit.Framework;
 using PIM.Data.Objects;
-using PIM.Object.GenericRepositories;
-using PIM.Object.UnitOfWork;
-using PIM.Object.UnitOfWork.GenericTransactions;
+using PIM.Data.Repositories;
+using PIM.Data.UnitOfWorks;
+using PIM.Data.UnitOfWorks.GenericTransactions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -188,7 +188,6 @@ namespace PIM.Test
         {
             // Arrange
             string searchValue = "Test 1";
-            int pageIndex = 1, pageSize = 10;
             IList<Project> projectsResult;
 
             // Action
@@ -196,7 +195,7 @@ namespace PIM.Test
             using (IUnitOfWork unitOfwork = UnitOfWork.Start())
             {
                 GenericRepository<Project> projectRepository = new GenericRepository<Project>(unitOfwork.Session);
-                projectsResult = projectRepository.FilterBy((x) => x.ProjectName.Contains(searchValue), pageIndex, pageSize).ToList();
+                projectsResult = projectRepository.FilterBy((x) => x.ProjectName.Contains(searchValue)).ToList();
             }
 
             //Assert

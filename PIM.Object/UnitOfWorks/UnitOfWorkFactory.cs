@@ -6,11 +6,11 @@ using NHibernate.Driver;
 using NHibernate.Mapping.ByCode;
 using NHibernate.Tool.hbm2ddl;
 using PIM.Common.Constants;
-using PIM.Object.Maps;
+using PIM.Data.Maps;
 using System;
 using System.Data;
 
-namespace PIM.Object.UnitOfWork
+namespace PIM.Data.UnitOfWorks
 {
     public class UnitOfWorkFactory : IUnitOfWorkFactory
     {

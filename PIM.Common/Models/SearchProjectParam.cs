@@ -1,6 +1,8 @@
 ﻿
 
-namespace PIMWebMVC.Models.Projects
+using System.Web.UI;
+
+namespace PIM.Common.Models
 {
     public class SearchProjectParam
     {
@@ -9,6 +11,7 @@ namespace PIMWebMVC.Models.Projects
         public string Status { get; set; }
         public string Customer { get; set; }
         public int CurrentPage { get; set; }
+        public int PageSize { get; set; }
 
         public bool IsValidParam
         {
@@ -18,6 +21,13 @@ namespace PIMWebMVC.Models.Projects
                     || !string.IsNullOrWhiteSpace(Customer) 
                     || !string.IsNullOrWhiteSpace(Status)
                     || ProjectNumber.HasValue;
+            }
+        }
+        public bool IsValidPageSize
+        {
+            get
+            {
+                return PageSize > 0;
             }
         }
     }
