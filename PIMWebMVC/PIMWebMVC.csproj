@@ -237,7 +237,7 @@
       <Project>{df567e5b-a328-4027-9091-9b395445b45e}</Project>
       <Name>PIM.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PIM.Object\PIM.Data.csproj">
+    <ProjectReference Include="..\PIM.Data\PIM.Data.csproj">
       <Project>{b0177579-9f5f-4338-be23-fe088d3898e4}</Project>
       <Name>PIM.Data</Name>
     </ProjectReference>
