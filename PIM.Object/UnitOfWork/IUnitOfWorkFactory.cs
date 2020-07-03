@@ -9,6 +9,6 @@ namespace PIM.Object.UnitOfWork
         Configuration Configuration { get; }
         ISessionFactory SessionFactory { get; }
         ISession CurrentSession { get; set; }
-        void DisposeUnitOfWork(UnitOfWorkImplementor adapter);
+        void DisposeUnitOfWork();
     }
 }

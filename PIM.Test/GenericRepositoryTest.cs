@@ -10,6 +10,7 @@ using PIM.Object.UnitOfWork.GenericTransactions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.ServiceModel.Configuration;
 using System.Threading.Tasks;
 
@@ -22,8 +23,6 @@ namespace PIM.Test
     public class GenericRepositoryTest
     {
         #region Fields
-        private GenericRepository<Project> _projectRepository;
-        private IUnitOfWork _currentUnitOfWork;
         //Projects testing data to Assert
         // - projectTest1, ProjectId = 1 will be used for testing GetById and Update function
         private static readonly Project _projectTest1 = new Project() { ProjectNumber = 111, ProjectName = "Project Test 1", Customer = "Apple", Status = "INV", StartDate = DateTime.Now };
@@ -34,38 +33,41 @@ namespace PIM.Test
         #region Constructors
         public GenericRepositoryTest()
         {
-            _currentUnitOfWork = UnitOfWork.Start();
-            CreateDatabase(UnitOfWork.Configuration);
-            _projectRepository = new GenericRepository<Project>(_currentUnitOfWork.Session);
+            CreateDatabase();
             InsertTestProjectsData();
 
         }
         #endregion
-        #region Destructor
-        ~GenericRepositoryTest()
-        {
-            if (_currentUnitOfWork != null)
-            {
-                _currentUnitOfWork.Dispose();
-            }
-        }
-        #endregion
         #region Methods       
         #region Set up methods
-        private void CreateDatabase(Configuration nHibernateConfiguration)
+        private void CreateDatabase()
         {
-            new SchemaExport(nHibernateConfiguration).Drop(useStdOut: false, execute: true);
-            new SchemaExport(nHibernateConfiguration).Create(useStdOut: false, execute: true);
+            using (IUnitOfWork unitOfwork = UnitOfWork.Start())
+            {
+                new SchemaExport(UnitOfWork.Configuration).Drop(useStdOut: false, execute: true);
+                new SchemaExport(UnitOfWork.Configuration).Create(useStdOut: false, execute: true);
+            }
+
         }
         private void InsertTestProjectsData()
         {
-            using (IGenericTransaction transaction = _currentUnitOfWork.BeginTransaction())
+            using (IUnitOfWork unitOfwork = UnitOfWork.Start())
             {
-                var projectId1 = _projectRepository.AddAsync(_projectTest1).Result;
-                var projectId2 = _projectRepository.AddAsync(_projectTest2).Result;
-                transaction.Commit();
+                GenericRepository<Project> projectRepository = new GenericRepository<Project>(unitOfwork.Session);
+                using (IGenericTransaction transaction = unitOfwork.BeginTransaction())
+                {
+                    var projectId1 = projectRepository.AddAsync(_projectTest1).Result;
+                    var projectId2 = projectRepository.AddAsync(_projectTest2).Result;
+                    transaction.Commit();
+                }
             }
-
+        }
+        private void ResetUnitOfWork()
+        {
+            // assert that the UnitOfWork is reset
+            var propertyInfo = typeof(UnitOfWork).GetProperty("CurrentUnitOfWork",
+                                BindingFlags.Static | BindingFlags.SetProperty | BindingFlags.NonPublic);
+            propertyInfo.SetValue(null, null, null);
         }
         #endregion
 
@@ -78,8 +80,12 @@ namespace PIM.Test
             Project projectTest1FromDb;
 
             // Action
-            projectTest1FromDb = await _projectRepository.GetByIdAsync(projectTest1Id);
-
+            ResetUnitOfWork();
+            using (IUnitOfWork unitOfwork = UnitOfWork.Start())
+            {
+                GenericRepository<Project> projectRepository = new GenericRepository<Project>(unitOfwork.Session);
+                projectTest1FromDb = await projectRepository.GetByIdAsync(projectTest1Id);
+            }
             // Assert
             Assert.IsNotNull(projectTest1FromDb);
             Assert.AreEqual(_projectTest1.ProjectName, projectTest1FromDb.ProjectName);
@@ -92,7 +98,12 @@ namespace PIM.Test
             Project projectFromDb;
 
             // Action
-            projectFromDb = await _projectRepository.GetByIdAsync(invalidProjectId);
+            ResetUnitOfWork();
+            using (IUnitOfWork unitOfwork = UnitOfWork.Start())
+            {
+                GenericRepository<Project> projectRepository = new GenericRepository<Project>(unitOfwork.Session);
+                projectFromDb = await projectRepository.GetByIdAsync(invalidProjectId);
+            }
 
             // Assert
             Assert.IsNull(projectFromDb);
@@ -102,10 +113,22 @@ namespace PIM.Test
         {
             // Arrange
             Project newProject = new Project() { ProjectNumber = 333, ProjectName = "Viacar", Customer = "Switzerland", Status = "INV", StartDate = DateTime.Now };
+            object objectId;
             Project insertedProject;
+
             // Action 
-            object objectId = await _projectRepository.AddAsync(newProject);
-            insertedProject = await _projectRepository.GetByIdAsync(int.Parse(objectId.ToString()));
+            ResetUnitOfWork();
+            using (IUnitOfWork unitOfwork = UnitOfWork.Start())
+            {
+                GenericRepository<Project> projectRepository = new GenericRepository<Project>(unitOfwork.Session);
+                using (IGenericTransaction transaction = unitOfwork.BeginTransaction())
+                {
+                    objectId = await projectRepository.AddAsync(newProject);
+                    transaction.Commit();
+                }
+                insertedProject = await projectRepository.GetByIdAsync(objectId);
+            }
+
             // Assert
             Assert.IsNotNull(insertedProject);
             Assert.AreEqual(insertedProject.ProjectName, insertedProject.ProjectName);
@@ -119,11 +142,17 @@ namespace PIM.Test
             Project updatedProjectFromDb;
 
             // Action
-            using (IGenericTransaction transaction = _currentUnitOfWork.BeginTransaction())
+            ResetUnitOfWork();
+            using (IUnitOfWork unitOfwork = UnitOfWork.Start())
             {
-                await _projectRepository.UpdateAsync(_projectTest1);
-                await transaction.CommitAsync();
-                updatedProjectFromDb = await _projectRepository.GetByIdAsync(_projectTest1.ProjectID);
+                GenericRepository<Project> projectRepository = new GenericRepository<Project>(unitOfwork.Session);
+                using (IGenericTransaction transaction = unitOfwork.BeginTransaction())
+                {
+                    await projectRepository.UpdateAsync(_projectTest1);
+                    await transaction.CommitAsync();
+                    
+                }
+                updatedProjectFromDb = await projectRepository.GetByIdAsync(_projectTest1.ProjectID);
             }
 
             // Assert
@@ -137,13 +166,18 @@ namespace PIM.Test
             // Arrange
             Project existedProject = _projectTest2;
             Project deletedProject;
-            _currentUnitOfWork.Session.Refresh(existedProject);
+
             // Action
-            using (IGenericTransaction transaction = _currentUnitOfWork.BeginTransaction())
+            ResetUnitOfWork();
+            using (IUnitOfWork unitOfwork = UnitOfWork.Start())
             {
-                await _projectRepository.DeleteAsync(existedProject);
-                await transaction.CommitAsync();
-                deletedProject = await _projectRepository.GetByIdAsync(existedProject.ProjectID);
+                GenericRepository<Project> projectRepository = new GenericRepository<Project>(unitOfwork.Session);
+                using (IGenericTransaction transaction = unitOfwork.BeginTransaction())
+                {
+                    await projectRepository.DeleteAsync(existedProject);
+                    await transaction.CommitAsync();
+                }
+                deletedProject = await projectRepository.GetByIdAsync(existedProject.ProjectID);
             }
 
             // Assert
@@ -155,11 +189,18 @@ namespace PIM.Test
             // Arrange
             string searchValue = "Test 1";
             int pageIndex = 1, pageSize = 10;
+            IList<Project> projectsResult;
 
             // Action
-            IList<Project> projectsResult = _projectRepository.FilterBy((x) => x.ProjectName.Contains(searchValue), pageIndex, pageSize).ToList();
+            ResetUnitOfWork();
+            using (IUnitOfWork unitOfwork = UnitOfWork.Start())
+            {
+                GenericRepository<Project> projectRepository = new GenericRepository<Project>(unitOfwork.Session);
+                projectsResult = projectRepository.FilterBy((x) => x.ProjectName.Contains(searchValue), pageIndex, pageSize).ToList();
+            }
 
             //Assert
+            Assert.IsNotNull(projectsResult);
             Assert.IsTrue(projectsResult.Count() > 0);
 
         }
@@ -173,7 +214,8 @@ namespace PIM.Test
             StaleStateException staleStateException = null;
 
             // Action
-            using (IUnitOfWork unitOfworkForExceptionTest = new UnitOfWorkFactory().Create())
+            ResetUnitOfWork();
+            using (IUnitOfWork unitOfworkForExceptionTest = UnitOfWork.Start())
             {
                 GenericRepository<Project> projectRepo = new GenericRepository<Project>(unitOfworkForExceptionTest.Session);
                 using (IGenericTransaction transaction = unitOfworkForExceptionTest.BeginTransaction())
@@ -182,6 +224,7 @@ namespace PIM.Test
                     staleStateException = Assert.Throws<StaleStateException>(() => transaction.Commit());
                 }
             }
+
             // Assert
             Assert.IsNotNull(staleStateException);
         }
@@ -193,7 +236,8 @@ namespace PIM.Test
             Exception genericADOException;
 
             // Action 
-            using (IUnitOfWork unitOfworkForExceptionTest = new UnitOfWorkFactory().Create())
+            ResetUnitOfWork();
+            using (IUnitOfWork unitOfworkForExceptionTest = UnitOfWork.Start())
             {
                 GenericRepository<Project> projectRepo = new GenericRepository<Project>(unitOfworkForExceptionTest.Session);
                 using (IGenericTransaction transaction = unitOfworkForExceptionTest.BeginTransaction())
@@ -201,7 +245,6 @@ namespace PIM.Test
                     genericADOException = Assert.ThrowsAsync<GenericADOException>(() => projectRepo.AddAsync(newProject));
                 }
             }
-
 
             // Assert
             Assert.IsNotNull(genericADOException);
@@ -215,7 +258,8 @@ namespace PIM.Test
             StaleStateException staleStateException = null;
 
             // Action
-            using (IUnitOfWork unitOfworkForExceptionTest = new UnitOfWorkFactory().Create())
+            ResetUnitOfWork();
+            using (IUnitOfWork unitOfworkForExceptionTest = UnitOfWork.Start())
             {
                 GenericRepository<Project> projectRepo = new GenericRepository<Project>(unitOfworkForExceptionTest.Session);
                 using (IGenericTransaction transaction = unitOfworkForExceptionTest.BeginTransaction())
@@ -224,7 +268,7 @@ namespace PIM.Test
                     staleStateException = Assert.Throws<StaleStateException>(() => transaction.Commit());
                 }
             }
-
+            
             // Assert
             Assert.IsNotNull(staleStateException);
         }

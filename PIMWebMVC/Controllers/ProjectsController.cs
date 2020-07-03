@@ -1,4 +1,9 @@
-﻿using PIMWebMVC.Constants;
+﻿using AutoMapper;
+using PIM.Business.Services;
+using PIM.Data.Objects;
+using PIM.Object.GenericRepositories;
+using PIM.Object.UnitOfWork;
+using PIMWebMVC.Constants;
 using PIMWebMVC.Models.Common;
 using PIMWebMVC.Models.Projects;
 using PIMWebMVC.Resources;
@@ -6,12 +11,25 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace PIMWebMVC.Controllers
 {
     public class ProjectsController : Controller
     {
+        #region Fields
+        private readonly IProjectService _projectService;
+        #endregion
+        #region Constructors
+        public ProjectsController()
+        {
+            // TODO: apply IOC
+            _projectService = new ProjectService(new GenericRepository<Project>(UnitOfWork.CurrentSession), UnitOfWork.Current);
+        }
+        #endregion
+
+        #region Methods
         public ActionResult Index()
         {
             return View();
@@ -32,17 +50,22 @@ namespace PIMWebMVC.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Project(ProjectModel project)
+        public async Task<ActionResult> Project(ProjectModel project)
         {
             if (!ValidateProjectModel(project))
             {
                 return View(project);
             }
-            else
-            {                
-                // update db
-                return View(project);
+            if (project.ProjectID.HasValue) // Update project
+            {
+                
             }
+            else // Create new project
+            {
+                Project newProject = Mapper.Map<Project>(project);
+                await _projectService.CreateProjectAsync(newProject);
+            }
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
@@ -111,5 +134,6 @@ namespace PIMWebMVC.Controllers
 
             return isValid;
         }
+        #endregion
     }
 }

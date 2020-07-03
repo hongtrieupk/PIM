@@ -17,7 +17,7 @@ namespace PIM.Object.UnitOfWork
         private static ISession _currentSession;
         private ISessionFactory _sessionFactory;
         private static Configuration _nhibernateConfiguration;
-        public UnitOfWorkFactory()
+        internal UnitOfWorkFactory()
         { }
         public Configuration Configuration
         {
@@ -96,10 +96,10 @@ namespace PIM.Object.UnitOfWork
             return mapping;
         }
 
-        public void DisposeUnitOfWork(UnitOfWorkImplementor adapter)
+        public void DisposeUnitOfWork()
         {
             CurrentSession = null;
-            UnitOfWork.DisposeUnitOfWork(adapter);
+            UnitOfWork.DisposeUnitOfWork();
         }
     }
 }

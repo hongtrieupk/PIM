@@ -1,4 +1,6 @@
-﻿using PIMWebMVC.Constants;
+﻿using PIM.Object.UnitOfWork;
+using PIMWebMVC.App_Start;
+using PIMWebMVC.Constants;
 using System;
 using System.Globalization;
 using System.Linq;
@@ -14,10 +16,25 @@ namespace PIMWebMVC
     {
         protected void Application_Start()
         {
+            AutoMapper.Mapper.Initialize(m =>
+            {
+                m.AddProfile(new AutoMapperProfile());
+            });
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+        }
+        protected void Application_BeginRequest()
+        {
+            UnitOfWork.Start();
+        }
+        protected void Application_EndRequest()
+        {
+            if (UnitOfWork.Current != null)
+            {
+                UnitOfWork.Current.Dispose();
+            }
         }
         protected void Application_AcquireRequestState(object sender, EventArgs e)
         {

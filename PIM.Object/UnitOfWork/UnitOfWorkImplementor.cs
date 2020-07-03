@@ -65,7 +65,7 @@ namespace PIM.Object.UnitOfWork
         }
         public void Dispose()
         {
-            _factory.DisposeUnitOfWork(this);
+            _factory.DisposeUnitOfWork();
             _session.Dispose();
         }
     }
