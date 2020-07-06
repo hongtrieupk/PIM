@@ -3,7 +3,6 @@ using NHibernate;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
 
 namespace PIM.Data.Repositories
 {
@@ -19,22 +18,22 @@ namespace PIM.Data.Repositories
         }
         #endregion
         #region Methods
-        public async Task<object> AddAsync(T entity)
+        public object Add(T entity)
         {
-            return await _session.SaveAsync(entity);
+            return  _session.Save(entity);
         }
 
-        public async Task UpdateAsync(T entity)
+        public  void Update(T entity)
         {
-            await _session.UpdateAsync(entity);
+             _session.Update(entity);
         }
-        public async Task DeleteAsync(T entity)
+        public  void Delete(T entity)
         {
-            await _session.DeleteAsync(entity);
+            _session.Delete(entity);
         }
-        public async Task<T> GetByIdAsync(object id)
+        public T GetById(object id)
         {
-            return await _session.GetAsync<T>(id);
+            return _session.Get<T>(id);
         }
         /// <summary>
         /// Filter with pagination function

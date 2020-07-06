@@ -2,9 +2,9 @@
 using PIM.Business.Services;
 using PIM.Common.Models;
 using PIM.Common.SystemConfigurationHelper;
+using PIM.Data.NHibernateConfiguration;
 using PIM.Data.Objects;
 using PIM.Data.Repositories;
-using PIM.Data.UnitOfWorks;
 using PIMWebMVC.Constants;
 using PIMWebMVC.Models.Common;
 using PIMWebMVC.Models.Projects;
@@ -28,7 +28,8 @@ namespace PIMWebMVC.Controllers
         public ProjectsController()
         {
             // TODO: apply IOC
-            _projectService = new ProjectService(new ProjectRepository(UnitOfWork.CurrentSession), UnitOfWork.Current);
+            IApplicationDbContext dbContext = new ApplicationDbContext();
+            _projectService = new ProjectService(new ProjectRepository(dbContext.CurrentSession), dbContext);
             _appConfiguration = new AppConfiguration();
         }
         #endregion
@@ -39,12 +40,12 @@ namespace PIMWebMVC.Controllers
             return View();
         }
 
-        public async Task<ActionResult> AddUpdate(int? id)
+        public ActionResult AddUpdate(int? id)
         {
             ProjectModel initProject = new ProjectModel();
             if (id.HasValue)
             {
-                Project projectFromDb = await _projectService.GetProjectByIdAsync(id.Value);
+                Project projectFromDb = _projectService.GetProjectById(id.Value);
                 if (projectFromDb == null)
                 {
                     throw new HttpException((int)HttpStatusCode.NotFound, PIMResource.ERROR_NOT_FOUND_MESSAGE);
@@ -55,7 +56,7 @@ namespace PIMWebMVC.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> AddUpdate(ProjectModel projectModel)
+        public ActionResult AddUpdate(ProjectModel projectModel)
         {
             if (!ValidateProjectModel(projectModel))
             {
@@ -65,12 +66,12 @@ namespace PIMWebMVC.Controllers
 
             if (projectModel.ProjectID.HasValue) // Update project
             {
-                await _projectService.UpdateProjectAsync(project);
+                _projectService.UpdateProject(project);
             }
             else // Create new project
             {
 
-                await _projectService.CreateProjectAsync(project);
+                _projectService.CreateProject(project);
             }
             return RedirectToAction("Index");
         }

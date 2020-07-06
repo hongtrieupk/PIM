@@ -59,20 +59,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NHibernateConfiguration\ApplicationDbContext.cs" />
+    <Compile Include="NHibernateConfiguration\IApplicationDbContext.cs" />
     <Compile Include="Repositories\GenericRepository.cs" />
+    <Compile Include="Repositories\GenericTransactions\GenericTransaction.cs" />
+    <Compile Include="Repositories\GenericTransactions\IGenericTransaction.cs" />
     <Compile Include="Repositories\IGenericRepository.cs" />
     <Compile Include="Maps\ProjectMap.cs" />
     <Compile Include="Objects\Project.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\IProjectRepository.cs" />
     <Compile Include="Repositories\ProjectRepository.cs" />
-    <Compile Include="UnitOfWorks\GenericTransactions\GenericTransaction.cs" />
-    <Compile Include="UnitOfWorks\GenericTransactions\IGenericTransaction.cs" />
-    <Compile Include="UnitOfWorks\IUnitOfWork.cs" />
-    <Compile Include="UnitOfWorks\IUnitOfWorkFactory.cs" />
-    <Compile Include="UnitOfWorks\UnitOfWork.cs" />
-    <Compile Include="UnitOfWorks\UnitOfWorkFactory.cs" />
-    <Compile Include="UnitOfWorks\UnitOfWorkImplementor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

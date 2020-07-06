@@ -1,12 +1,12 @@
 ﻿using PIM.Common.Models;
 using PIM.Data.Objects;
-using PIM.Data.UnitOfWorks;
-using PIM.Data.UnitOfWorks.GenericTransactions;
 using PIM.Data.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using PIM.Data.NHibernateConfiguration;
+using PIM.Data.Repositories.GenericTransactions;
 
 namespace PIM.Business.Services
 {
@@ -14,40 +14,40 @@ namespace PIM.Business.Services
     {
         #region Fields
         private readonly IProjectRepository _projectRepository;
-        private readonly IUnitOfWork _unitOfwork;
+        private readonly IApplicationDbContext _dbContext;
         #endregion
 
         #region Constructors
-        public ProjectService(IProjectRepository projectRepository, IUnitOfWork unitOfwork)
+        public ProjectService(IProjectRepository projectRepository, IApplicationDbContext dbContext)
         {
             _projectRepository = projectRepository ?? throw new ArgumentNullException("Can not inject a null project repository!");
-            _unitOfwork = unitOfwork ?? throw new ArgumentNullException("Can not inject a null unitOfwork!");
+            _dbContext = dbContext ?? throw new ArgumentNullException("Can not inject a null dbContext!");
         }
         #endregion
 
         #region Method
-        public async Task<int> CreateProjectAsync(Project newProject)
+        public int CreateProject(Project newProject)
         {
-            using (IGenericTransaction transaction = _unitOfwork.BeginTransaction())
+            using (IGenericTransaction transaction = _dbContext.BeginTransaction())
             {
-                await _projectRepository.AddAsync(newProject);
+                _projectRepository.Add(newProject);
                 transaction.Commit();
             }
             return newProject.ProjectID;
         }
 
-        public async Task UpdateProjectAsync(Project project)
+        public void UpdateProject(Project project)
         {
-            using (IGenericTransaction transaction = _unitOfwork.BeginTransaction())
+            using (IGenericTransaction transaction = _dbContext.BeginTransaction())
             {
-                await _projectRepository.UpdateAsync(project);
+                _projectRepository.Update(project);
                 transaction.Commit();
             }
         }
 
-        public async Task<Project> GetProjectByIdAsync(int id)
+        public Project GetProjectById(int id)
         {
-            return await _projectRepository.GetByIdAsync(id);
+            return _projectRepository.GetById(id);
         }
         public PagingResultModel<Project> SearchProject(SearchProjectParam searchParam)
         {

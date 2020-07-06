@@ -7,9 +7,9 @@ namespace PIM.Business.Services
 {
     public interface IProjectService
     {
-        Task<int> CreateProjectAsync(Project newProject);
-        Task UpdateProjectAsync(Project project);
-        Task<Project> GetProjectByIdAsync(int id);
+        int CreateProject(Project newProject);
+        void UpdateProject(Project project);
+        Project GetProjectById(int id);
         /// <summary>
         /// search projects with pagination option
         /// </summary>

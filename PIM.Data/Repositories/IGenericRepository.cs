@@ -9,10 +9,10 @@ namespace PIM.Data.Repositories
     public interface IGenericRepository<T> where T : class
     {
         #region Methods
-        Task<object> AddAsync(T entity);
-		Task UpdateAsync(T entity);
-		Task DeleteAsync(T entity);
-		Task<T> GetByIdAsync(object id);
+        object Add(T entity);
+		void Update(T entity);
+        void Delete(T entity);
+		T GetById(object id);
         /// <summary>
         /// Filter with pagination function
         /// </summary>
