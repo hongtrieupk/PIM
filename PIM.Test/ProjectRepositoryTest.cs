@@ -2,6 +2,7 @@
 using NHibernate.Exceptions;
 using NHibernate.Tool.hbm2ddl;
 using NUnit.Framework;
+using PIM.Common.CustomExceptions;
 using PIM.Data.NHibernateConfiguration;
 using PIM.Data.Objects;
 using PIM.Data.Repositories;
@@ -17,7 +18,7 @@ namespace PIM.Test
     /// User Project Object to test GenericRepository
     /// </summary>
     [TestFixture]
-    public class GenericRepositoryTest
+    public class ProjectRepositoryTest
     {
         #region Fields
         //Projects testing data to Assert
@@ -33,7 +34,7 @@ namespace PIM.Test
         #endregion
 
         #region Constructors
-        public GenericRepositoryTest()
+        public ProjectRepositoryTest()
         {
             CreateDatabase();
 
@@ -52,7 +53,7 @@ namespace PIM.Test
                 _seedProjectsData.Add(new Project() { ProjectName = "CHI", ProjectNumber = 777, Customer = "Hagen", Status = "INV", StartDate = DateTime.Now });
                 new SchemaExport(dbContext.Configuration).Drop(useStdOut: false, execute: true);
                 new SchemaExport(dbContext.Configuration).Create(useStdOut: false, execute: true);
-                GenericRepository<Project> projectRepository = new GenericRepository<Project>(dbContext.CurrentSession);
+                IProjectRepository projectRepository = new ProjectRepository(dbContext.CurrentSession);
                 using (IGenericTransaction transaction = dbContext.BeginTransaction())
                 {
                     foreach (Project project in _seedProjectsData)
@@ -78,7 +79,7 @@ namespace PIM.Test
             // Action
             using (IApplicationDbContext dbContext = new ApplicationDbContext())
             {
-                GenericRepository<Project> projectRepository = new GenericRepository<Project>(dbContext.CurrentSession);
+                IProjectRepository projectRepository = new ProjectRepository(dbContext.CurrentSession);
                 projectTest1FromDb = projectRepository.GetById(projectTest1Id);
             }
             // Assert
@@ -95,7 +96,7 @@ namespace PIM.Test
             // Action
             using (IApplicationDbContext dbContext = new ApplicationDbContext())
             {
-                GenericRepository<Project> projectRepository = new GenericRepository<Project>(dbContext.CurrentSession);
+                IProjectRepository projectRepository = new ProjectRepository(dbContext.CurrentSession);
                 projectFromDb = projectRepository.GetById(invalidProjectId);
             }
 
@@ -113,7 +114,7 @@ namespace PIM.Test
             // Action 
             using (IApplicationDbContext dbContext = new ApplicationDbContext())
             {
-                GenericRepository<Project> projectRepository = new GenericRepository<Project>(dbContext.CurrentSession);
+                IProjectRepository projectRepository = new ProjectRepository(dbContext.CurrentSession);
                 using (IGenericTransaction transaction = dbContext.BeginTransaction())
                 {
                     objectId = projectRepository.Add(newProject);
@@ -137,7 +138,7 @@ namespace PIM.Test
             // Action
             using (IApplicationDbContext dbContext = new ApplicationDbContext())
             {
-                GenericRepository<Project> projectRepository = new GenericRepository<Project>(dbContext.CurrentSession);
+                IProjectRepository projectRepository = new ProjectRepository(dbContext.CurrentSession);
                 using (IGenericTransaction transaction = dbContext.BeginTransaction())
                 {
                     projectRepository.Update(_projectTest1);
@@ -162,7 +163,7 @@ namespace PIM.Test
             // Action
             using (IApplicationDbContext dbContext = new ApplicationDbContext())
             {
-                GenericRepository<Project> projectRepository = new GenericRepository<Project>(dbContext.CurrentSession);
+                IProjectRepository projectRepository = new ProjectRepository(dbContext.CurrentSession);
                 using (IGenericTransaction transaction = dbContext.BeginTransaction())
                 {
                     projectRepository.Delete(existedProject);
@@ -175,6 +176,31 @@ namespace PIM.Test
             Assert.IsNull(deletedProject);
         }
         [Test]
+        public void DeleteProjectByIds__DeleteProjectId_4_5__ShouldRemovedFromDatabase()
+        {
+            // Arrange
+            int projectId4 = 4, projectId5 = 5;
+            IList<int> projectIds = new List<int>() { projectId4, projectId5 };
+            Project deletedProject4;
+            Project deletedProject5;
+            // Action
+            using (IApplicationDbContext dbContext = new ApplicationDbContext())
+            {
+                IProjectRepository projectRepository = new ProjectRepository(dbContext.CurrentSession);
+                using (IGenericTransaction transaction = dbContext.BeginTransaction())
+                {
+                    projectRepository.DeleteProjectByIds(projectIds);
+                    transaction.Commit();
+                }
+                deletedProject4 = projectRepository.GetById(projectId4);
+                deletedProject5 = projectRepository.GetById(projectId5);
+            }
+
+            // Assert
+            Assert.IsNull(deletedProject4);
+            Assert.IsNull(deletedProject5);
+        }
+        [Test]
         public void FilterBy__SearchContainsProjectName__ShouldReturnCorrectResult()
         {
             // Arrange
@@ -184,7 +210,7 @@ namespace PIM.Test
             // Action
             using (IApplicationDbContext dbContext = new ApplicationDbContext())
             {
-                GenericRepository<Project> projectRepository = new GenericRepository<Project>(dbContext.CurrentSession);
+                IProjectRepository projectRepository = new ProjectRepository(dbContext.CurrentSession);
                 projectsResult = projectRepository.FilterBy((x) => x.ProjectName.Contains(searchValue)).ToList();
             }
 
@@ -205,7 +231,7 @@ namespace PIM.Test
             // Action
             using (IApplicationDbContext dbContext = new ApplicationDbContext())
             {
-                GenericRepository<Project> projectRepository = new GenericRepository<Project>(dbContext.CurrentSession);
+                IProjectRepository projectRepository = new ProjectRepository(dbContext.CurrentSession);
                 using (IGenericTransaction transaction = dbContext.BeginTransaction())
                 {
                     projectRepository.Delete(notExistedProject);
@@ -226,10 +252,10 @@ namespace PIM.Test
             // Action 
             using (IApplicationDbContext dbContext = new ApplicationDbContext())
             {
-                GenericRepository<Project> projectRepo = new GenericRepository<Project>(dbContext.CurrentSession);
+                IProjectRepository projectRepository = new ProjectRepository(dbContext.CurrentSession);
                 using (IGenericTransaction transaction = dbContext.BeginTransaction())
                 {
-                    genericADOException = Assert.Throws<GenericADOException>(() => projectRepo.Add(newProject));
+                    genericADOException = Assert.Throws<GenericADOException>(() => projectRepository.Add(newProject));
                 }
             }
 
@@ -242,21 +268,21 @@ namespace PIM.Test
             // Arrange
             Project notExistedProject = new Project()
             { ProjectID = 100000, ProjectName = "fake", Customer = "Fake", Status = "Fake", ProjectNumber = 123, StartDate = DateTime.Now };
-            StaleStateException staleStateException = null;
+            ConcurrencyUpdateException dbException = null;
 
             // Action
             using (IApplicationDbContext dbContext = new ApplicationDbContext())
             {
-                GenericRepository<Project> projectRepo = new GenericRepository<Project>(dbContext.CurrentSession);
+                IProjectRepository projectRepository = new ProjectRepository(dbContext.CurrentSession);
                 using (IGenericTransaction transaction = dbContext.BeginTransaction())
                 {
-                    projectRepo.Update(notExistedProject);
-                    staleStateException = Assert.Throws<StaleStateException>(() => transaction.Commit());
+                    projectRepository.Update(notExistedProject);
+                    dbException = Assert.Throws<ConcurrencyUpdateException>(() => transaction.Commit());
                 }
             }
             
             // Assert
-            Assert.IsNotNull(staleStateException);
+            Assert.IsNotNull(dbException);
         }
         #endregion
         #endregion

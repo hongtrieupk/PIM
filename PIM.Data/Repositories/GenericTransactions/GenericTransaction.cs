@@ -1,12 +1,13 @@
-﻿using NHibernate;
+﻿using log4net;
+using NHibernate;
 using PIM.Common.CustomExceptions;
-using System.Threading.Tasks;
 
 namespace PIM.Data.Repositories.GenericTransactions
 {
     public class GenericTransaction : IGenericTransaction
     {
         #region Fields
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(GenericTransaction));
         private readonly ITransaction _transaction;
         #endregion
         #region Constructors
@@ -25,6 +26,7 @@ namespace PIM.Data.Repositories.GenericTransactions
             catch (StaleStateException exception)
             {
                 _transaction.Rollback();
+                _logger.Error("Error was happen when committing a transaction", exception);
                 throw new ConcurrencyUpdateException(exception.Message, exception);
             }
         }

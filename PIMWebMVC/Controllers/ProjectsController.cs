@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using log4net;
 using PIM.Business.Services;
 using PIM.Common.Models;
 using PIM.Common.SystemConfigurationHelper;
@@ -21,6 +22,7 @@ namespace PIMWebMVC.Controllers
     public class ProjectsController : Controller
     {
         #region Fields
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(ProjectsController));
         private readonly IProjectService _projectService;
         private readonly IAppConfiguration _appConfiguration;
         #endregion
