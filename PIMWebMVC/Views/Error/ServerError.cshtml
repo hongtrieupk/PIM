@@ -2,7 +2,7 @@
 @using PIMWebMVC.Constants
 @{
     ViewBag.Title = PIMResource.ERROR_SERVER_ERROR_TITLE;
-    var currentErrorMessage = Session[ErrorActionsConstant.ERROR_MESSAGE_SESSION_KEY];
+    var currentErrorMessage = HttpContext.Current.Session[ErrorActionsConstant.ERROR_MESSAGE_SESSION_KEY];
     Session.Remove(ErrorActionsConstant.ERROR_MESSAGE_SESSION_KEY);
 }
 

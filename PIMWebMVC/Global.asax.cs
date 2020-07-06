@@ -47,7 +47,7 @@ namespace PIMWebMVC
             }
             else
             {
-                Session[ErrorActionsConstant.ERROR_MESSAGE_SESSION_KEY] = exception.Message;
+                HttpContext.Current.Session[ErrorActionsConstant.ERROR_MESSAGE_SESSION_KEY] = exception.Message;
                 Response.Clear();
                 HttpException httpException = exception as HttpException;
                 if (httpException != null)

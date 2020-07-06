@@ -295,6 +295,24 @@ namespace PIMWebMVC.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Selected Project(s) are going to be removed from the database. Are you sure?.
+        /// </summary>
+        public static string MESSAGE_CONFIRM_DELETE_PROJECTS {
+            get {
+                return ResourceManager.GetString("MESSAGE_CONFIRM_DELETE_PROJECTS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete selected Projects successfully.
+        /// </summary>
+        public static string MESSAGE_DELETE_PROJECTS_SUCCESS {
+            get {
+                return ResourceManager.GetString("MESSAGE_DELETE_PROJECTS_SUCCESS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The project number already existed. Please select a different project number.
         /// </summary>
         public static string MESSAGE_DUPLICATED_PROJECT_NUMBER {

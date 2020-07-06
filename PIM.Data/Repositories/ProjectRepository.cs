@@ -18,7 +18,7 @@ namespace PIM.Data.Repositories
         }
         #endregion
         #region Methods
-        public void DeleteProjectByIds(IList<int> projectIds)
+        public void DeleteProjectsByIds(IList<int> projectIds)
         {
             _session.Query<Project>()
                     .Where(p => projectIds.Contains(p.ProjectID)).Delete();

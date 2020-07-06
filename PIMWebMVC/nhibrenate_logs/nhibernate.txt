@@ -1,12 +1,12 @@
-13:05:51.611 [8] DEBUG NHibernate.SQL - 
+14:01:12.114 [7] DEBUG NHibernate.SQL - 
     /* [expression] */select
         cast(count(*) as INT) as col_0_0_ 
     from
         Projects project0_ 
     where
-        project0_.ProjectName like ('%'+@p0+'%');
-    @p0 = 'a' [Type: String (4000:0:0)]
-13:05:51.681 [8] DEBUG NHibernate.SQL - 
+        project0_.Status=@p0;
+    @p0 = 'INV' [Type: String (3:0:0)]
+14:01:12.196 [7] DEBUG NHibernate.SQL - 
     /* [expression] */select
         project0_.ProjectID as projectid1_0_,
         project0_.Version as version2_0_,
@@ -31,7 +31,7 @@
                 from
                     Projects project1_ 
                 where
-                    project1_.ProjectName like ('%'+@p1+'%')) as query 
+                    project1_.Status=@p1) as query 
             WHERE
                 query.__hibernate_sort_row > @p2 
             ORDER BY
@@ -39,5 +39,5 @@
             order by
                 project0_.ProjectNumber asc;
     @p0 = 5 [Type: Int32 (0:0:0)],
-    @p1 = 'a' [Type: String (4000:0:0)],
+    @p1 = 'INV' [Type: String (3:0:0)],
     @p2 = 0 [Type: Int32 (0:0:0)]

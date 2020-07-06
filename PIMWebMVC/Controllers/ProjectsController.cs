@@ -22,7 +22,6 @@ namespace PIMWebMVC.Controllers
     public class ProjectsController : Controller
     {
         #region Fields
-        private static readonly ILog _logger = LogManager.GetLogger(typeof(ProjectsController));
         private readonly IProjectService _projectService;
         private readonly IAppConfiguration _appConfiguration;
         #endregion
@@ -95,6 +94,14 @@ namespace PIMWebMVC.Controllers
                 TotalRecords = projectsPagingResult.TotalRecords,
             };
             return PartialView("_ProjectsPaginationPartial", result);
+        }
+
+        [HttpPost]
+        public ActionResult DeleteProjectByIds(IList<int> projectIds)
+        {
+            // _projectService.DeleteProjectsByIds(projectIds);
+            return Json(new ActionResultModel() { IsSuccess = true, Message = PIMResource.MESSAGE_DELETE_PROJECTS_SUCCESS });
+
         }
 
         public ActionResult PaginationBar(PaginationBarModel dataModel)

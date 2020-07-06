@@ -189,7 +189,7 @@ namespace PIM.Test
                 IProjectRepository projectRepository = new ProjectRepository(dbContext.CurrentSession);
                 using (IGenericTransaction transaction = dbContext.BeginTransaction())
                 {
-                    projectRepository.DeleteProjectByIds(projectIds);
+                    projectRepository.DeleteProjectsByIds(projectIds);
                     transaction.Commit();
                 }
                 deletedProject4 = projectRepository.GetById(projectId4);

@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using PIM.Data.NHibernateConfiguration;
 using PIM.Data.Repositories.GenericTransactions;
+using System.Collections.Generic;
 
 namespace PIM.Business.Services
 {
@@ -60,6 +61,14 @@ namespace PIM.Business.Services
         {
             int countDuplicatedProjects =  _projectRepository.FilterBy(p => p.ProjectNumber == newProjectNumber && p.ProjectID != projectId).Count();
             return countDuplicatedProjects > 0;
+        }
+        public void DeleteProjectsByIds(IList<int> projectIds)
+        {
+            if (projectIds == null || projectIds.Count == 0)
+            {
+                throw new ArgumentNullException("Invalid projectIds");
+            }
+            _projectRepository.DeleteProjectsByIds(projectIds);
         }
         #endregion
     }

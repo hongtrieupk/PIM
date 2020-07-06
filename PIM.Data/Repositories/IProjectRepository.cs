@@ -18,6 +18,6 @@ namespace PIM.Data.Repositories
         /// delete multiple projects by provided ProjectIds
         /// </summary>
         /// <param name="projectIds"></param>
-        void DeleteProjectByIds(IList<int> projectIds);
+        void DeleteProjectsByIds(IList<int> projectIds);
     }
 }

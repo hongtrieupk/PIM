@@ -195,6 +195,12 @@
   <data name="LAYOUT_TITLE" xml:space="preserve">
     <value>Project Infomation Management</value>
   </data>
+  <data name="MESSAGE_CONFIRM_DELETE_PROJECTS" xml:space="preserve">
+    <value>Selected Project(s) are going to be removed from the database. Are you sure?</value>
+  </data>
+  <data name="MESSAGE_DELETE_PROJECTS_SUCCESS" xml:space="preserve">
+    <value>Delete selected Projects successfully</value>
+  </data>
   <data name="MESSAGE_DUPLICATED_PROJECT_NUMBER" xml:space="preserve">
     <value>The project number already existed. Please select a different project number</value>
   </data>

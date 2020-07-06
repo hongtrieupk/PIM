@@ -26,6 +26,8 @@ function ProjectSearchComponent() {
     this.isValidComponent = false;
     this.currentPage = this.startPage;
     this.searchProjectUrl = "/Projects/SearchProjects";
+    this.deleteProjectsUrl = "/Projects/DeleteProjectByIds";
+    this.confirmDeleteMessage = $("#confirm-message-span").text();
 }
 
 ProjectSearchComponent.prototype = {
@@ -72,7 +74,7 @@ ProjectSearchComponent.prototype = {
     renderPaginationComponent: function (htmlData) {
         this.searchContent.html(htmlData);
         this.setPagingButtonsEvent.call(this);
-        this.setEventForDeleteBtn();
+        this.setEventForDeleteBtn.call(this);
     },
     setPagingButtonsEvent: function () {
         var searchComponent = this;
@@ -88,6 +90,7 @@ ProjectSearchComponent.prototype = {
         if (!Boolean(deleteBtn.length) || !Boolean(rows)) {
             return;
         }
+        let self = this;
         deleteBtn.on("click", function () {
             let selectedProjectIds = [];
             for (let i = rows.length - 1; i >= 0; i--) {
@@ -96,7 +99,29 @@ ProjectSearchComponent.prototype = {
                     selectedProjectIds.push(rowCheckbox.value);
                 }
             }
-            console.log(selectedProjectIds);
+            if (selectedProjectIds.length === 0) {
+                return;
+            }
+            let isConfirmed = confirm(self.confirmDeleteMessage);
+            if (!isConfirmed) {
+                return;
+            }          
+            $.ajax({
+                type: "post",
+                url: self.deleteProjectsUrl,
+                data: { projectIds: selectedProjectIds},
+                success: function (response) {
+                    if (response.IsSuccess) {
+                        showSuccessNotify(response.Message);
+                        self.onResetCriteria();
+                    } else {
+                        showErrorNotify(response.Message);
+                    }
+                },
+                error: function () {
+                    showErrorNotify("Fail to delete Projects");
+                }
+            });
         });
     },
     getSearchParam: function () {
@@ -129,7 +154,7 @@ ProjectSearchComponent.prototype = {
                 this.currentPage = this.startPage;
                 break;
             case previousBtn:
-                this.currentPage = this.currentPage > this.startPage ? this.currentPage -1 : this.currentPage;
+                this.currentPage = this.currentPage > this.startPage ? this.currentPage - 1 : this.currentPage;
                 break;
             case nextBtn:
                 this.currentPage = this.currentPage < totalPage ? this.currentPage + 1 : this.currentPage;
