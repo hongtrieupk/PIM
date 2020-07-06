@@ -49,7 +49,7 @@ namespace PIMWebMVC.Models.Projects
 
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime? EndDate { get; set; }
-
+        public int Version { get; set; }
         public string StatusDisplay
         {
             get

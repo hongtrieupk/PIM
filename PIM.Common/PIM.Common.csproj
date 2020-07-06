@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants\GlobalConfigurationConstants.cs" />
+    <Compile Include="CustomExceptions\ConcurrencyUpdateException.cs" />
     <Compile Include="LocalStorage\Local.cs" />
     <Compile Include="Models\PagingResultModel.cs" />
     <Compile Include="Models\SearchProjectParam.cs" />

@@ -2,9 +2,7 @@
 using PIM.Data.Objects;
 using PIM.Data.Repositories;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using PIM.Data.NHibernateConfiguration;
 using PIM.Data.Repositories.GenericTransactions;
 
@@ -40,8 +38,8 @@ namespace PIM.Business.Services
         {
             using (IGenericTransaction transaction = _dbContext.BeginTransaction())
             {
-                _projectRepository.Update(project);
-                transaction.Commit();
+                    _projectRepository.Update(project);
+                    transaction.Commit();
             }
         }
 

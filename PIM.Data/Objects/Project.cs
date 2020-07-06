@@ -13,6 +13,7 @@ namespace PIM.Data.Objects
         public virtual string Status { get; set; }
         public virtual DateTime StartDate { get; set; }
         public virtual DateTime? EndDate { get; set; }
+        public virtual int Version { get; set; }
         #endregion
     }
 }

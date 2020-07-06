@@ -141,6 +141,12 @@
   <data name="ERROR_BAD_REQUEST_TITLE" xml:space="preserve">
     <value>Bad Request</value>
   </data>
+  <data name="ERROR_DB_CONCURRENCY_MESSAGE" xml:space="preserve">
+    <value>An error happened while modifying the data. Your record might be changed in another transaction. Please reload and update your data again </value>
+  </data>
+  <data name="ERROR_DB_CONCURRENCY_TITLE" xml:space="preserve">
+    <value>Concurrency Error</value>
+  </data>
   <data name="ERROR_NOT_FOUND_MESSAGE" xml:space="preserve">
     <value>OOPS! - Could not Find it</value>
   </data>

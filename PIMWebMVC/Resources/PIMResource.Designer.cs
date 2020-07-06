@@ -133,6 +133,24 @@ namespace PIMWebMVC.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An error happened while modifying the data. Your record might be changed in another transaction. Please reload and update your data again .
+        /// </summary>
+        public static string ERROR_DB_CONCURRENCY_MESSAGE {
+            get {
+                return ResourceManager.GetString("ERROR_DB_CONCURRENCY_MESSAGE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Concurrency Error.
+        /// </summary>
+        public static string ERROR_DB_CONCURRENCY_TITLE {
+            get {
+                return ResourceManager.GetString("ERROR_DB_CONCURRENCY_TITLE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to OOPS! - Could not Find it.
         /// </summary>
         public static string ERROR_NOT_FOUND_MESSAGE {

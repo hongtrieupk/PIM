@@ -9,6 +9,7 @@ namespace PIM.Data.Maps
     {
         public ProjectMap()
         {
+            OptimisticLock(OptimisticLockMode.Version);
             Table("Projects");
             Id(x => x.ProjectID,
                 m =>
@@ -49,6 +50,11 @@ namespace PIM.Data.Maps
             {
                 m.Column("EndDate");
                 m.NotNullable(false);
+            });
+            Version(x => x.Version, m =>
+            {
+                m.Column("Version");
+                m.UnsavedValue(0);
             });
         }
     }

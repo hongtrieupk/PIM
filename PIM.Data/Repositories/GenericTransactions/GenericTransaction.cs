@@ -1,4 +1,5 @@
 ﻿using NHibernate;
+using PIM.Common.CustomExceptions;
 using System.Threading.Tasks;
 
 namespace PIM.Data.Repositories.GenericTransactions
@@ -17,7 +18,15 @@ namespace PIM.Data.Repositories.GenericTransactions
         #region Methods
         public void Commit()
         {
-            _transaction.Commit();
+            try
+            {
+                _transaction.Commit();
+            }
+            catch (StaleStateException exception)
+            {
+                _transaction.Rollback();
+                throw new ConcurrencyUpdateException(exception.Message, exception);
+            }
         }
 
         public void Rollback()

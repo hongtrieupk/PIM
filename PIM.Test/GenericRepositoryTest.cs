@@ -25,7 +25,7 @@ namespace PIM.Test
         private static readonly Project _projectTest1 = new Project() { ProjectNumber = 111, ProjectName = "Project Test 1", Customer = "Apple", Status = "INV", StartDate = DateTime.Now };
         // - projectTest1, ProjectId = 2 will be used for testing Delete function
         private static readonly Project _projectTest2 = new Project() { ProjectNumber = 222, ProjectName = "Project Test 2", Customer = "Beats", Status = "INV", StartDate = DateTime.Now };
-        private static readonly List<Project> _seedProjectsData = new List<Project>()
+        private static List<Project> _seedProjectsData = new List<Project>()
         {
             _projectTest1,
             _projectTest2
@@ -45,6 +45,11 @@ namespace PIM.Test
         {
             using (IApplicationDbContext dbContext = new ApplicationDbContext())
             {
+                _seedProjectsData.Add(new Project() { ProjectName = "Iphone 12", ProjectNumber = 333, Customer = "Apple", Status = "VAL", StartDate = DateTime.Now });
+                _seedProjectsData.Add(new Project() { ProjectName = "Galaxy Note 12", ProjectNumber = 444, Customer = "Samsung", Status = "INV", StartDate = DateTime.Now });
+                _seedProjectsData.Add(new Project() { ProjectName = "Macbook 2025", ProjectNumber = 555, Customer = "Apple", Status = "INV", StartDate = DateTime.Now });
+                _seedProjectsData.Add(new Project() { ProjectName = "Auto Cars", ProjectNumber = 666, Customer = "BMW", Status = "INV", StartDate = DateTime.Now });
+                _seedProjectsData.Add(new Project() { ProjectName = "CHI", ProjectNumber = 777, Customer = "Hagen", Status = "INV", StartDate = DateTime.Now });
                 new SchemaExport(dbContext.Configuration).Drop(useStdOut: false, execute: true);
                 new SchemaExport(dbContext.Configuration).Create(useStdOut: false, execute: true);
                 GenericRepository<Project> projectRepository = new GenericRepository<Project>(dbContext.CurrentSession);
