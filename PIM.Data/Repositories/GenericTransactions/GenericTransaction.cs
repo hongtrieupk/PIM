@@ -27,7 +27,7 @@ namespace PIM.Data.Repositories.GenericTransactions
             {
                 _transaction.Rollback();
                 _logger.Error("Error was happen when committing a transaction", exception);
-                throw new ConcurrencyUpdateException(exception.Message, exception);
+                throw new ConcurrencyDbException(exception.Message, exception);
             }
         }
 

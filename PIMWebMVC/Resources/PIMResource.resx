@@ -198,6 +198,9 @@
   <data name="MESSAGE_CONFIRM_DELETE_PROJECTS" xml:space="preserve">
     <value>Selected Project(s) are going to be removed from the database. Are you sure?</value>
   </data>
+  <data name="MESSAGE_CONFIRM_SAVE_PROJECT" xml:space="preserve">
+    <value>Are you sure you want to save the Project?</value>
+  </data>
   <data name="MESSAGE_CREATE_PROJECT_SUCCESS" xml:space="preserve">
     <value>New Project created successfully </value>
   </data>
@@ -215,6 +218,9 @@
   </data>
   <data name="MESSAGE_MANDATORY_FIELD" xml:space="preserve">
     <value>Please enter all the mandatory fields (*).</value>
+  </data>
+  <data name="MESSAGE_PROJECT_NUMBER_NOT_IN_RANGE" xml:space="preserve">
+    <value>Project Number must in range 0 - 2147483647</value>
   </data>
   <data name="MESSAGE_UPDATE_PROJECT_SUCCESS" xml:space="preserve">
     <value>The Project was successfully updated</value>

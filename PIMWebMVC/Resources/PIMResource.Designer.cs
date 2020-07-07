@@ -304,6 +304,15 @@ namespace PIMWebMVC.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to save the Project?.
+        /// </summary>
+        public static string MESSAGE_CONFIRM_SAVE_PROJECT {
+            get {
+                return ResourceManager.GetString("MESSAGE_CONFIRM_SAVE_PROJECT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New Project created successfully .
         /// </summary>
         public static string MESSAGE_CREATE_PROJECT_SUCCESS {
@@ -354,6 +363,15 @@ namespace PIMWebMVC.Resources {
         public static string MESSAGE_MANDATORY_FIELD {
             get {
                 return ResourceManager.GetString("MESSAGE_MANDATORY_FIELD", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Project Number must in range 0 - 2147483647.
+        /// </summary>
+        public static string MESSAGE_PROJECT_NUMBER_NOT_IN_RANGE {
+            get {
+                return ResourceManager.GetString("MESSAGE_PROJECT_NUMBER_NOT_IN_RANGE", resourceCulture);
             }
         }
         

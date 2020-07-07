@@ -8,12 +8,13 @@
 <h3>@PIMResource.PROJECT_SEARCH_PAGE_TITLE</h3>
 <hr />
 <div class="form-horizontal">
-    <span hidden id="confirm-message-span">@PIMResource.MESSAGE_CONFIRM_DELETE_PROJECTS</span>
-    <p id="missing-criteria-lbl" class="error">@PIMResource.MESSAGE_INVALID_CRITERIA</p>
+    <span hidden id="confirm-delete-message-span">@PIMResource.MESSAGE_CONFIRM_DELETE_PROJECTS</span>
+    <p id="missing-criteria-lbl" class="error display-none">@PIMResource.MESSAGE_INVALID_CRITERIA</p>
+    <p id="project-number-not-in-range-lbl" class="error display-none">@PIMResource.MESSAGE_PROJECT_NUMBER_NOT_IN_RANGE</p>
     <div class="form-group">
         <div class="col-md-6">
             <label class="control-label col-md-4">@PIMResource.PROJECT_LBL_NUMBER</label>
-            <input id="number-search-txt" type="number" class="col-md-8 form-control" />
+            <input id="number-search-txt" type="number" min=0 max=2147483647 class="col-md-8 form-control" autofocus />
         </div>
         <div class="col-md-6">
             <label class="control-label col-md-4">@PIMResource.PROJECT_LBL_CUSTOMER</label>
@@ -35,7 +36,7 @@
         <div class="col-md-5">
         </div>
         <div class="col-md-7">
-            <button id="search-projects-btn" class="btn btn-success">@PIMResource.BTN_SEARCH</button>
+            <button id="search-projects-btn" name="default-button" class="btn btn-success">@PIMResource.BTN_SEARCH</button>
             <button id="reset-criteria-btn" class="btn btn-warning">@PIMResource.BTN_RESET_SEARCH</button>
         </div>
     </div>

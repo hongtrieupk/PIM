@@ -8,6 +8,9 @@
     this.isValidCriteria = function () {
         return this.ProjectNumber || this.ProjectName || this.Customer || this.Status;
     }
+    this.isProjectNumberInRange = function(min, max){
+        return min <= +this.ProjectNumber && +this.ProjectNumber <= max;
+    }
 }
 
 function ProjectSearchComponent() {
@@ -16,6 +19,7 @@ function ProjectSearchComponent() {
     this.resetCriteriaBtn = $("#reset-criteria-btn");
     this.searchContent = $("#projects-search-result");
     this.missingCriteriaLbl = $("#missing-criteria-lbl");
+    this.projectNumberNotInRangeLbl = $("#project-number-not-in-range-lbl");
 
     this.numberSearchTxt = $("#number-search-txt");
     this.customerSearchTxt = $("#customer-search-txt");
@@ -28,7 +32,7 @@ function ProjectSearchComponent() {
     this.searchProjectUrl = "/Projects/SearchProjects";
     this.deleteProjectsUrl = "/Projects/DeleteProjectByIds";
     this.serverErrorPage = "Error/ServerError";
-    this.confirmDeleteMessage = $("#confirm-message-span").text();
+    this.confirmDeleteMessage = $("#confirm-delete-message-span").text();
 }
 
 ProjectSearchComponent.prototype = {
@@ -52,7 +56,14 @@ ProjectSearchComponent.prototype = {
             this.missingCriteriaLbl.show();
             return;
         }
+        const minProjectNumber = 0;
+        const maxProjectNumber = 2147483647;
+        if (!searchParam.isProjectNumberInRange(minProjectNumber, maxProjectNumber)) {
+            this.projectNumberNotInRangeLbl.show();
+            return;
+        }
         this.missingCriteriaLbl.hide();
+        this.projectNumberNotInRangeLbl.hide()
         var searchComponent = this;
         $.ajax({
             type: "post",
@@ -119,7 +130,8 @@ ProjectSearchComponent.prototype = {
                         showSuccessNotify(response.Message);
                         self.onResetCriteria();
                     } else {
-                        showErrorNotify(response.Message);
+                        //exception was throw on the server, the response is a whole html page
+                        document.write(response);
                     }
                 },
                 error: function () {

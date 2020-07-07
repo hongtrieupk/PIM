@@ -9,10 +9,10 @@ namespace PIMWebMVC.Constants
         #region Fields
         private IDictionary<string, string> _projectStatuses = new Dictionary<string, string>()
         {
+            { "FIN", PIMResource.PROJECT_STATUS_FIN},
             { "INV", PIMResource.PROJECT_STATUS_INV},
             { "TOV", PIMResource.PROJECT_STATUS_TOV},
-            { "VAL", PIMResource.PROJECT_STATUS_VAL},
-            { "FIN", PIMResource.PROJECT_STATUS_FIN}
+            { "VAL", PIMResource.PROJECT_STATUS_VAL}
         };
         private readonly ReadOnlyDictionary<string, string> _readOnlyProjectStatues;
         #endregion

@@ -14,71 +14,73 @@ else
 {
     <h3>@PIMResource.PROJECT_CREATE_MODE</h3>
 }
-@using (Html.BeginForm())
+<span hidden id="confirm-save-message-span">@PIMResource.MESSAGE_CONFIRM_SAVE_PROJECT</span>
+@using (Html.BeginForm("AddUpdate", "Projects", FormMethod.Post, new { @id = "project-form" }))
 {
     @Html.AntiForgeryToken()
-<div class="form-horizontal">
-    <hr />
-    @Html.ValidationMessage(ErrorActionsConstant.SUM_REQUIRED_ERROR_FIELD_NAME, new { @class = "text-danger custom-validation-message" })
-    @Html.ValidationMessageFor(x => x.EndDate, "", new { @class = "text-danger custom-validation-message" })
-    @Html.ValidationMessageFor(x => x.ProjectNumber, "", new { @class = "text-danger custom-validation-message" })
-<div class="form-group">
-    @Html.HiddenFor(x => x.ProjectID, new { htmlAttributes = new { id = "ProjectId" } })
-    @Html.HiddenFor(x => x.Version)
-    <div class="col-md-2">
-        <label class="control-label" for="ProjectNumber">@PIMResource.PROJECT_LBL_NUMBER*</label>
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationMessage(ErrorActionsConstant.SUM_REQUIRED_ERROR_FIELD_NAME, new { @class = "text-danger custom-validation-message" })
+        @Html.ValidationMessageFor(x => x.EndDate, "", new { @class = "text-danger custom-validation-message" })
+        @Html.ValidationMessageFor(x => x.ProjectNumber, "", new { @class = "text-danger custom-validation-message" })
+        <div class="form-group">
+            @Html.HiddenFor(x => x.ProjectID, new { htmlAttributes = new { id = "ProjectId" } })
+            @Html.HiddenFor(x => x.Version)
+            <div class="col-md-2">
+                <label class="control-label" for="ProjectNumber">@PIMResource.PROJECT_LBL_NUMBER*</label>
+            </div>
+            <div class="col-md-2">
+                @Html.EditorFor(model => model.ProjectNumber, new { htmlAttributes = new { @class = "form-control", autofocus = "", max = 2147483647 } })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                <label class="control-label" for="ProjectName">@PIMResource.PROJECT_LBL_NAME*</label>
+            </div>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.ProjectName, new { htmlAttributes = new { @class = "form-control project-max-width", maxlength = "100" } })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                <label class="control-label" for="ProjectName">@PIMResource.PROJECT_LBL_CUSTOMER*</label>
+            </div>
+            <div class="col-md-8">
+                @Html.EditorFor(model => model.Customer, new { htmlAttributes = new { @class = "form-control project-max-width", maxlength = "500" } })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                <label class="control-label" for="Status">@PIMResource.PROJECT_LBL_STATUS*</label>
+            </div>
+            <div class="col-md-5">
+                @Html.DropDownListFor(model => model.Status, new SelectList(projectStatues.PROJECT_STATUSES, "key", "value"), "", htmlAttributes: new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                <label class="control-label" for="StartDate">@PIMResource.PROJECT_LBL_START_DATE*</label>
+            </div>
+            <div class="col-md-4">
+                @Html.EditorFor(model => model.StartDate, "{yyyy-MM-dd}",
+               new { htmlAttributes = new { @class = "form-control", type = "date", @id = "start-date" } })
+            </div>
+            <div class="col-md-2">
+                <label class="control-label" for="EndDate">@PIMResource.PROJECT_LBL_END_DATE</label>
+            </div>
+            <div class="col-md-4">
+                @Html.EditorFor(model => model.EndDate,
+               new { htmlAttributes = new { @class = "form-control", type = "date", @id = "end-date" } })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-5">
+            </div>
+            <div class="col-md-7">
+                <button id="save-project-btn" name="default-button" class="btn btn-success">@PIMResource.BTN_SAVE</button>
+                @Html.ActionLink(PIMResource.BTN_CANCEL, "Index", null, new { @class = "btn btn-warning" })
+            </div>
+        </div>
     </div>
-    <div class="col-md-2">
-        @Html.EditorFor(model => model.ProjectNumber, new { htmlAttributes = new { @class = "form-control" } })
-    </div>
-</div>
-    <div class="form-group">
-        <div class="col-md-2">
-            <label class="control-label" for="ProjectName">@PIMResource.PROJECT_LBL_NAME*</label>
-        </div>
-        <div class="col-md-8">
-            @Html.EditorFor(model => model.ProjectName, new { htmlAttributes = new { @class = "form-control project-max-width", maxlength = "100" } })
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-md-2">
-            <label class="control-label" for="ProjectName">@PIMResource.PROJECT_LBL_CUSTOMER*</label>
-        </div>
-        <div class="col-md-8">
-            @Html.EditorFor(model => model.Customer, new { htmlAttributes = new { @class = "form-control project-max-width", maxlength = "500" } })
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-md-2">
-            <label class="control-label" for="Status">@PIMResource.PROJECT_LBL_STATUS*</label>
-        </div>
-        <div class="col-md-5">
-            @Html.DropDownListFor(model => model.Status, new SelectList(projectStatues.PROJECT_STATUSES, "key", "value"), "", htmlAttributes: new { @class = "form-control" })
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-md-2">
-            <label class="control-label" for="StartDate">@PIMResource.PROJECT_LBL_START_DATE*</label>
-        </div>
-        <div class="col-md-4">
-            @Html.EditorFor(model => model.StartDate, "{yyyy-MM-dd}",
-           new { htmlAttributes = new { @class = "form-control project-max-width", type = "date", @id = "start-date" } })
-        </div>
-        <div class="col-md-2">
-            <label class="control-label" for="EndDate">@PIMResource.PROJECT_LBL_END_DATE</label>
-        </div>
-        <div class="col-md-4">
-            @Html.EditorFor(model => model.EndDate,
-           new { htmlAttributes = new { @class = "form-control project-max-width", type = "date", @id = "end-date" } })
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-md-5">
-        </div>
-        <div class="col-md-7">
-            <input type="submit" value="@PIMResource.BTN_SAVE" class="btn btn-success" />
-            @Html.ActionLink(PIMResource.BTN_CANCEL, "Index", null, new { @class = "btn btn-warning" })
-        </div>
-    </div>
-</div>
 }
+@Scripts.Render("~/bundles/project")

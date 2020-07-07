@@ -6,6 +6,7 @@ using System.Linq;
 using PIM.Data.NHibernateConfiguration;
 using PIM.Data.Repositories.GenericTransactions;
 using System.Collections.Generic;
+using PIM.Common.CustomExceptions;
 
 namespace PIM.Business.Services
 {
@@ -23,6 +24,7 @@ namespace PIM.Business.Services
             _dbContext = dbContext ?? throw new ArgumentNullException("Can not inject a null dbContext!");
         }
         #endregion
+
         #region Method
         public int CreateProject(Project newProject)
         {
@@ -37,7 +39,6 @@ namespace PIM.Business.Services
             }
             return newProject.ProjectID;
         }
-
         public void UpdateProject(Project project)
         {
             using (var session = _dbContext.OpenSession())
@@ -50,7 +51,6 @@ namespace PIM.Business.Services
                 }
             }
         }
-
         public Project GetProjectById(int id)
         {
             using (var session = _dbContext.OpenSession())
@@ -90,6 +90,11 @@ namespace PIM.Business.Services
             using (var session = _dbContext.OpenSession())
             {
                 _projectRepository.SetSession(session);
+                int countProjectsInDb = _projectRepository.FilterBy(p => projectIds.Contains(p.ProjectID)).Count();
+                if (countProjectsInDb != projectIds.Count)
+                {
+                    throw new ConcurrencyDbException("list deleted projects was modified");
+                }
                 _projectRepository.DeleteProjectsByIds(projectIds);
             }
         }

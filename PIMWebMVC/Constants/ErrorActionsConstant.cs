@@ -10,6 +10,6 @@ namespace PIMWebMVC.Constants
         public const string CONCURRENCY_ERROR = "ConcurrencyError";
 
         public const string ERROR_MESSAGE_SESSION_KEY = "CurrentErrorMessage";
-        public const string SUM_REQUIRED_ERROR_FIELD_NAME = "SumaryMandadtoryError";
+        public const string SUM_REQUIRED_ERROR_FIELD_NAME = "SumaryMandatoryError";
     }
 }

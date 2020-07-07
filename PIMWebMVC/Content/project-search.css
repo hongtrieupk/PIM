@@ -12,6 +12,6 @@
 #delete-projects-btn {
     margin-bottom: 10px;
 }
-#missing-criteria-lbl {
+.display-none {
     display: none;
 }

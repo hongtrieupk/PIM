@@ -22,6 +22,22 @@ textarea {
     max-width: 280px;
 }
 
+    input[type="number"] {
+        text-align: right;
+    }
+    input[type="text"] {
+        text-align: left;
+    }
+    input[type="date"] {
+        text-align: center;
+    }
+    input[type="datetime"] {
+        text-align: center;
+    }
+    input[type="datetime-local"] {
+        text-align: center;
+    }
+
 .float-right {
     float: right;
 }
@@ -33,11 +49,13 @@ textarea {
 .clear-fix {
     clear: both;
 }
+
 .clearfix:after {
     content: "";
     display: table;
     clear: both;
 }
+
 .right-content {
     padding-right: 0px;
 }
@@ -106,6 +124,7 @@ textarea {
 .pim-orange {
     color: #d04936;
 }
+
 .pim-dark-blue {
     color: #023267;
 }
@@ -113,6 +132,7 @@ textarea {
 .error {
     color: red;
 }
+
 .project-max-width {
     max-width: 600px;
 }
@@ -129,6 +149,7 @@ textarea {
     .error-global span {
         font-size: 250px;
     }
+
 .custom-validation-message {
     display: block;
     margin-bottom: 10px;
@@ -138,6 +159,7 @@ button[name="paging-button"] {
     border: none;
     background: none;
 }
-button[name="paging-button"]:disabled {
-    color: darkgrey;
-}
+
+    button[name="paging-button"]:disabled {
+        color: darkgrey;
+    }

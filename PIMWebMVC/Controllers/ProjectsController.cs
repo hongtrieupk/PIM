@@ -77,7 +77,7 @@ namespace PIMWebMVC.Controllers
         public ActionResult AddUpdate(ProjectModel projectModel)
         {
             bool isValidModelState = ValidateProjectModel(projectModel);
-            if (!isValidModelState)
+            if (!isValidModelState || !ModelState.IsValid)
             {
                 return View(projectModel);
             }
@@ -152,7 +152,9 @@ namespace PIMWebMVC.Controllers
                 ModelState.AddModelError(nameof(project.EndDate), PIMResource.MESSAGE_END_DATE_MUST_GREATER_THAN_START_DATE);
             }
 
-            bool isDuplicatedProjectNumber = _projectService.IsDuplicateProjectNumber(project.ProjectID, project.ProjectNumber.Value);
+            bool isDuplicatedProjectNumber = project.ProjectNumber.HasValue
+                ? _projectService.IsDuplicateProjectNumber(project.ProjectID, project.ProjectNumber.Value)
+                : false;
             if (isDuplicatedProjectNumber)
             {
                 isValid = false;
@@ -160,7 +162,7 @@ namespace PIMWebMVC.Controllers
             }
             else
             {
-                if (project.ProjectNumber.HasValue)
+                if (project.IsProjectNumberInRange())
                 {
                     ModelState.Remove(nameof(project.ProjectNumber));
                 }

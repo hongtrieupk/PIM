@@ -23,11 +23,24 @@
     }
 });
 var notifyConfig = { position: "top center", style: 'custom-notify', className: 'success', autoHideDelay: 5000 };
-function showErrorNotify(message) {
-    notifyConfig.className = 'error';
+window.showErrorNotify = function(message) {
+    notifyConfig.className = "error";
     $.notify(message, notifyConfig);
 }
-function showSuccessNotify(message) {
-    notifyConfig.className = 'success';
+window.showSuccessNotify = function(message) {
+    notifyConfig.className = "success";
     $.notify(message, notifyConfig);
 }
+window.defaulButtonName = "default-button";
+$(document).ready(function () {
+    $('body').keypress(function (e) {
+        var code = e.keyCode || e.which;
+        if (code === 13) {
+            e.preventDefault();
+            let defaultBtns = $("button[name='" + window.defaulButtonName + "']");
+            if (defaultBtns && defaultBtns.length > 0) {
+                defaultBtns[0].click();
+            }
+        }
+    })
+});

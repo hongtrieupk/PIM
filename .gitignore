@@ -13,3 +13,4 @@ PIM.Business/obj/
 PIM.Data/bin/
 PIM.Data/obj/
 PIMWebMVC/logs/
+PIMWebMVC/nhibrenate_logs/

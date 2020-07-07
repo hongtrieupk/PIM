@@ -303,7 +303,7 @@ namespace PIM.Test
             // a Project, which does not existed in the database
             Project notExistedProject = new Project()
             { ProjectID = 100000, ProjectName = "fake", Customer = "Fake", Status = "Fake", ProjectNumber = 123, StartDate = DateTime.Now };
-            ConcurrencyUpdateException staleStateException = null;
+            ConcurrencyDbException staleStateException = null;
 
             // Action
             using (IApplicationDbContext dbContext = new ApplicationDbContext())
@@ -315,7 +315,7 @@ namespace PIM.Test
                     using (IGenericTransaction transaction = dbContext.BeginTransaction())
                     {
                         projectRepository.Delete(notExistedProject);
-                        staleStateException = Assert.Throws<ConcurrencyUpdateException>(() => transaction.Commit());
+                        staleStateException = Assert.Throws<ConcurrencyDbException>(() => transaction.Commit());
                     }
                 }
             }
@@ -353,7 +353,7 @@ namespace PIM.Test
             // Arrange
             Project notExistedProject = new Project()
             { ProjectID = 100000, ProjectName = "fake", Customer = "Fake", Status = "Fake", ProjectNumber = 123, StartDate = DateTime.Now };
-            ConcurrencyUpdateException dbException = null;
+            ConcurrencyDbException dbException = null;
 
             // Action
             using (IApplicationDbContext dbContext = new ApplicationDbContext())
@@ -365,7 +365,7 @@ namespace PIM.Test
                     using (IGenericTransaction transaction = dbContext.BeginTransaction())
                     {
                         projectRepository.Update(notExistedProject);
-                        dbException = Assert.Throws<ConcurrencyUpdateException>(() => transaction.Commit());
+                        dbException = Assert.Throws<ConcurrencyDbException>(() => transaction.Commit());
                     }
                 }
             }
@@ -380,7 +380,7 @@ namespace PIM.Test
             Project existedProject = _projectTest1;
             _projectTest1.ProjectName = "new name";
             _projectTest1.Version = 0; // simulate _project1 haved been modified in the database
-            ConcurrencyUpdateException dbException = null;
+            ConcurrencyDbException dbException = null;
 
             // Action
             using (IApplicationDbContext dbContext = new ApplicationDbContext())
@@ -392,7 +392,7 @@ namespace PIM.Test
                     using (IGenericTransaction transaction = dbContext.BeginTransaction())
                     {
                         projectRepository.Update(_projectTest1);
-                        dbException = Assert.Throws<ConcurrencyUpdateException>(() => transaction.Commit());
+                        dbException = Assert.Throws<ConcurrencyDbException>(() => transaction.Commit());
                     }
                 }
             }

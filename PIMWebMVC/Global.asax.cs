@@ -45,7 +45,7 @@ namespace PIMWebMVC
                 return;
             }
             string action = ErrorActionsConstant.SERVER_ERROR;
-            if (exception is ConcurrencyUpdateException)
+            if (exception is ConcurrencyDbException)
             {
                 action = ErrorActionsConstant.CONCURRENCY_ERROR;
             }

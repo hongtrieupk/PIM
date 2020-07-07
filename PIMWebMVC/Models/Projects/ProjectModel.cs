@@ -1,4 +1,5 @@
-﻿using PIMWebMVC.Constants;
+﻿using PIM.Common.Constants;
+using PIMWebMVC.Constants;
 using PIMWebMVC.Resources;
 using System;
 using System.ComponentModel.DataAnnotations;
@@ -17,11 +18,14 @@ namespace PIMWebMVC.Models.Projects
         #endregion
 
         #region Properties
-        [Required]
         public int? ProjectID { get; set; }
 
         // leave ErrorMessage blank string, this error message is handled in ProjectsControler.ValidateProjectModel() 
         [Required(ErrorMessage = " ")]
+        [Range(GlobalConfigurationConstants.MIN_PROJECT_NUMBER_VALUE,
+            GlobalConfigurationConstants.MAX_PROJECT_NUMBER_VALUE,
+            ErrorMessageResourceName = "MESSAGE_PROJECT_NUMBER_NOT_IN_RANGE",
+            ErrorMessageResourceType = typeof(PIMResource))]
         public int? ProjectNumber { get; set; }
 
         [StringLength(100)]
@@ -74,6 +78,11 @@ namespace PIMWebMVC.Models.Projects
                 return EndDate.Value.Date > StartDate.Value.Date;
             }
             return true;
+        }
+        public bool IsProjectNumberInRange()
+        {
+            return ProjectNumber.HasValue && ProjectNumber.Value >= GlobalConfigurationConstants.MIN_PROJECT_NUMBER_VALUE
+                && ProjectNumber.Value <= GlobalConfigurationConstants.MAX_PROJECT_NUMBER_VALUE;
         }
         #endregion
     }
