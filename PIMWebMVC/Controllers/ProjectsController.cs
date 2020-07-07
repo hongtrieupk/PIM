@@ -20,6 +20,7 @@ namespace PIMWebMVC.Controllers
     public class ProjectsController : Controller
     {
         #region Fields
+        private readonly IApplicationDbContext _applicationDbContext;
         private readonly IProjectService _projectService;
         private readonly IAppConfiguration _appConfiguration;
         private const string createSuccessfullyMessageKey = "CREATE_SUCCESS_MESSAGE";
@@ -29,16 +30,24 @@ namespace PIMWebMVC.Controllers
         public ProjectsController()
         {
             // TODO: apply IOC
-            IApplicationDbContext dbContext = new ApplicationDbContext();
-            _projectService = new ProjectService(new ProjectRepository(), dbContext);
+            _applicationDbContext = new ApplicationDbContext();
+            _projectService = new ProjectService(new ProjectRepository(), _applicationDbContext);
             _appConfiguration = new AppConfiguration();
         }
         #endregion
-
+        #region Destructor
+        ~ProjectsController()
+        {
+            if (_applicationDbContext != null)
+            {
+                _applicationDbContext.Dispose();
+            }
+        }
+        #endregion
         #region Methods
         public ActionResult Index()
         {
-            // the Index View will use those ViewBag's properties to show message if the Index view is redirect from Update or Create Action
+            // the Index View will use those ViewBag's properties to show message if the Index view is redirected from Update or Create Action
             ViewBag.CREATE_SUCCESS_MESSAGE = TempData[createSuccessfullyMessageKey];
             ViewBag.UPDATE_SUCCESS_MASSAGE = TempData[updateSuccessfullyMessageKey];
             return View();
@@ -60,18 +69,20 @@ namespace PIMWebMVC.Controllers
                 }
                 initProject = Mapper.Map<ProjectModel>(projectFromDb);
             }
+
             return View(initProject);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult AddUpdate(ProjectModel projectModel)
         {
-            if (!ValidateProjectModel(projectModel))
+            bool isValidModelState = ValidateProjectModel(projectModel);
+            if (!isValidModelState)
             {
                 return View(projectModel);
             }
-            Project project = Mapper.Map<Project>(projectModel);
 
+            Project project = Mapper.Map<Project>(projectModel);
             if (projectModel.ProjectID.HasValue) // Update project
             {
                 _projectService.UpdateProject(project);
@@ -82,6 +93,7 @@ namespace PIMWebMVC.Controllers
                 _projectService.CreateProject(project);
                 TempData[createSuccessfullyMessageKey] = PIMResource.MESSAGE_CREATE_PROJECT_SUCCESS;
             }
+
             return RedirectToAction("Index");
         }
 

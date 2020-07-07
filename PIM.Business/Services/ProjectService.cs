@@ -23,7 +23,6 @@ namespace PIM.Business.Services
             _dbContext = dbContext ?? throw new ArgumentNullException("Can not inject a null dbContext!");
         }
         #endregion
-
         #region Method
         public int CreateProject(Project newProject)
         {

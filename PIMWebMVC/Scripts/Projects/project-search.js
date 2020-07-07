@@ -27,6 +27,7 @@ function ProjectSearchComponent() {
     this.currentPage = this.startPage;
     this.searchProjectUrl = "/Projects/SearchProjects";
     this.deleteProjectsUrl = "/Projects/DeleteProjectByIds";
+    this.serverErrorPage = "Error/ServerError";
     this.confirmDeleteMessage = $("#confirm-message-span").text();
 }
 
@@ -42,7 +43,7 @@ ProjectSearchComponent.prototype = {
     onPageClick: function (event) {
         let source = event.target || event.srcElement;
         let totalPage = $("#total-page").val();
-        this.currentPage = this.calculateCurrentPage.call(this, source.text, totalPage);
+        this.currentPage = this.calculateCurrentPage.call(this, source.textContent, totalPage);
         this.onSearching.call(this);
     },
     onSearching: function () {
@@ -59,6 +60,9 @@ ProjectSearchComponent.prototype = {
             data: searchParam,
             success: function (data) {
                 searchComponent.renderPaginationComponent.call(searchComponent, data);
+            },
+            error: function () {
+                window.location.href = searchComponent.serverErrorPage;
             }
         });
     },
@@ -78,7 +82,7 @@ ProjectSearchComponent.prototype = {
     },
     setPagingButtonsEvent: function () {
         var searchComponent = this;
-        var pagingButtons = $("a[name='" + this.pagingButtonsName + "']");
+        var pagingButtons = $("button[name='" + this.pagingButtonsName + "']");
         pagingButtons.each(function () {
             this.onclick = searchComponent.onPageClick.bind(searchComponent);
         });
@@ -119,7 +123,7 @@ ProjectSearchComponent.prototype = {
                     }
                 },
                 error: function () {
-                    showErrorNotify("Fail to delete Projects");
+                    window.location.href = self.serverErrorPage;
                 }
             });
         });

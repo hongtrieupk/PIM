@@ -2,6 +2,9 @@
 
 namespace PIMWebMVC.Controllers
 {
+    /// <summary>
+    /// Create View to display corresponding Error
+    /// </summary>
     public class ErrorController : Controller
     {
         public ActionResult AccessDenied()

@@ -1,7 +1,12 @@
 ﻿@using PIMWebMVC.Resources
 @{
     Layout = null;
-    var startPage = 1;
+    const int startPage = 1;
+    const string disableAtr = "disabled";
+    string disableLast = Model.CurrentPage != Model.TotalPages ? string.Empty : disableAtr;
+    string disableNext = Model.CurrentPage < Model.TotalPages ? string.Empty : disableAtr;
+    string disablePrevious = Model.CurrentPage > startPage ? string.Empty : disableAtr;
+    string disableFirst = Model.CurrentPage != startPage ? string.Empty : disableAtr;
 }
 @model PIMWebMVC.Models.Common.PaginationBarModel
 
@@ -9,26 +14,14 @@
     @Model.CurrentPage / @Model.TotalPages
 </div>
 <div class="col-md-1 float-right">
-    @if (Model.CurrentPage != Model.TotalPages)
-    {
-        <a name="paging-button">@PIMResource.PAGINATION_LAST</a>
-    }
+    <button name="paging-button" @disableLast>@PIMResource.PAGINATION_LAST</button>
 </div>
 <div class="col-md-1 float-right">
-    @if (Model.CurrentPage < Model.TotalPages)
-    {
-    <a name="paging-button">@PIMResource.PAGINATION_NEXT</a>
-    }
+    <button name="paging-button" @disableNext>@PIMResource.PAGINATION_NEXT</button>
 </div>
 <div class="col-md-1 float-right">
-    @if (Model.CurrentPage > startPage)
-    {
-        <a name="paging-button">@PIMResource.PAGINATION_PREVIOUS</a>
-    }
+    <button name="paging-button" @disablePrevious>@PIMResource.PAGINATION_PREVIOUS</button>
 </div>
 <div class="col-md-1 float-right">
-    @if (Model.CurrentPage != startPage)
-    {
-    <a name="paging-button">@PIMResource.PAGINATION_FIRST</a>
-    }
+    <button name="paging-button" @disableFirst>@PIMResource.PAGINATION_FIRST</button>
 </div>
