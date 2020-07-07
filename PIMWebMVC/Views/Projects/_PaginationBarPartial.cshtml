@@ -3,7 +3,7 @@
     Layout = null;
     const int startPage = 1;
     const string disableAtr = "disabled";
-    string disableLast = Model.CurrentPage != Model.TotalPages ? string.Empty : disableAtr;
+    string disableLast = Model.CurrentPage != Model.TotalPages && Model.TotalPages != 0 ? string.Empty : disableAtr;
     string disableNext = Model.CurrentPage < Model.TotalPages ? string.Empty : disableAtr;
     string disablePrevious = Model.CurrentPage > startPage ? string.Empty : disableAtr;
     string disableFirst = Model.CurrentPage != startPage ? string.Empty : disableAtr;
@@ -11,7 +11,10 @@
 @model PIMWebMVC.Models.Common.PaginationBarModel
 
 <div class="col-md-1 float-right">
-    @Model.CurrentPage / @Model.TotalPages
+    @if (Model.TotalPages > 0)
+    {
+    <span>@Model.CurrentPage / @Model.TotalPages</span>
+    }
 </div>
 <div class="col-md-1 float-right">
     <button name="paging-button" @disableLast>@PIMResource.PAGINATION_LAST</button>

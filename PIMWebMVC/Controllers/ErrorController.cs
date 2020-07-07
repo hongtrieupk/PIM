@@ -26,10 +26,5 @@ namespace PIMWebMVC.Controllers
         {
             return View();
         }
-
-        public ActionResult ConcurrencyError()
-        {
-            return View();
-        }
     }
 }

@@ -45,41 +45,33 @@ namespace PIMWebMVC
                 return;
             }
             string action = ErrorsConstant.SERVER_ERROR_ACTION;
-            if (exception is ConcurrencyDbException)
+            HttpContext.Current.Session[ErrorsConstant.ERROR_MESSAGE_SESSION_KEY] = exception.Message;
+            Response.Clear();
+            HttpException httpException = exception as HttpException;
+            if (httpException != null)
             {
-                action = ErrorsConstant.CONCURRENCY_ERROR_ACTION;
-            }
-            else
-            {
-                HttpContext.Current.Session[ErrorsConstant.ERROR_MESSAGE_SESSION_KEY] = exception.Message;
-                Response.Clear();
-                HttpException httpException = exception as HttpException;
-                if (httpException != null)
+
+                switch (httpException.GetHttpCode())
                 {
-
-                    switch (httpException.GetHttpCode())
-                    {
-                        case 404:
-                            action = ErrorsConstant.NOT_FOUND_ACTION;
-                            break;
-                        case 500:
-                            action = ErrorsConstant.SERVER_ERROR_ACTION;
-                            break;
-                        case 401:
-                            action = ErrorsConstant.ACCESS_DENIED_ACTION;
-                            break;
-                        case 400:
-                            action = ErrorsConstant.BAD_REQUEST_ACTION;
-                            break;
-                        case 403:
-                            action = ErrorsConstant.ACCESS_DENIED_ACTION;
-                            break;
-                        default:
-                            break;
-                    }
-
+                    case 404:
+                        action = ErrorsConstant.NOT_FOUND_ACTION;
+                        break;
+                    case 500:
+                        action = ErrorsConstant.SERVER_ERROR_ACTION;
+                        break;
+                    case 401:
+                        action = ErrorsConstant.ACCESS_DENIED_ACTION;
+                        break;
+                    case 400:
+                        action = ErrorsConstant.BAD_REQUEST_ACTION;
+                        break;
+                    case 403:
+                        action = ErrorsConstant.ACCESS_DENIED_ACTION;
+                        break;
+                    default:
+                        break;
                 }
-            }            
+            }
             Server.ClearError();
             Response.Redirect($"~/Error/{action}");
         }

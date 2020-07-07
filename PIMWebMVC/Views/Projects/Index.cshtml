@@ -4,6 +4,7 @@
     ViewBag.Title = PIMResource.PROJECT_SEARCH_PAGE_TITLE;
     IProjectStatuesConstant projectStatues = new ProjectStatuesConstant();
 }
+@model PIM.Common.Models.SearchProjectParam
 <hr />
 <h3>@PIMResource.PROJECT_SEARCH_PAGE_TITLE</h3>
 <hr />
@@ -14,22 +15,21 @@
     <div class="form-group">
         <div class="col-md-6">
             <label class="control-label col-md-4">@PIMResource.PROJECT_LBL_NUMBER</label>
-            <input id="number-search-txt" type="number" min=0 max=2147483647 class="col-md-8 form-control" autofocus />
+            @Html.EditorFor(model => model.ProjectNumber, new { htmlAttributes = new { id = "number-search-txt", type = "number", @class = "col-md-8 form-control", autofocus = "" } })
         </div>
         <div class="col-md-6">
             <label class="control-label col-md-4">@PIMResource.PROJECT_LBL_CUSTOMER</label>
-            <input id="customer-search-txt" class="col-md-8 form-control" />
+            @Html.EditorFor(model => model.Customer, new { htmlAttributes = new { id = "customer-search-txt", @class = "form-control col-md-8", maxlength = "500" } })            
         </div>
     </div>
     <div class="form-group">
         <div class="col-md-6">
             <label class="control-label col-md-4">@PIMResource.PROJECT_LBL_NAME</label>
-            <input id="name-search-txt" class="col-md-8 form-control" />
+            @Html.EditorFor(model => model.ProjectName, new { htmlAttributes = new { @class = "col-md-8 form-control", maxlength = "100", id = "name-search-txt" } })
         </div>
         <div class="col-md-6">
             <label class="control-label col-md-4">@PIMResource.PROJECT_LBL_STATUS</label>
-            @Html.DropDownList("status-search-cbb", new SelectList(projectStatues.PROJECT_STATUSES, "key", "value"),
-           "", htmlAttributes: new { @class = "form-control", @id = "status-search-cbb" })
+            @Html.DropDownListFor(model => model.Status, new SelectList(projectStatues.PROJECT_STATUSES, "key", "value"), "", htmlAttributes: new { @class = "form-control", @id = "status-search-cbb" })
         </div>
     </div>
     <div class="form-group">
@@ -37,7 +37,7 @@
         </div>
         <div class="col-md-7">
             <button id="search-projects-btn" name="default-button" class="btn btn-success">@PIMResource.BTN_SEARCH</button>
-            <button id="reset-criteria-btn" class="btn btn-warning">@PIMResource.BTN_RESET_SEARCH</button>
+            <button id="reset-criteria-btn" class="btn btn-warning" disabled>@PIMResource.BTN_RESET_SEARCH</button>
         </div>
     </div>
     <div id="projects-search-result">

@@ -18,10 +18,10 @@ namespace PIMWebMVC.Constants
                 if (_readOnlyProjectStatues == null)
                 {
                     _readOnlyProjectStatues = new ReadOnlyDictionary<string, string>(new Dictionary<string, string>(){
-                                            { "FIN", PIMResource.PROJECT_STATUS_FIN},
                                             { "INV", PIMResource.PROJECT_STATUS_INV},
                                             { "TOV", PIMResource.PROJECT_STATUS_TOV},
-                                            { "VAL", PIMResource.PROJECT_STATUS_VAL}
+                                            { "VAL", PIMResource.PROJECT_STATUS_VAL},
+                                            { "FIN", PIMResource.PROJECT_STATUS_FIN}
                                         });
                 }
                 return _readOnlyProjectStatues;

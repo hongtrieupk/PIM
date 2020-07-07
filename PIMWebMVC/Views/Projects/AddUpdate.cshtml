@@ -20,7 +20,7 @@ else
     @Html.AntiForgeryToken()
     <div class="form-horizontal">
         <hr />
-        @Html.ValidationMessage(ErrorActionsConstant.SUM_REQUIRED_ERROR_FIELD_NAME, new { @class = "text-danger custom-validation-message" })
+        @Html.ValidationMessage(ErrorsConstant.SUM_ERROR_FIELD_NAME, new { @class = "text-danger custom-validation-message" })
         @Html.ValidationMessageFor(x => x.EndDate, "", new { @class = "text-danger custom-validation-message" })
         @Html.ValidationMessageFor(x => x.ProjectNumber, "", new { @class = "text-danger custom-validation-message" })
         <div class="form-group">
@@ -30,7 +30,7 @@ else
                 <label class="control-label" for="ProjectNumber">@PIMResource.PROJECT_LBL_NUMBER*</label>
             </div>
             <div class="col-md-2">
-                @Html.EditorFor(model => model.ProjectNumber, new { htmlAttributes = new { @class = "form-control", autofocus = "", max = 2147483647 } })
+                @Html.EditorFor(model => model.ProjectNumber, new { htmlAttributes = new { @class = "form-control", autofocus = "" } })
             </div>
         </div>
         <div class="form-group">

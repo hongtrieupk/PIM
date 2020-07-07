@@ -220,16 +220,16 @@
     <value>Dự án đã được cập nhật thành công</value>
   </data>
   <data name="PAGINATION_FIRST" xml:space="preserve">
-    <value>Trang đầu</value>
+    <value>Đầu</value>
   </data>
   <data name="PAGINATION_LAST" xml:space="preserve">
-    <value>Trang cuối</value>
+    <value>Cuối</value>
   </data>
   <data name="PAGINATION_NEXT" xml:space="preserve">
-    <value>Trang kế</value>
+    <value>Kế</value>
   </data>
   <data name="PAGINATION_PREVIOUS" xml:space="preserve">
-    <value>Trang trước</value>
+    <value>Trước</value>
   </data>
   <data name="PROJECT_CREATE_MODE" xml:space="preserve">
     <value>Tạo mới Dự án</value>

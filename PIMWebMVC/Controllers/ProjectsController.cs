@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using log4net;
 using PIM.Business.Services;
+using PIM.Common.CustomExceptions;
 using PIM.Common.Models;
 using PIM.Common.SystemConfigurationHelper;
 using PIM.Data.NHibernateConfiguration;
@@ -11,6 +13,8 @@ using PIMWebMVC.Models.Projects;
 using PIMWebMVC.Resources;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
+using System.Linq.Expressions;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
@@ -23,6 +27,8 @@ namespace PIMWebMVC.Controllers
         private readonly IApplicationDbContext _applicationDbContext;
         private readonly IProjectService _projectService;
         private readonly IAppConfiguration _appConfiguration;
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(ProjectsController));
+
         private const string createSuccessfullyMessageKey = "CREATE_SUCCESS_MESSAGE";
         private const string updateSuccessfullyMessageKey = "UPDATE_SUCCESS_MASSAGE";
         #endregion
@@ -50,7 +56,7 @@ namespace PIMWebMVC.Controllers
             // the Index View will use those ViewBag's properties to show message if the Index view is redirected from Update or Create Action
             ViewBag.CREATE_SUCCESS_MESSAGE = TempData[createSuccessfullyMessageKey];
             ViewBag.UPDATE_SUCCESS_MASSAGE = TempData[updateSuccessfullyMessageKey];
-            return View();
+            return View(new SearchProjectParam());
         }
         /// <summary>
         /// depend on the id parameter, this will be a Add new Project page if id is null and Update Project page if id has value
@@ -84,24 +90,35 @@ namespace PIMWebMVC.Controllers
             }
 
             Project project = Mapper.Map<Project>(projectModel);
-            if (projectModel.ProjectID.HasValue) // Update project
+            try
             {
-                _projectService.UpdateProject(project);
-                TempData[updateSuccessfullyMessageKey] = PIMResource.MESSAGE_UPDATE_PROJECT_SUCCESS;
-            }
-            else // Create new project
-            {
-                _projectService.CreateProject(project);
-                TempData[createSuccessfullyMessageKey] = PIMResource.MESSAGE_CREATE_PROJECT_SUCCESS;
-            }
 
-            return RedirectToAction("Index");
+
+                if (projectModel.ProjectID.HasValue) // Update project
+                {
+                    _projectService.UpdateProject(project);
+                    TempData[updateSuccessfullyMessageKey] = PIMResource.MESSAGE_UPDATE_PROJECT_SUCCESS;
+                }
+                else // Create new project
+                {
+                    _projectService.CreateProject(project);
+                    TempData[createSuccessfullyMessageKey] = PIMResource.MESSAGE_CREATE_PROJECT_SUCCESS;
+                }
+
+                return RedirectToAction("Index");
+            }
+            catch(ConcurrencyDbException concurrencyException)
+            {
+                _logger.Error(concurrencyException.InnerException);
+                ModelState.AddModelError(ErrorsConstant.SUM_ERROR_FIELD_NAME, PIMResource.ERROR_DB_CONCURRENCY_MESSAGE);
+                return View(projectModel);
+            }
         }
 
         [HttpPost]
         public ActionResult SearchProjects(SearchProjectParam searchParam)
         {
-            if (!searchParam.IsValidParam)
+            if (!searchParam.IsValidParam || !ModelState.IsValid)
             {
                 throw new ArgumentNullException($"{PIMResource.MESSAGE_INVALID_CRITERIA}");
             }
@@ -135,12 +152,12 @@ namespace PIMWebMVC.Controllers
             bool isValid = true;
             if (project.IsValidMadatoryFields())
             {
-                ModelState.Remove(ErrorsConstant.SUM_REQUIRED_ERROR_FIELD_NAME);
+                ModelState.Remove(ErrorsConstant.SUM_ERROR_FIELD_NAME);
             }
             else
             {
                 isValid = false;
-                ModelState.AddModelError(ErrorsConstant.SUM_REQUIRED_ERROR_FIELD_NAME, PIMResource.MESSAGE_MANDATORY_FIELD);
+                ModelState.AddModelError(ErrorsConstant.SUM_ERROR_FIELD_NAME, PIMResource.MESSAGE_MANDATORY_FIELD);
             }
 
             if (project.IsValidEndDate())

@@ -216,7 +216,6 @@
     <Content Include="Views\Error\BadRequest.cshtml" />
     <Content Include="Views\Error\NotFound.cshtml" />
     <Content Include="Views\Error\ServerError.cshtml" />
-    <Content Include="Views\Error\ConcurrencyError.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
