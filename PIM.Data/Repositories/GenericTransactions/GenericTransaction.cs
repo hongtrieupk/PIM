@@ -37,7 +37,10 @@ namespace PIM.Data.Repositories.GenericTransactions
         }
         public void Dispose()
         {
-            _transaction.Dispose();
+            if (_transaction != null)
+            {
+                _transaction.Dispose();
+            }
         }
         #endregion
     }

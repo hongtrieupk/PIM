@@ -27,26 +27,38 @@ namespace PIM.Business.Services
         #region Method
         public int CreateProject(Project newProject)
         {
-            using (IGenericTransaction transaction = _dbContext.BeginTransaction())
+            using (var session = _dbContext.OpenSession())
             {
-                _projectRepository.Add(newProject);
-                transaction.Commit();
+                _projectRepository.SetSession(session);
+                using (IGenericTransaction transaction = _dbContext.BeginTransaction())
+                {
+                    _projectRepository.Add(newProject);
+                    transaction.Commit();
+                }
             }
             return newProject.ProjectID;
         }
 
         public void UpdateProject(Project project)
         {
-            using (IGenericTransaction transaction = _dbContext.BeginTransaction())
+            using (var session = _dbContext.OpenSession())
             {
+                _projectRepository.SetSession(session);
+                using (IGenericTransaction transaction = _dbContext.BeginTransaction())
+                {
                     _projectRepository.Update(project);
                     transaction.Commit();
+                }
             }
         }
 
         public Project GetProjectById(int id)
         {
-            return _projectRepository.GetById(id);
+            using (var session = _dbContext.OpenSession())
+            {
+                _projectRepository.SetSession(session);
+                return _projectRepository.GetById(id);
+            }
         }
         public PagingResultModel<Project> SearchProject(SearchProjectParam searchParam)
         {
@@ -54,13 +66,21 @@ namespace PIM.Business.Services
             {
                 return null;
             }
-            PagingResultModel<Project> result = _projectRepository.SearchProject(searchParam);
-            return result;
+            using (var session = _dbContext.OpenSession())
+            {
+                _projectRepository.SetSession(session);
+                PagingResultModel<Project> result = _projectRepository.SearchProject(searchParam);
+                return result;
+            }
         }
         public bool IsDuplicateProjectNumber(int? projectId, int newProjectNumber)
         {
-            int countDuplicatedProjects =  _projectRepository.FilterBy(p => p.ProjectNumber == newProjectNumber && p.ProjectID != projectId).Count();
-            return countDuplicatedProjects > 0;
+            using (var session = _dbContext.OpenSession())
+            {
+                _projectRepository.SetSession(session);
+                int countDuplicatedProjects = _projectRepository.FilterBy(p => p.ProjectNumber == newProjectNumber && p.ProjectID != projectId).Count();
+                return countDuplicatedProjects > 0;
+            }
         }
         public void DeleteProjectsByIds(IList<int> projectIds)
         {
@@ -68,7 +88,11 @@ namespace PIM.Business.Services
             {
                 throw new ArgumentNullException("Invalid projectIds");
             }
-            _projectRepository.DeleteProjectsByIds(projectIds);
+            using (var session = _dbContext.OpenSession())
+            {
+                _projectRepository.SetSession(session);
+                _projectRepository.DeleteProjectsByIds(projectIds);
+            }
         }
         #endregion
     }

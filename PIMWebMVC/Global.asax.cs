@@ -32,7 +32,7 @@ namespace PIMWebMVC
             string[] userLanguages = Request.UserLanguages;
             if (userLanguages != null && userLanguages.Count() > 0)
             {
-                culture = Request.UserLanguages[0];
+                culture = userLanguages[0];
             }
             Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo(culture);
             Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo(culture);
@@ -40,6 +40,10 @@ namespace PIMWebMVC
         protected void Application_Error(object sender, EventArgs e)
         {
             Exception exception = Server.GetLastError();
+            if (exception == null)
+            {
+                return;
+            }
             string action = ErrorActionsConstant.SERVER_ERROR;
             if (exception is ConcurrencyUpdateException)
             {

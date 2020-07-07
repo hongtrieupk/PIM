@@ -118,16 +118,16 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="BTN_CANCEL" xml:space="preserve">
-    <value>Cancel</value>
+    <value>Hủy</value>
   </data>
   <data name="BTN_RESET_SEARCH" xml:space="preserve">
-    <value>Reset Criteria</value>
+    <value>Thiết lập lại</value>
   </data>
   <data name="BTN_SAVE" xml:space="preserve">
-    <value>Save</value>
+    <value>Lưu</value>
   </data>
   <data name="BTN_SEARCH" xml:space="preserve">
-    <value>Search</value>
+    <value>Tìm</value>
   </data>
   <data name="ERROR_ACCESS_DENIED_MESSAGE" xml:space="preserve">
     <value>You don't have permission</value>
@@ -142,135 +142,135 @@
     <value>Bad Request</value>
   </data>
   <data name="ERROR_DB_CONCURRENCY_MESSAGE" xml:space="preserve">
-    <value>An error happened while modifying the data. Your record might be changed in another transaction. Please reload and update your data again </value>
+    <value>Đã có lỗi xảy ra trong quá trình chỉnh sửa dữ liệu. Dữ liệu của bạn có thể đã bị thay đổi bởi 1 phiên làm việc khác. Please reload and update your data again </value>
   </data>
   <data name="ERROR_DB_CONCURRENCY_TITLE" xml:space="preserve">
-    <value>Concurrency Error</value>
+    <value>Lỗi chỉnh sửa đồng thời</value>
   </data>
   <data name="ERROR_NOT_FOUND_MESSAGE" xml:space="preserve">
-    <value>OOPS! - Could not Find it</value>
+    <value>OOPS! - không thẻ tìm thấy dữ liệu</value>
   </data>
   <data name="ERROR_NOT_FOUND_TITLE" xml:space="preserve">
-    <value>Not Found</value>
+    <value>Không tìm thấy</value>
   </data>
   <data name="ERROR_SERVER_ERROR_PLEASE_CONTACT" xml:space="preserve">
     <value>Please contact your administrator</value>
   </data>
   <data name="ERROR_SERVER_ERROR_TITLE" xml:space="preserve">
-    <value>Server Error</value>
+    <value>Lỗi Server</value>
   </data>
   <data name="ERROR_SERVER_ERROR_UNEXPECTED_MESSAGE" xml:space="preserve">
     <value>Unexpected error occurred</value>
   </data>
   <data name="LAYOUT_NAV_HELP" xml:space="preserve">
-    <value>Help</value>
+    <value>Giúp đỡ</value>
   </data>
   <data name="LAYOUT_NAV_LOG_OUT" xml:space="preserve">
-    <value>Log out</value>
+    <value>Đăng xuất</value>
   </data>
   <data name="LAYOUT_SIDE_BAR_ACCOUNT" xml:space="preserve">
-    <value>Account</value>
+    <value>Tài Khoản</value>
   </data>
   <data name="LAYOUT_SIDE_BAR_AFFAIR" xml:space="preserve">
     <value>Affair</value>
   </data>
   <data name="LAYOUT_SIDE_BAR_CUSTOMER" xml:space="preserve">
-    <value>Customer</value>
+    <value>Khách hàng</value>
   </data>
   <data name="LAYOUT_SIDE_BAR_MY_PROJECTS" xml:space="preserve">
-    <value>My Projects</value>
+    <value>Projects của tôi</value>
   </data>
   <data name="LAYOUT_SIDE_BAR_NEW" xml:space="preserve">
-    <value>New</value>
+    <value>Tạo mới</value>
   </data>
   <data name="LAYOUT_SIDE_BAR_PROJECT" xml:space="preserve">
-    <value>Project</value>
+    <value>Dự Án</value>
   </data>
   <data name="LAYOUT_SIDE_BAR_SEARCH" xml:space="preserve">
-    <value>Search</value>
+    <value>Tìm Kiếm</value>
   </data>
   <data name="LAYOUT_SIDE_BAR_SUPPLIER" xml:space="preserve">
-    <value>Supplier</value>
+    <value>Nhà cung cấp</value>
   </data>
   <data name="LAYOUT_TITLE" xml:space="preserve">
-    <value>Project Infomation Management</value>
+    <value>Quản lý Thông tin Dự án</value>
   </data>
   <data name="MESSAGE_CONFIRM_DELETE_PROJECTS" xml:space="preserve">
-    <value>Selected Project(s) are going to be removed from the database. Are you sure?</value>
+    <value>Các Projects đã được chọn sẽ bị xóa khỏa CSDL. Xác nhận xóa?</value>
   </data>
   <data name="MESSAGE_CREATE_PROJECT_SUCCESS" xml:space="preserve">
-    <value>New Project created successfully </value>
+    <value>Tạo mới Dự án thành công</value>
   </data>
   <data name="MESSAGE_DELETE_PROJECTS_SUCCESS" xml:space="preserve">
-    <value>Delete selected Projects successfully</value>
+    <value>Xóa các Dự án đã chọn thành công</value>
   </data>
   <data name="MESSAGE_DUPLICATED_PROJECT_NUMBER" xml:space="preserve">
-    <value>The project number already existed. Please select a different project number</value>
+    <value>Số Dự án đã tồn tại. vui lòng chọn Số khác</value>
   </data>
   <data name="MESSAGE_END_DATE_MUST_GREATER_THAN_START_DATE" xml:space="preserve">
-    <value>End date must greater than start date</value>
+    <value>Ngày kết thúc phải lớn hơn ngày bắt đầu</value>
   </data>
   <data name="MESSAGE_INVALID_CRITERIA" xml:space="preserve">
-    <value>At least one criterion must be entered to search a project</value>
+    <value>Vui lòng nhập ít nhất 1 điều kiện tìm kiếm</value>
   </data>
   <data name="MESSAGE_MANDATORY_FIELD" xml:space="preserve">
-    <value>Please enter all the mandatory fields (*).</value>
+    <value>Vui lòng nhập dữ liệu cho tất cả các dòng bắt buộc (*).</value>
   </data>
   <data name="MESSAGE_UPDATE_PROJECT_SUCCESS" xml:space="preserve">
-    <value>The Project was successfully updated</value>
+    <value>Dự án đã được cập nhật thành công</value>
   </data>
   <data name="PAGINATION_FIRST" xml:space="preserve">
-    <value>First</value>
+    <value>Trang đầu</value>
   </data>
   <data name="PAGINATION_LAST" xml:space="preserve">
-    <value>Last</value>
+    <value>Trang cuối</value>
   </data>
   <data name="PAGINATION_NEXT" xml:space="preserve">
-    <value>Next</value>
+    <value>Trang kế</value>
   </data>
   <data name="PAGINATION_PREVIOUS" xml:space="preserve">
-    <value>Previous</value>
+    <value>Trang trước</value>
   </data>
   <data name="PROJECT_CREATE_MODE" xml:space="preserve">
-    <value>New Project</value>
+    <value>Tạo mới Dự án</value>
   </data>
   <data name="PROJECT_DETAILS_PAGE_TITLE" xml:space="preserve">
-    <value>Project</value>
+    <value>Dự Án</value>
   </data>
   <data name="PROJECT_EDIT_MODE" xml:space="preserve">
-    <value>Edit Project</value>
+    <value>Chỉnh sửa Dự án</value>
   </data>
   <data name="PROJECT_LBL_CUSTOMER" xml:space="preserve">
-    <value>Customer</value>
+    <value>Khách hàng</value>
   </data>
   <data name="PROJECT_LBL_END_DATE" xml:space="preserve">
-    <value>End date</value>
+    <value>Ngày kết thúc</value>
   </data>
   <data name="PROJECT_LBL_NAME" xml:space="preserve">
-    <value>Name</value>
+    <value>Tên</value>
   </data>
   <data name="PROJECT_LBL_NUMBER" xml:space="preserve">
-    <value>Number</value>
+    <value>Số</value>
   </data>
   <data name="PROJECT_LBL_START_DATE" xml:space="preserve">
-    <value>Start date</value>
+    <value>Ngày bắt đầu</value>
   </data>
   <data name="PROJECT_LBL_STATUS" xml:space="preserve">
-    <value>Status</value>
+    <value>Trạng thái</value>
   </data>
   <data name="PROJECT_SEARCH_PAGE_TITLE" xml:space="preserve">
-    <value>Search Projects</value>
+    <value>Tìm kiếm Dự Án</value>
   </data>
   <data name="PROJECT_STATUS_FIN" xml:space="preserve">
-    <value>Finished</value>
+    <value>Đã Kết Thúc</value>
   </data>
   <data name="PROJECT_STATUS_INV" xml:space="preserve">
-    <value>Not Validated</value>
+    <value>Chưa Duyệt</value>
   </data>
   <data name="PROJECT_STATUS_TOV" xml:space="preserve">
-    <value>To Validate</value>
+    <value>Đang Duyệt</value>
   </data>
   <data name="PROJECT_STATUS_VAL" xml:space="preserve">
-    <value>Validated</value>
+    <value>Đã Duyệt</value>
   </data>
 </root>

@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using log4net;
 using PIM.Business.Services;
 using PIM.Common.Models;
 using PIM.Common.SystemConfigurationHelper;
@@ -13,7 +12,6 @@ using PIMWebMVC.Resources;
 using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -24,13 +22,15 @@ namespace PIMWebMVC.Controllers
         #region Fields
         private readonly IProjectService _projectService;
         private readonly IAppConfiguration _appConfiguration;
+        private const string createSuccessfullyMessageKey = "CREATE_SUCCESS_MESSAGE";
+        private const string updateSuccessfullyMessageKey = "UPDATE_SUCCESS_MASSAGE";
         #endregion
         #region Constructors
         public ProjectsController()
         {
             // TODO: apply IOC
             IApplicationDbContext dbContext = new ApplicationDbContext();
-            _projectService = new ProjectService(new ProjectRepository(dbContext.CurrentSession), dbContext);
+            _projectService = new ProjectService(new ProjectRepository(), dbContext);
             _appConfiguration = new AppConfiguration();
         }
         #endregion
@@ -38,9 +38,16 @@ namespace PIMWebMVC.Controllers
         #region Methods
         public ActionResult Index()
         {
+            // the Index View will use those ViewBag's properties to show message if the Index view is redirect from Update or Create Action
+            ViewBag.CREATE_SUCCESS_MESSAGE = TempData[createSuccessfullyMessageKey];
+            ViewBag.UPDATE_SUCCESS_MASSAGE = TempData[updateSuccessfullyMessageKey];
             return View();
         }
-
+        /// <summary>
+        /// depend on the id parameter, this will be a Add new Project page if id is null and Update Project page if id has value
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public ActionResult AddUpdate(int? id)
         {
             ProjectModel initProject = new ProjectModel();
@@ -68,11 +75,12 @@ namespace PIMWebMVC.Controllers
             if (projectModel.ProjectID.HasValue) // Update project
             {
                 _projectService.UpdateProject(project);
+                TempData[updateSuccessfullyMessageKey] = PIMResource.MESSAGE_UPDATE_PROJECT_SUCCESS;
             }
             else // Create new project
             {
-
                 _projectService.CreateProject(project);
+                TempData[createSuccessfullyMessageKey] = PIMResource.MESSAGE_CREATE_PROJECT_SUCCESS;
             }
             return RedirectToAction("Index");
         }
@@ -99,7 +107,7 @@ namespace PIMWebMVC.Controllers
         [HttpPost]
         public ActionResult DeleteProjectByIds(IList<int> projectIds)
         {
-            // _projectService.DeleteProjectsByIds(projectIds);
+            _projectService.DeleteProjectsByIds(projectIds);
             return Json(new ActionResultModel() { IsSuccess = true, Message = PIMResource.MESSAGE_DELETE_PROJECTS_SUCCESS });
 
         }

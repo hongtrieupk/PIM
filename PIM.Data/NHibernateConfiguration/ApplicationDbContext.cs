@@ -1,5 +1,4 @@
 ﻿
-
 using NHibernate;
 using NHibernate.Cfg;
 using NHibernate.Cfg.MappingSchema;
@@ -8,7 +7,6 @@ using NHibernate.Driver;
 using NHibernate.Mapping.ByCode;
 using NHibernate.Tool.hbm2ddl;
 using PIM.Data.Maps;
-using PIM.Data.NHibernateConfiguration;
 using PIM.Data.Repositories.GenericTransactions;
 using System;
 using System.Data;
@@ -26,12 +24,10 @@ namespace PIM.Data.NHibernateConfiguration
         #region Constructor
         public ApplicationDbContext()
         {
-            CreateSession();
         }
         public ApplicationDbContext(string connectionStringName)
         {
             _connectionStringName = !string.IsNullOrWhiteSpace(_connectionStringName) ? connectionStringName : _connectionStringName;
-            CreateSession();
         }
         #endregion
         #region Properties
@@ -46,22 +42,13 @@ namespace PIM.Data.NHibernateConfiguration
                 return _nhibernateConfiguration;
             }
         }
-        public ISession CurrentSession
+        public ISession OpenSession()
         {
-            get
+            if (_currentSession == null || !_currentSession.IsOpen)
             {
-                if (_currentSession == null)
-                    throw new InvalidOperationException("You are not in a unit of work.");
-                return _currentSession;
+                _currentSession = CreateSession();
             }
-            set { _currentSession = value; }
-        }
-        public bool IsInActiveTransaction
-        {
-            get
-            {
-                return _currentSession.Transaction.IsActive;
-            }
+            return _currentSession;
         }
         private static ISessionFactory SessionFactory
         {
@@ -79,10 +66,6 @@ namespace PIM.Data.NHibernateConfiguration
         {
             return new GenericTransaction(_currentSession.BeginTransaction());
         }
-        public IGenericTransaction BeginTransaction(IsolationLevel isolationLevel)
-        {
-            return new GenericTransaction(_currentSession.BeginTransaction(isolationLevel));
-        }
 
         public void Flush()
         {
@@ -90,15 +73,23 @@ namespace PIM.Data.NHibernateConfiguration
         }
         public void Dispose()
         {
-            _currentSession.Dispose();
-            _sessionFactory.Dispose();
+            if (_currentSession != null)
+            {
+                _currentSession.Dispose();
+            }
+            if (_sessionFactory != null)
+            {
+                _sessionFactory.Dispose();
+            }
         }
-        private void CreateSession()
+        private ISession CreateSession()
         {
-            _currentSession =  SessionFactory.OpenSession();
+            ISession session = SessionFactory.OpenSession();
+            session.FlushMode = FlushMode.Commit;
+            return session;
         }
 
-        public static void AppConfigure()
+        private static void AppConfigure()
         {
             _nhibernateConfiguration = ConfigureNHibernate();
 
@@ -110,7 +101,8 @@ namespace PIM.Data.NHibernateConfiguration
             var configure = new Configuration();
             configure.SessionFactoryName("BuildIt");
 
-            configure.DataBaseIntegration(db => {
+            configure.DataBaseIntegration(db =>
+            {
                 db.Driver<SqlClientDriver>();
                 db.Dialect<MsSql2008Dialect>();
                 db.KeywordsAutoImport = Hbm2DDLKeyWords.AutoQuote;

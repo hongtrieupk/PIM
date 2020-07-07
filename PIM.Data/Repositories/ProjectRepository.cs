@@ -12,17 +12,17 @@ namespace PIM.Data.Repositories
 {
     public class ProjectRepository : GenericRepository<Project>, IProjectRepository
     {
-        #region Constructors
-        public ProjectRepository(ISession session) : base(session)
-        {
-        }
-        #endregion
         #region Methods
         public void DeleteProjectsByIds(IList<int> projectIds)
         {
             _session.Query<Project>()
                     .Where(p => projectIds.Contains(p.ProjectID)).Delete();
         }
+        /// <summary>
+        /// search projects by Number, Name, Customer and status
+        /// </summary>
+        /// <param name="searchParam"></param>
+        /// <returns>return list projects with pagination option</returns>
         public PagingResultModel<Project> SearchProject(SearchProjectParam searchParam)
         {
             PagingResultModel<Project> result = new PagingResultModel<Project>();

@@ -304,6 +304,15 @@ namespace PIMWebMVC.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to New Project created successfully .
+        /// </summary>
+        public static string MESSAGE_CREATE_PROJECT_SUCCESS {
+            get {
+                return ResourceManager.GetString("MESSAGE_CREATE_PROJECT_SUCCESS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete selected Projects successfully.
         /// </summary>
         public static string MESSAGE_DELETE_PROJECTS_SUCCESS {
@@ -345,6 +354,15 @@ namespace PIMWebMVC.Resources {
         public static string MESSAGE_MANDATORY_FIELD {
             get {
                 return ResourceManager.GetString("MESSAGE_MANDATORY_FIELD", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Project was successfully updated.
+        /// </summary>
+        public static string MESSAGE_UPDATE_PROJECT_SUCCESS {
+            get {
+                return ResourceManager.GetString("MESSAGE_UPDATE_PROJECT_SUCCESS", resourceCulture);
             }
         }
         

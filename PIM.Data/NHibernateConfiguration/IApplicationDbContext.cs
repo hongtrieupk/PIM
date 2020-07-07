@@ -10,9 +10,7 @@ namespace PIM.Data.NHibernateConfiguration
     {
         Configuration Configuration { get; }
         IGenericTransaction BeginTransaction();
-        IGenericTransaction BeginTransaction(IsolationLevel isolationLevel);
-        bool IsInActiveTransaction { get; }
-        ISession CurrentSession { get; }
+        ISession OpenSession();
         void Flush();
     }
 }

@@ -14,13 +14,6 @@ namespace PIMWebMVC.Models.Projects
 
         #region Construtors
         public ProjectModel() { }
-        public ProjectModel(int number, string name)
-        {
-            ProjectID = number;
-            ProjectNumber = number;
-            ProjectName = name;
-            StartDate = DateTime.Now;
-        }
         #endregion
 
         #region Properties
@@ -54,9 +47,10 @@ namespace PIMWebMVC.Models.Projects
         {
             get
             {
-                if (this.Status != null && ProjectConstant.PROJECT_STATUSES.ContainsKey(this.Status))
+                IProjectStatuesConstant projectStatues = new ProjectStatuesConstant();
+                if (this.Status != null && projectStatues.PROJECT_STATUSES.ContainsKey(this.Status))
                 {
-                    return ProjectConstant.PROJECT_STATUSES[this.Status];
+                    return projectStatues.PROJECT_STATUSES[this.Status];
                 }
                 return string.Empty;
             }
