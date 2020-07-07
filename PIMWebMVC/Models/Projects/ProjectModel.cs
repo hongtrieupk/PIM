@@ -3,8 +3,6 @@ using PIMWebMVC.Constants;
 using PIMWebMVC.Resources;
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.Runtime.Remoting.Metadata.W3cXsd2001;
-using System.Web.Mvc;
 
 namespace PIMWebMVC.Models.Projects
 {

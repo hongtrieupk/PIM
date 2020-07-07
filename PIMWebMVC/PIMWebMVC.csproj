@@ -141,7 +141,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Constants\ErrorActionsConstant.cs" />
+    <Compile Include="Constants\ErrorsConstant.cs" />
     <Compile Include="Constants\IProjectStatuesConstant.cs" />
     <Compile Include="Constants\ProjectStatuesConstant.cs" />
     <Compile Include="Controllers\ErrorController.cs" />

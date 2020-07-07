@@ -6,9 +6,12 @@ using System.Linq.Expressions;
 
 namespace PIM.Data.Repositories
 {
+    /// <summary>
+    /// SetSession method must be call to inject ISession to the Repository by  before using 
+    /// </summary>
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
-        #region Fields
+        #region Fields        
         protected ISession _session;
         #endregion
         #region Constructors

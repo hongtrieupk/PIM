@@ -1,8 +1,4 @@
 ﻿
-
-using System.ComponentModel.DataAnnotations;
-using System.Web.UI;
-
 namespace PIM.Common.Models
 {
     public class SearchProjectParam

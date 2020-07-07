@@ -1,5 +1,4 @@
-﻿using NHibernate;
-using NHibernate.Exceptions;
+﻿using NHibernate.Exceptions;
 using NHibernate.Tool.hbm2ddl;
 using NUnit.Framework;
 using PIM.Common.CustomExceptions;
@@ -11,7 +10,6 @@ using PIM.Data.Repositories.GenericTransactions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 namespace PIM.Test
 {

@@ -1,5 +1,4 @@
-﻿
-namespace PIMWebMVC.Models.Common
+﻿namespace PIMWebMVC.Models.Common
 {
     public class PaginationBarModel
     {

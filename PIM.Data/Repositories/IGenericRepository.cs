@@ -3,10 +3,12 @@ using NHibernate;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
 
 namespace PIM.Data.Repositories
 {
+    /// <summary>
+    /// SetSession method must be call to inject ISession to the Repository by  before using 
+    /// </summary>
     public interface IGenericRepository<T> where T : class
     {
         #region Methods

@@ -2,7 +2,6 @@
 using NHibernate.Cfg;
 using PIM.Data.Repositories.GenericTransactions;
 using System;
-using System.Data;
 
 namespace PIM.Data.NHibernateConfiguration
 {

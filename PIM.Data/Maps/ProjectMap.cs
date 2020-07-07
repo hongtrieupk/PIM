@@ -1,5 +1,4 @@
-﻿using NHibernate.Engine;
-using NHibernate.Mapping.ByCode;
+﻿using NHibernate.Mapping.ByCode;
 using NHibernate.Mapping.ByCode.Conformist;
 using PIM.Data.Objects;
 

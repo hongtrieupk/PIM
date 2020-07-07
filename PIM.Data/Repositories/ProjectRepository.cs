@@ -1,11 +1,8 @@
 ﻿using PIM.Data.Objects;
-using NHibernate;
 using System.Linq;
 using PIM.Common.Models;
 using System;
-using NHibernate.Criterion;
 using NHibernate.Linq;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace PIM.Data.Repositories

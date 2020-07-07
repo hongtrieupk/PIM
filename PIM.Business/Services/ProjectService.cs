@@ -93,7 +93,7 @@ namespace PIM.Business.Services
                 int countProjectsInDb = _projectRepository.FilterBy(p => projectIds.Contains(p.ProjectID)).Count();
                 if (countProjectsInDb != projectIds.Count)
                 {
-                    throw new ConcurrencyDbException("list deleted projects was modified");
+                    throw new ConcurrencyDbException("List deleted projects was modified!");
                 }
                 _projectRepository.DeleteProjectsByIds(projectIds);
             }

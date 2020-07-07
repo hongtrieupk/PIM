@@ -1,5 +1,4 @@
-﻿
-using NHibernate;
+﻿using NHibernate;
 using NHibernate.Cfg;
 using NHibernate.Cfg.MappingSchema;
 using NHibernate.Dialect;
@@ -8,7 +7,6 @@ using NHibernate.Mapping.ByCode;
 using NHibernate.Tool.hbm2ddl;
 using PIM.Data.Maps;
 using PIM.Data.Repositories.GenericTransactions;
-using System;
 using System.Data;
 
 namespace PIM.Data.NHibernateConfiguration
@@ -30,6 +28,7 @@ namespace PIM.Data.NHibernateConfiguration
             _connectionStringName = !string.IsNullOrWhiteSpace(_connectionStringName) ? connectionStringName : _connectionStringName;
         }
         #endregion
+
         #region Properties
         public Configuration Configuration
         {
@@ -41,27 +40,30 @@ namespace PIM.Data.NHibernateConfiguration
                 }
                 return _nhibernateConfiguration;
             }
-        }
-        public ISession OpenSession()
-        {
-            if (_currentSession == null || !_currentSession.IsOpen)
-            {
-                _currentSession = CreateSession();
-            }
-            return _currentSession;
-        }
+        }    
         private static ISessionFactory SessionFactory
         {
             get
             {
                 if (_sessionFactory == null)
-                    AppConfigure();
+                    ConfigureApplicationContext();
 
                 return _sessionFactory;
             }
         }
         #endregion
+
         #region Methods
+        public ISession OpenSession()
+        {
+            if (_currentSession == null || !_currentSession.IsOpen)
+            {
+                ISession session = SessionFactory.OpenSession();
+                session.FlushMode = FlushMode.Commit;
+                _currentSession = session;
+            }
+            return _currentSession;
+        }
         public IGenericTransaction BeginTransaction()
         {
             return new GenericTransaction(_currentSession.BeginTransaction());
@@ -82,14 +84,8 @@ namespace PIM.Data.NHibernateConfiguration
                 _sessionFactory.Dispose();
             }
         }
-        private ISession CreateSession()
-        {
-            ISession session = SessionFactory.OpenSession();
-            session.FlushMode = FlushMode.Commit;
-            return session;
-        }
 
-        private static void AppConfigure()
+        private static void ConfigureApplicationContext()
         {
             _nhibernateConfiguration = ConfigureNHibernate();
 
@@ -126,10 +122,8 @@ namespace PIM.Data.NHibernateConfiguration
         private static HbmMapping GetMappings()
         {
             ModelMapper mapper = new ModelMapper();
-
             mapper.AddMapping<ProjectMap>();
             var mapping = mapper.CompileMappingForAllExplicitlyAddedEntities();
-
             return mapping;
         }
         #endregion

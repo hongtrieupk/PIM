@@ -44,14 +44,14 @@ namespace PIMWebMVC
             {
                 return;
             }
-            string action = ErrorActionsConstant.SERVER_ERROR;
+            string action = ErrorsConstant.SERVER_ERROR_ACTION;
             if (exception is ConcurrencyDbException)
             {
-                action = ErrorActionsConstant.CONCURRENCY_ERROR;
+                action = ErrorsConstant.CONCURRENCY_ERROR_ACTION;
             }
             else
             {
-                HttpContext.Current.Session[ErrorActionsConstant.ERROR_MESSAGE_SESSION_KEY] = exception.Message;
+                HttpContext.Current.Session[ErrorsConstant.ERROR_MESSAGE_SESSION_KEY] = exception.Message;
                 Response.Clear();
                 HttpException httpException = exception as HttpException;
                 if (httpException != null)
@@ -60,19 +60,19 @@ namespace PIMWebMVC
                     switch (httpException.GetHttpCode())
                     {
                         case 404:
-                            action = ErrorActionsConstant.NOT_FOUND;
+                            action = ErrorsConstant.NOT_FOUND_ACTION;
                             break;
                         case 500:
-                            action = ErrorActionsConstant.SERVER_ERROR;
+                            action = ErrorsConstant.SERVER_ERROR_ACTION;
                             break;
                         case 401:
-                            action = ErrorActionsConstant.ACCESS_DENIED;
+                            action = ErrorsConstant.ACCESS_DENIED_ACTION;
                             break;
                         case 400:
-                            action = ErrorActionsConstant.BAD_REQUEST;
+                            action = ErrorsConstant.BAD_REQUEST_ACTION;
                             break;
                         case 403:
-                            action = ErrorActionsConstant.ACCESS_DENIED;
+                            action = ErrorsConstant.ACCESS_DENIED_ACTION;
                             break;
                         default:
                             break;

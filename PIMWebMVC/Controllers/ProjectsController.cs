@@ -72,6 +72,7 @@ namespace PIMWebMVC.Controllers
 
             return View(initProject);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult AddUpdate(ProjectModel projectModel)
@@ -134,12 +135,12 @@ namespace PIMWebMVC.Controllers
             bool isValid = true;
             if (project.IsValidMadatoryFields())
             {
-                ModelState.Remove(ErrorActionsConstant.SUM_REQUIRED_ERROR_FIELD_NAME);
+                ModelState.Remove(ErrorsConstant.SUM_REQUIRED_ERROR_FIELD_NAME);
             }
             else
             {
                 isValid = false;
-                ModelState.AddModelError(ErrorActionsConstant.SUM_REQUIRED_ERROR_FIELD_NAME, PIMResource.MESSAGE_MANDATORY_FIELD);
+                ModelState.AddModelError(ErrorsConstant.SUM_REQUIRED_ERROR_FIELD_NAME, PIMResource.MESSAGE_MANDATORY_FIELD);
             }
 
             if (project.IsValidEndDate())
