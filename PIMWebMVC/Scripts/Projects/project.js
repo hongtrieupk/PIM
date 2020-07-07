@@ -9,10 +9,7 @@ ProjectComponent.prototype = {
         this.btnSaveProject.on("click", this.onSavingProject.bind(this));
     },
     onSavingProject: function () {
-        let isConfirmed = confirm(this.confirmSaveProjectMessage)
-        if (isConfirmed) {
-            this.projectForm.submit();
-        }
+        this.projectForm.submit();
     }
 };
 
