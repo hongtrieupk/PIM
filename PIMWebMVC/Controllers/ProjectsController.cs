@@ -4,17 +4,14 @@ using PIM.Business.Services;
 using PIM.Common.CustomExceptions;
 using PIM.Common.Models;
 using PIM.Common.SystemConfigurationHelper;
-using PIM.Data.NHibernateConfiguration;
 using PIM.Data.Objects;
-using PIM.Data.Repositories;
 using PIMWebMVC.Constants;
 using PIMWebMVC.Models.Common;
 using PIMWebMVC.Models.Projects;
 using PIMWebMVC.Resources;
 using System;
 using System.Collections.Generic;
-using System.Net;
-using System.Web;
+using System.ServiceModel.Channels;
 using System.Web.Mvc;
 
 namespace PIMWebMVC.Controllers
@@ -22,7 +19,6 @@ namespace PIMWebMVC.Controllers
     public class ProjectsController : Controller
     {
         #region Fields
-        private readonly IApplicationDbContext _applicationDbContext;
         private readonly IProjectService _projectService;
         private readonly IAppConfiguration _appConfiguration;
         private static readonly ILog _logger = LogManager.GetLogger(typeof(ProjectsController));
@@ -31,21 +27,10 @@ namespace PIMWebMVC.Controllers
         private const string UPDATE_SUCCESSFULLY_MESSAGE = "UPDATE_SUCCESS_MASSAGE";
         #endregion
         #region Constructors
-        public ProjectsController()
+        public ProjectsController(IProjectService projectService, IAppConfiguration appConfiguration)
         {
-            // TODO: apply IOC
-            _applicationDbContext = new ApplicationDbContext();
-            _projectService = new ProjectService(new ProjectRepository(), _applicationDbContext);
-            _appConfiguration = new AppConfiguration();
-        }
-        #endregion
-        #region Destructor
-        ~ProjectsController()
-        {
-            if (_applicationDbContext != null)
-            {
-                _applicationDbContext.Dispose();
-            }
+            _projectService = projectService ?? throw new ArgumentNullException("Can not inject a null projectService!");
+            _appConfiguration = appConfiguration ?? throw new ArgumentNullException("Can not inject a null appConfiguration!");
         }
         #endregion
         #region Methods

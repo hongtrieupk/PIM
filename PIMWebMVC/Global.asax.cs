@@ -21,6 +21,7 @@ namespace PIMWebMVC
             {
                 m.AddProfile(new AutoMapperProfile());
             });
+            AutofacConfig.ConfigureContainer();
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
@@ -52,7 +53,11 @@ namespace PIMWebMVC
                 Response.Redirect($"~/Error/{action}");
                 return;
             }
-            HttpContext.Current.Session[ErrorsConstant.ERROR_MESSAGE_SESSION_KEY] = exception.Message;
+            if (HttpContext.Current.Session != null)
+            {
+                HttpContext.Current.Session[ErrorsConstant.ERROR_MESSAGE_SESSION_KEY] = exception.Message;
+            }
+            
             Response.Clear();
             HttpException httpException = exception as HttpException;
             if (httpException != null)

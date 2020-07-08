@@ -20,13 +20,10 @@ namespace PIM.Data.NHibernateConfiguration
         private static Configuration _nhibernateConfiguration;
         #endregion
         #region Constructor
-        public ApplicationDbContext()
-        {
-        }
-        public ApplicationDbContext(string connectionStringName)
-        {
-            _connectionStringName = !string.IsNullOrWhiteSpace(_connectionStringName) ? connectionStringName : _connectionStringName;
-        }
+        //public ApplicationDbContext(string connectionStringName)
+        //{
+        //    _connectionStringName = !string.IsNullOrWhiteSpace(_connectionStringName) ? connectionStringName : _connectionStringName;
+        //}
         #endregion
 
         #region Properties
