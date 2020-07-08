@@ -18,25 +18,24 @@ namespace PIM.Data.Repositories
         public PagingResultModel<Project> SearchProject(SearchProjectParam searchParam)
         {
             PagingResultModel<Project> result = new PagingResultModel<Project>();
-            var query = _session.Query<Project>();
-            query = searchParam.ProjectNumber.HasValue ? query.Where(x => x.ProjectNumber == searchParam.ProjectNumber) : query;
+            var queryOver = _session.QueryOver<Project>();
+            queryOver = searchParam.ProjectNumber.HasValue 
+                    ? queryOver.Where(x => x.ProjectNumber == searchParam.ProjectNumber) : queryOver;
 
-            query = !string.IsNullOrWhiteSpace(searchParam.ProjectName)
-                    ? query.Where(x => x.ProjectName.Contains(searchParam.ProjectName)) : query;
+            queryOver = !string.IsNullOrWhiteSpace(searchParam.ProjectName)
+                    ? queryOver.WhereRestrictionOn(x => x.ProjectName).IsLike($"%{searchParam.ProjectName}%") : queryOver;
 
-            query = !string.IsNullOrWhiteSpace(searchParam.Status)
-                    ? query = query.Where(x => x.Status == searchParam.Status) : query;
+            queryOver = !string.IsNullOrWhiteSpace(searchParam.Status)
+                    ? queryOver.Where(x => x.Status == searchParam.Status) : queryOver;
 
-            query = !string.IsNullOrWhiteSpace(searchParam.Customer)
-                        ? query.Where(x => x.Customer.Contains(searchParam.Customer)) : query;
+            queryOver = !string.IsNullOrWhiteSpace(searchParam.Customer)
+                    ? queryOver.WhereRestrictionOn(x => x.Customer).IsLike($"%{searchParam.Customer}%") : queryOver;
 
-            result.TotalRecords = query.Count();
+            queryOver = queryOver.OrderBy(x => x.ProjectNumber).Asc;
+            result.TotalRecords = queryOver.RowCount();
             result.TotalPages = (int)Math.Ceiling((double)result.TotalRecords / searchParam.PageSize);
-            query = query.Skip((searchParam.CurrentPage - 1) * searchParam.PageSize)
-                        .Take(searchParam.PageSize);
-            query = query.OrderBy(x => x.ProjectNumber);
-
-            result.Records = query.ToList();
+            int numberOfSkipItems = (searchParam.CurrentPage - 1) * searchParam.PageSize;
+            result.Records = queryOver.Skip(numberOfSkipItems).Take(searchParam.PageSize).List();
             return result;
         }
         #endregion

@@ -13,8 +13,6 @@ using PIMWebMVC.Models.Projects;
 using PIMWebMVC.Resources;
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
-using System.Linq.Expressions;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
@@ -83,17 +81,16 @@ namespace PIMWebMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult AddUpdate(ProjectModel projectModel)
         {
-            bool isValidModelState = ValidateProjectModel(projectModel);
-            if (!isValidModelState || !ModelState.IsValid)
+            ValidateProjectModel(projectModel);
+            if (!ModelState.IsValid)
             {
+                ViewBag.FormHasError = true;
                 return View(projectModel);
             }
 
             Project project = Mapper.Map<Project>(projectModel);
             try
             {
-
-
                 if (projectModel.ProjectID.HasValue) // Update project
                 {
                     _projectService.UpdateProject(project);
@@ -111,6 +108,7 @@ namespace PIMWebMVC.Controllers
             {
                 _logger.Error(concurrencyException.InnerException);
                 ModelState.AddModelError(ErrorsConstant.SUM_ERROR_FIELD_NAME, PIMResource.ERROR_DB_CONCURRENCY_MESSAGE);
+                ViewBag.FormHasError = true;
                 return View(projectModel);
             }
         }
@@ -156,35 +154,54 @@ namespace PIMWebMVC.Controllers
             return PartialView("_PaginationBarPartial", dataModel);
         }
 
-        private bool ValidateProjectModel(ProjectModel project)
+        private void ValidateProjectModel(ProjectModel project)
         {
-            bool isValid = true;
+            ValidateMandatoryFields(project);
+            ValidateSpecialCharacters(project);
+            ValidateEndDate(project);
+            ValidateProjectNumber(project);
+        }
+        private void ValidateMandatoryFields(ProjectModel project)
+        {
             if (project.IsValidMadatoryFields())
             {
                 ModelState.Remove(ErrorsConstant.SUM_ERROR_FIELD_NAME);
             }
             else
             {
-                isValid = false;
                 ModelState.AddModelError(ErrorsConstant.SUM_ERROR_FIELD_NAME, PIMResource.MESSAGE_MANDATORY_FIELD);
             }
+        }
+        private void ValidateSpecialCharacters(ProjectModel project)
+        {
 
+            if (project.IsMatchAllowCharacterSet())
+            {
+                ModelState.Remove(ErrorsConstant.SUM_ERROR_SPECIAL_CHARACTERS_FIELD_NAME);
+            }
+            else
+            {
+                ModelState.AddModelError(ErrorsConstant.SUM_ERROR_SPECIAL_CHARACTERS_FIELD_NAME, PIMResource.MESSAGE_SPECIAL_CHARACTER_ERROR);
+            }
+        }
+        private void ValidateEndDate(ProjectModel project)
+        {
             if (project.IsValidEndDate())
             {
                 ModelState.Remove(nameof(project.EndDate));
             }
             else
             {
-                isValid = false;
                 ModelState.AddModelError(nameof(project.EndDate), PIMResource.MESSAGE_END_DATE_MUST_GREATER_THAN_START_DATE);
             }
-
+        }
+        private void ValidateProjectNumber(ProjectModel project)
+        {
             bool isDuplicatedProjectNumber = project.ProjectNumber.HasValue
                 ? _projectService.IsDuplicateProjectNumber(project.ProjectID, project.ProjectNumber.Value)
                 : false;
             if (isDuplicatedProjectNumber)
             {
-                isValid = false;
                 ModelState.AddModelError(nameof(project.ProjectNumber), PIMResource.MESSAGE_DUPLICATED_PROJECT_NUMBER);
             }
             else
@@ -194,8 +211,6 @@ namespace PIMWebMVC.Controllers
                     ModelState.Remove(nameof(project.ProjectNumber));
                 }
             }
-
-            return isValid;
         }
         #endregion
     }

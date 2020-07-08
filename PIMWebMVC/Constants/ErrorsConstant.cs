@@ -10,5 +10,6 @@ namespace PIMWebMVC.Constants
 
         public const string ERROR_MESSAGE_SESSION_KEY = "CurrentErrorMessage";
         public const string SUM_ERROR_FIELD_NAME = "SumaryError";
+        public const string SUM_ERROR_SPECIAL_CHARACTERS_FIELD_NAME = "SumarySpecialCharactersError";
     }
 }

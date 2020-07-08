@@ -162,3 +162,15 @@ button[name="paging-button"] {
     button[name="paging-button"]:disabled {
         color: darkgrey;
     }
+.modal-header-warning {
+    background-color: #f0ad4e;
+}
+
+.modal-header-success {
+    background-color: #337ab7;
+}
+
+.model-title-custom {
+    font-weight: bold;
+    font-size: 18px;
+}

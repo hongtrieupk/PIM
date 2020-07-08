@@ -144,6 +144,7 @@
     <Compile Include="Constants\ErrorsConstant.cs" />
     <Compile Include="Constants\IProjectStatuesConstant.cs" />
     <Compile Include="Constants\ProjectStatuesConstant.cs" />
+    <Compile Include="Constants\RegexPatternConstants.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\ProjectsController.cs" />
     <Compile Include="Global.asax.cs">

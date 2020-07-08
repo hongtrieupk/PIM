@@ -1,4 +1,4 @@
-﻿$.notify.addStyle('custom-notify', {
+﻿$.notify.addStyle("custom-notify", {
     html: "<div><span data-notify-text/></div>",
     classes: {
         base: {
@@ -32,6 +32,30 @@ window.showSuccessNotify = function(message) {
     $.notify(message, notifyConfig);
 }
 window.defaulButtonName = "default-button";
+window.hasDirtyForm = false;
+
+window.preventLeavePage = function() {
+    $(":input").change(function () {
+        if (!hasDirtyForm) {
+            hasDirtyForm = true;
+        }
+        $("input[type=submit]").prop("disabled", false);
+    });
+    $(":input").keydown(function () {
+        if (!hasDirtyForm) {
+            hasDirtyForm = true;
+        }
+    });
+    $("form").submit(function (event) {
+            hasDirtyForm = false;
+    });
+    window.onbeforeunload = function (e) {
+        if (hasDirtyForm) {
+            return false;
+        }
+        $("input[type=submit]").prop("disabled", true);
+    }
+}
 $(document).ready(function () {
     $('body').keypress(function (e) {
         var code = e.keyCode || e.which;

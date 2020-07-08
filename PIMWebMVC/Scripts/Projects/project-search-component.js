@@ -21,6 +21,8 @@ function ProjectSearchComponent() {
     this.missingCriteriaLbl = $("#missing-criteria-lbl");
     this.serverErrorMessageLbl = $("#server-error-message-lbl");
     this.projectNumberNotInRangeLbl = $("#project-number-not-in-range-lbl");
+    this.confirmDeleteModal = $("#confirm-delete-modal");
+    this.deleteBtnInModal = $("#delete-projects-btn-in-modal");
 
     this.numberSearchTxt = $("#number-search-txt");
     this.customerSearchTxt = $("#customer-search-txt");
@@ -50,6 +52,8 @@ ProjectSearchComponent.prototype = {
         let searchFromStartPage = true;
         this.searchBtn.on("click", this.onSearching.bind(this, searchFromStartPage));
         this.resetCriteriaBtn.on("click", this.onResetCriteria.bind(this));
+        this.deleteBtnInModal.on("click", this.deleteSelectedProjects.bind(this));
+
         this.numberSearchTxt.on("keyup", this.checkEnableResetCriteriaBtn.bind(this));
         this.customerSearchTxt.on("keyup", this.checkEnableResetCriteriaBtn.bind(this));
         this.statusSearchCbb.on("keyup change", this.checkEnableResetCriteriaBtn.bind(this));
@@ -63,19 +67,19 @@ ProjectSearchComponent.prototype = {
     },
     onSearching: function (initFromStartPage) {
         this.serverErrorMessageLbl.hide();
+        this.missingCriteriaLbl.hide();
+        this.projectNumberNotInRangeLbl.hide()
         var searchParam = this.getSearchParam();
         if (!searchParam.isNotNullCriteria()) {
             this.missingCriteriaLbl.show();
             return;
         }
-        this.missingCriteriaLbl.hide();
         const minProjectNumber = 0;
         const maxProjectNumber = 2147483647;
         if (!searchParam.isProjectNumberInRange(minProjectNumber, maxProjectNumber)) {
             this.projectNumberNotInRangeLbl.show();
             return;
         }
-        this.projectNumberNotInRangeLbl.hide()
         var searchComponent = this;
         if (initFromStartPage) {
             searchParam.CurrentPage = searchComponent.startPage;
@@ -128,40 +132,37 @@ ProjectSearchComponent.prototype = {
             this.onclick = searchComponent.checkEnableDeleteBtn.bind(searchComponent);
         });
     },
-    setEventForDeleteBtn: function () {
-        var deleteBtn = $("#" + this.deleteButtonId);
+    deleteSelectedProjects: function () {
         let searchComponent = this;
-        deleteBtn.on("click", function () {
-            let selectedProjects = searchComponent.getSelectedProjectsFromHtmlTable.call(searchComponent);
-            console.log(selectedProjects);
-            if (!selectedProjects || !selectedProjects.length) {
-                return;
-            }
-            let isConfirmed = confirm(searchComponent.confirmDeleteMessage);
-            if (!isConfirmed) {
-                return;
-            }
-            $.ajax({
-                type: "post",
-                url: searchComponent.deleteProjectsUrl,
-                data: { projects: selectedProjects },
-                success: function (response) {
-                    if (typeof response === "string" && response.indexOf("<html") > -1) { // server error exception was throwed
-                        document.write(response);
-                        return;
-                    }
-                    if (response.IsSuccess) {
-                        showSuccessNotify(response.Message);
-                        searchComponent.onSearching();
-                    } else {
-                        searchComponent.serverErrorMessageLbl.text(response.Message);
-                        searchComponent.serverErrorMessageLbl.show();
-                    }
-                },
-                error: function () {
-                    window.location.href = searchComponent.serverErrorPage;
+        let selectedProjects = searchComponent.getSelectedProjectsFromHtmlTable.call(searchComponent);       
+        $.ajax({
+            type: "post",
+            url: searchComponent.deleteProjectsUrl,
+            data: { projects: selectedProjects },
+            success: function (response) {
+                if (typeof response === "string" && response.indexOf("<html") > -1) { // server error exception was throwed
+                    document.write(response);
+                    return;
                 }
-            });
+                if (response.IsSuccess) {
+                    showSuccessNotify(response.Message);
+                    searchComponent.onSearching();
+                } else {
+                    searchComponent.serverErrorMessageLbl.text(response.Message);
+                    searchComponent.serverErrorMessageLbl.show();
+                }
+            },
+            error: function () {
+                window.location.href = this.serverErrorPage;
+            }
+        });
+    },
+    setEventForDeleteBtn: function () {
+        let searchComponent = this;
+        var deleteBtn = $("#" + searchComponent.deleteButtonId);
+        deleteBtn.on("click", function () {
+            searchComponent.confirmDeleteModal.modal();
+            searchComponent.deleteBtnInModal.focus();
         });
     },
     getSelectedProjectsFromHtmlTable: function () {

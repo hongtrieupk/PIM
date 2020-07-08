@@ -222,6 +222,9 @@
   <data name="MESSAGE_PROJECT_NUMBER_NOT_IN_RANGE" xml:space="preserve">
     <value>Project Number must in range 0 - 2147483647</value>
   </data>
+  <data name="MESSAGE_SPECIAL_CHARACTER_ERROR" xml:space="preserve">
+    <value>Special characters are not allowed</value>
+  </data>
   <data name="MESSAGE_UPDATE_PROJECT_SUCCESS" xml:space="preserve">
     <value>The Project was successfully updated</value>
   </data>

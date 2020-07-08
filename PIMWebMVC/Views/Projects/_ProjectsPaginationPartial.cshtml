@@ -1,4 +1,5 @@
 ﻿@using PIMWebMVC.Resources
+@using PIM.Common.Constants
 @{
     Layout = null;
 }
@@ -31,7 +32,7 @@
                 <td>@project.ProjectName</td>
                 <td>@project.StatusDisplay</td>
                 <td>@project.Customer</td>
-                <td>@project.StartDate.Value.ToString("dd.MM.yyyy")</td>
+                <td>@project.StartDate.Value.ToString(GlobalConfigurationConstants.DATE_FORMAT)</td>
                 <td hidden>@project.Version</td>
             </tr>
         }

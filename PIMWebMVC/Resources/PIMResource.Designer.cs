@@ -376,6 +376,15 @@ namespace PIMWebMVC.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Special characters are not allowed.
+        /// </summary>
+        public static string MESSAGE_SPECIAL_CHARACTER_ERROR {
+            get {
+                return ResourceManager.GetString("MESSAGE_SPECIAL_CHARACTER_ERROR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The Project was successfully updated.
         /// </summary>
         public static string MESSAGE_UPDATE_PROJECT_SUCCESS {

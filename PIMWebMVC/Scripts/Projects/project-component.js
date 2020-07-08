@@ -1,19 +1,10 @@
 ﻿function ProjectComponent() {
-    this.confirmSaveProjectMessage = $("#confirm-save-message-span").text();
-    this.btnSaveProject = $("#save-project-btn");
-    this.projectForm = $("#project-form");
+    this.formHasErrorLbl = $("#form-has-error-lbl");
 }
 
-ProjectComponent.prototype = {
-    initEvent: function () {
-        this.btnSaveProject.on("click", this.onSavingProject.bind(this));
-    },
-    onSavingProject: function () {
-        this.projectForm.submit();
-    }
-};
 
 $(document).ready(function () {
+    window.preventLeavePage();
     let projectComponent = new ProjectComponent();
-    projectComponent.initEvent();
+    window.hasDirtyForm = projectComponent.formHasErrorLbl && !!projectComponent.formHasErrorLbl.text();
 });

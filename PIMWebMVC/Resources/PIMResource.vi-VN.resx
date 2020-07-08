@@ -216,6 +216,9 @@
   <data name="MESSAGE_MANDATORY_FIELD" xml:space="preserve">
     <value>Vui lòng nhập dữ liệu cho tất cả các dòng bắt buộc (*).</value>
   </data>
+  <data name="MESSAGE_SPECIAL_CHARACTER_ERROR" xml:space="preserve">
+    <value>Không được phép nhập ký tự đặc biệt</value>
+  </data>
   <data name="MESSAGE_UPDATE_PROJECT_SUCCESS" xml:space="preserve">
     <value>Dự án đã được cập nhật thành công</value>
   </data>

@@ -237,25 +237,28 @@ namespace PIM.Test
         {
             // Arrange
             _projectTest3.Version = 999; // simulate _projectTest3 have been concurrently updated
-            ConcurrencyDbException exception = null;
 
-            // Action
-            using (IApplicationDbContext dbContext = new ApplicationDbContext())
+            // Action 
+            Action action = () =>
             {
-                using (var session = dbContext.OpenSession())
+                using (IApplicationDbContext dbContext = new ApplicationDbContext())
                 {
-                    IProjectRepository projectRepository = new ProjectRepository();
-                    projectRepository.SetSession(session);
-                    using (IGenericTransaction transaction = dbContext.BeginTransaction())
+                    using (var session = dbContext.OpenSession())
                     {
-                        projectRepository.Delete(_projectTest3);
-                        exception = Assert.Throws<ConcurrencyDbException>(() => transaction.Commit());
+                        IProjectRepository projectRepository = new ProjectRepository();
+                        projectRepository.SetSession(session);
+                        using (IGenericTransaction transaction = dbContext.BeginTransaction())
+                        {
+                            projectRepository.Delete(_projectTest3);
+                            transaction.Commit();
+                        }
                     }
                 }
-            }
+            };
 
             // Assert
-            Assert.IsNotNull(exception);
+            Assert.Throws<ConcurrencyDbException>(() => action());
+
         }
         [Test]
         public void FilterBy__SearchContainsProjectName__ShouldReturnCorrectResult()
@@ -284,52 +287,56 @@ namespace PIM.Test
         public void Delete__DeleteNotExistedProject__ShouldThrowConcurrencyDbException()
         {
             // Arrange
-            // a Project, which does not existed in the database
             Project notExistedProject = new Project()
             { ProjectID = 100000, ProjectName = "fake", Customer = "Fake", Status = "Fake", ProjectNumber = 123, StartDate = DateTime.Now };
-            ConcurrencyDbException exception = null;
 
-            // Action
-            using (IApplicationDbContext dbContext = new ApplicationDbContext())
+            // Action 
+            Action action = () =>
             {
-                using (var session = dbContext.OpenSession())
+                using (IApplicationDbContext dbContext = new ApplicationDbContext())
                 {
-                    IProjectRepository projectRepository = new ProjectRepository();
-                    projectRepository.SetSession(session);
-                    using (IGenericTransaction transaction = dbContext.BeginTransaction())
+                    using (var session = dbContext.OpenSession())
                     {
-                        projectRepository.Delete(notExistedProject);
-                        exception = Assert.Throws<ConcurrencyDbException>(() => transaction.Commit());
+                        IProjectRepository projectRepository = new ProjectRepository();
+                        projectRepository.SetSession(session);
+                        using (IGenericTransaction transaction = dbContext.BeginTransaction())
+                        {
+                            projectRepository.Delete(notExistedProject);
+                            transaction.Commit();
+                        }
                     }
                 }
-            }
+            };
 
             // Assert
-            Assert.IsNotNull(exception);
+            Assert.Throws<ConcurrencyDbException>(() => action());
         }
         [Test]
         public void Add__AddNewProject_DuplicatedProjectNumber___ShouldThrowGenericADOException()
         {
             // Arrange
             Project newProject = new Project() { ProjectNumber = _projectTest1.ProjectNumber, ProjectName = "Test Duplicated Number", Customer = "Customer 1", Status = "INV", StartDate = DateTime.Now };
-            Exception genericADOException;
 
             // Action 
-            using (IApplicationDbContext dbContext = new ApplicationDbContext())
+            Action action = () =>
             {
-                using (var session = dbContext.OpenSession())
+                using (IApplicationDbContext dbContext = new ApplicationDbContext())
                 {
-                    IProjectRepository projectRepository = new ProjectRepository();
-                    projectRepository.SetSession(session);
-                    using (IGenericTransaction transaction = dbContext.BeginTransaction())
+                    using (var session = dbContext.OpenSession())
                     {
-                        genericADOException = Assert.Throws<GenericADOException>(() => projectRepository.Add(newProject));
+                        IProjectRepository projectRepository = new ProjectRepository();
+                        projectRepository.SetSession(session);
+                        using (IGenericTransaction transaction = dbContext.BeginTransaction())
+                        {
+                            projectRepository.Add(newProject);
+                            transaction.Commit();
+                        }
                     }
                 }
-            }
+            };
 
             // Assert
-            Assert.IsNotNull(genericADOException);
+            Assert.Throws<GenericADOException>(() => action());
         }
         [Test]
         public void Update__UpdateNotExistedProject___ShouldThrowConcurrencyDbException()
@@ -337,25 +344,28 @@ namespace PIM.Test
             // Arrange
             Project notExistedProject = new Project()
             { ProjectID = 100000, ProjectName = "fake", Customer = "Fake", Status = "Fake", ProjectNumber = 123, StartDate = DateTime.Now };
-            ConcurrencyDbException dbException = null;
 
             // Action
-            using (IApplicationDbContext dbContext = new ApplicationDbContext())
+            Action action = () =>
             {
-                using (var session = dbContext.OpenSession())
+
+                using (IApplicationDbContext dbContext = new ApplicationDbContext())
                 {
-                    IProjectRepository projectRepository = new ProjectRepository();
-                    projectRepository.SetSession(session);
-                    using (IGenericTransaction transaction = dbContext.BeginTransaction())
+                    using (var session = dbContext.OpenSession())
                     {
-                        projectRepository.Update(notExistedProject);
-                        dbException = Assert.Throws<ConcurrencyDbException>(() => transaction.Commit());
+                        IProjectRepository projectRepository = new ProjectRepository();
+                        projectRepository.SetSession(session);
+                        using (IGenericTransaction transaction = dbContext.BeginTransaction())
+                        {
+                            projectRepository.Update(notExistedProject);
+                            transaction.Commit();
+                        }
                     }
                 }
-            }
+            };
 
             // Assert
-            Assert.IsNotNull(dbException);
+            Assert.Throws<ConcurrencyDbException>(() => action());
         }
         [Test]
         public void Update__UpdateWithDifferentVersion___ShouldThrowConcurrencyDbException()
@@ -364,25 +374,27 @@ namespace PIM.Test
             Project existedProject = _projectTest1;
             _projectTest1.ProjectName = "new name";
             _projectTest1.Version = 0; // simulate _project1 haved been modified in the database
-            ConcurrencyDbException dbException = null;
 
             // Action
-            using (IApplicationDbContext dbContext = new ApplicationDbContext())
+            Action action = () =>
             {
-                using (var session = dbContext.OpenSession())
+                using (IApplicationDbContext dbContext = new ApplicationDbContext())
                 {
-                    IProjectRepository projectRepository = new ProjectRepository();
-                    projectRepository.SetSession(session);
-                    using (IGenericTransaction transaction = dbContext.BeginTransaction())
+                    using (var session = dbContext.OpenSession())
                     {
-                        projectRepository.Update(_projectTest1);
-                        dbException = Assert.Throws<ConcurrencyDbException>(() => transaction.Commit());
+                        IProjectRepository projectRepository = new ProjectRepository();
+                        projectRepository.SetSession(session);
+                        using (IGenericTransaction transaction = dbContext.BeginTransaction())
+                        {
+                            projectRepository.Update(_projectTest1);
+                            transaction.Commit();
+                        }
                     }
                 }
-            }
+            };
 
             // Assert
-            Assert.IsNotNull(dbException);
+            Assert.Throws<ConcurrencyDbException>(() => action());
         }
         [Test]
         public void SearchProject__SearchBy_Name_2020_Customer_a__ShouldReturnCountEqual2()
