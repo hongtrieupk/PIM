@@ -1,9 +1,6 @@
 ﻿using PIM.Data.Objects;
-using System.Linq;
 using PIM.Common.Models;
 using System;
-using NHibernate.Linq;
-using System.Collections.Generic;
 
 namespace PIM.Data.Repositories
 {
@@ -32,10 +29,12 @@ namespace PIM.Data.Repositories
                     ? queryOver.WhereRestrictionOn(x => x.Customer).IsLike($"%{searchParam.Customer}%") : queryOver;
 
             queryOver = queryOver.OrderBy(x => x.ProjectNumber).Asc;
+
             result.TotalRecords = queryOver.RowCount();
             result.TotalPages = (int)Math.Ceiling((double)result.TotalRecords / searchParam.PageSize);
             int numberOfSkipItems = (searchParam.CurrentPage - 1) * searchParam.PageSize;
             result.Records = queryOver.Skip(numberOfSkipItems).Take(searchParam.PageSize).List();
+
             return result;
         }
         #endregion

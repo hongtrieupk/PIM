@@ -10,6 +10,7 @@ namespace PIMWebMVC
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js",
+                        "~/Scripts/jquery-ui.js",
                         "~/Scripts/notify.min.js",
                         "~/Scripts/global.js"));
 
@@ -34,6 +35,7 @@ namespace PIMWebMVC
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
+                      "~/Content/jquery-ui.css",
                       "~/Content/site.css",
                       "~/Content/project-search.css"));
         }

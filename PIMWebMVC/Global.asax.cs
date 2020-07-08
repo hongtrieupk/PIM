@@ -45,6 +45,13 @@ namespace PIMWebMVC
                 return;
             }
             string action = ErrorsConstant.SERVER_ERROR_ACTION;
+            if (exception is NotFoundFromDbException)
+            {
+                action = ErrorsConstant.NOT_FOUND_ACTION;
+                Server.ClearError();
+                Response.Redirect($"~/Error/{action}");
+                return;
+            }
             HttpContext.Current.Session[ErrorsConstant.ERROR_MESSAGE_SESSION_KEY] = exception.Message;
             Response.Clear();
             HttpException httpException = exception as HttpException;

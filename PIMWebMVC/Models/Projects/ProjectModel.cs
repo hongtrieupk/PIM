@@ -9,10 +9,6 @@ namespace PIMWebMVC.Models.Projects
 {
     public class ProjectModel
     {
-        #region Construtors
-        public ProjectModel() { }
-        #endregion
-
         #region Properties
         public int? ProjectID { get; set; }
 

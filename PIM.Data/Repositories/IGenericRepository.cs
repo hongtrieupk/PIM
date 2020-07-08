@@ -17,6 +17,7 @@ namespace PIM.Data.Repositories
 		void Update(T entity);
         void Delete(T entity);
 		T GetById(object id);
+        T LoadById(object id);
         IQueryable<T> FilterBy(Expression<Func<T, bool>> criteria);
         #endregion
     }

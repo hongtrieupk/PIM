@@ -38,7 +38,6 @@ function ProjectSearchComponent() {
     this.searchProjectUrl = "/Projects/SearchProjects";
     this.deleteProjectsUrl = "/Projects/DeleteProjects";
     this.serverErrorPage = "Error/ServerError";
-    this.confirmDeleteMessage = $("#confirm-delete-message-span").text();
 
     this.isDisplayingResult = false;
 }

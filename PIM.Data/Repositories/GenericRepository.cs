@@ -1,5 +1,6 @@
 ﻿
 using NHibernate;
+using PIM.Common.CustomExceptions;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
@@ -23,20 +24,33 @@ namespace PIM.Data.Repositories
         }
         public object Add(T entity)
         {
-            return  _session.Save(entity);
+            return _session.Save(entity);
         }
 
-        public  void Update(T entity)
+        public void Update(T entity)
         {
-             _session.Update(entity);
+            _session.Update(entity);
         }
-        public  void Delete(T entity)
+        public void Delete(T entity)
         {
             _session.Delete(entity);
         }
         public T GetById(object id)
         {
             return _session.Get<T>(id);
+        }
+        public T LoadById(object id)
+        {
+            try
+            {
+                T result = _session.Load<T>(id);
+                NHibernateUtil.Initialize(result);
+                return result;
+            }
+            catch (ObjectNotFoundException notFoundException)
+            {
+                throw (new NotFoundFromDbException(notFoundException.Message, notFoundException));
+            }
         }
         public IQueryable<T> FilterBy(Expression<Func<T, bool>> criteria)
         {

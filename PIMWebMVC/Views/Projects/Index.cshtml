@@ -10,7 +10,6 @@
 <h3>@PIMResource.PROJECT_SEARCH_PAGE_TITLE</h3>
 <hr />
 <div class="form-horizontal">
-    <span hidden id="confirm-delete-message-span">@PIMResource.MESSAGE_CONFIRM_DELETE_PROJECTS</span>
     <p id="missing-criteria-lbl" class="text-danger display-none">@PIMResource.MESSAGE_INVALID_CRITERIA</p>
     <p id="server-error-message-lbl" class="text-danger display-none"></p>
     <p id="project-number-not-in-range-lbl" class="text-danger display-none">@PIMResource.MESSAGE_PROJECT_NUMBER_NOT_IN_RANGE</p>
@@ -54,7 +53,7 @@
                 <div class="model-title-custom">Confirmation</div>
             </div>
             <div class="modal-body">
-                <h4>Are you sure you want to delete this User?</h4>
+                <h4>@PIMResource.MESSAGE_CONFIRM_DELETE_PROJECTS</h4>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" id="delete-projects-btn-in-modal" data-dismiss="modal">Yes</button>

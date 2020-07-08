@@ -61,31 +61,27 @@ namespace PIMWebMVC.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public ActionResult AddUpdate(int? id)
+        public ActionResult ViewDetail(int? id)
         {
-            ProjectModel initProject = new ProjectModel();
+            ProjectModel projectModelToCreateOrUpdate = new ProjectModel();
             if (id.HasValue)
             {
                 Project projectFromDb = _projectService.GetProjectById(id.Value);
-                if (projectFromDb == null)
-                {
-                    throw new HttpException((int)HttpStatusCode.NotFound, PIMResource.ERROR_NOT_FOUND_MESSAGE);
-                }
-                initProject = Mapper.Map<ProjectModel>(projectFromDb);
+                projectModelToCreateOrUpdate = Mapper.Map<ProjectModel>(projectFromDb);
             }
 
-            return View(initProject);
+            return View(projectModelToCreateOrUpdate);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddUpdate(ProjectModel projectModel)
+        public ActionResult CreateOrUpdate(ProjectModel projectModel)
         {
-            ValidateProjectModel(projectModel);
+            ValidateForCreateOrUpdate(projectModel);
             if (!ModelState.IsValid)
             {
                 ViewBag.FormHasError = true;
-                return View(projectModel);
+                return View("ViewDetail", projectModel);
             }
 
             Project project = Mapper.Map<Project>(projectModel);
@@ -109,7 +105,7 @@ namespace PIMWebMVC.Controllers
                 _logger.Error(concurrencyException.InnerException);
                 ModelState.AddModelError(ErrorsConstant.SUM_ERROR_FIELD_NAME, PIMResource.ERROR_DB_CONCURRENCY_MESSAGE);
                 ViewBag.FormHasError = true;
-                return View(projectModel);
+                return View("ViewDetail", projectModel);
             }
         }
 
@@ -154,7 +150,7 @@ namespace PIMWebMVC.Controllers
             return PartialView("_PaginationBarPartial", dataModel);
         }
 
-        private void ValidateProjectModel(ProjectModel project)
+        private void ValidateForCreateOrUpdate(ProjectModel project)
         {
             ValidateMandatoryFields(project);
             ValidateSpecialCharacters(project);

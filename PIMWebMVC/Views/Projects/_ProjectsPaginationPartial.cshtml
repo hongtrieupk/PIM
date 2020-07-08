@@ -1,5 +1,4 @@
 ﻿@using PIMWebMVC.Resources
-@using PIM.Common.Constants
 @{
     Layout = null;
 }
@@ -24,17 +23,17 @@
         @*modify those html below must update getProjectModelFromHtmlTableRow() function in project-search-component*@
         @foreach (var project in Model.Projects)
         {
-            <tr>
-                <td>
-                    <input type="checkbox" value="@project.ProjectID" name="delete-project-checkbox" />
-                </td>
-                <td><a href="/Projects/AddUpdate/@project.ProjectID">@project.ProjectNumber</a></td>
-                <td>@project.ProjectName</td>
-                <td>@project.StatusDisplay</td>
-                <td>@project.Customer</td>
-                <td>@project.StartDate.Value.ToString(GlobalConfigurationConstants.DATE_FORMAT)</td>
-                <td hidden>@project.Version</td>
-            </tr>
+        <tr>
+            <td>
+                <input type="checkbox" value="@project.ProjectID" name="delete-project-checkbox" />
+            </td>
+            <td><a href="/Projects/ViewDetail/@project.ProjectID">@project.ProjectNumber</a></td>
+            <td>@project.ProjectName</td>
+            <td>@project.StatusDisplay</td>
+            <td>@project.Customer</td>
+            <td>@project.StartDate.Value.ToShortDateString()</td>
+            <td hidden>@project.Version</td>
+        </tr>
         }
     </tbody>
 </table>

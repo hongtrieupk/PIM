@@ -109,7 +109,7 @@ namespace PIM.Test
         public void GetById__GetProjectTest1__ShouldReturnCorrectProject1Name()
         {
             // Arrange
-            int projectTest1Id = _projectTest1.ProjectID;
+            int projectTest1Id = 4040404;
             Project projectTest1FromDb;
 
             // Action

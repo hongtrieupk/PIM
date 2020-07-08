@@ -55,7 +55,7 @@ namespace PIM.Business.Services
             using (var session = _dbContext.OpenSession())
             {
                 _projectRepository.SetSession(session);
-                return _projectRepository.GetById(id);
+                return _projectRepository.LoadById(id);
             }
         }
         public PagingResultModel<Project> SearchProject(SearchProjectParam searchParam)

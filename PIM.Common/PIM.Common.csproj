@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="Constants\GlobalConfigurationConstants.cs" />
     <Compile Include="CustomExceptions\ConcurrencyDbException.cs" />
+    <Compile Include="CustomExceptions\NotFoundFromDbException.cs" />
     <Compile Include="Models\DeleteEntityModel.cs" />
     <Compile Include="Models\PagingResultModel.cs" />
     <Compile Include="Models\SearchProjectParam.cs" />
