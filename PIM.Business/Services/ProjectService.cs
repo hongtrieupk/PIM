@@ -6,6 +6,7 @@ using System.Linq;
 using PIM.Data.NHibernateConfiguration;
 using PIM.Data.Repositories.GenericTransactions;
 using System.Collections.Generic;
+using System.ServiceModel.Configuration;
 
 namespace PIM.Business.Services
 {
@@ -76,15 +77,14 @@ namespace PIM.Business.Services
             using (var session = _dbContext.OpenSession())
             {
                 _projectRepository.SetSession(session);
-                int countDuplicatedProjects = _projectRepository.FilterBy(p => p.ProjectNumber == newProjectNumber && p.ProjectID != projectId).Count();
-                return countDuplicatedProjects > 0;
+                return _projectRepository.IsDuplicateProjectNumber(projectId, newProjectNumber);
             }
         }
         public void DeleteProjects(IList<Project> projects)
         {
-            if (projects == null || projects.Count == 0)
+            if(projects == null)
             {
-                throw new ArgumentNullException("Invalid projects input");
+                throw new ArgumentNullException("Can not pass a null projects paramater");
             }
             using (var session = _dbContext.OpenSession())
             {

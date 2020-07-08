@@ -7,6 +7,12 @@ namespace PIM.Data.Repositories
     public class ProjectRepository : GenericRepository<Project>, IProjectRepository
     {
         #region Methods
+        public bool IsDuplicateProjectNumber(int? projectId, int newProjectNumber)
+        {
+            return _session.QueryOver<Project>()
+                    .Where(p => p.ProjectNumber == newProjectNumber && p.ProjectID != projectId)
+                    .RowCount() > 0;
+        }
         /// <summary>
         /// search projects by Number, Name, Customer and status
         /// </summary>
@@ -16,7 +22,7 @@ namespace PIM.Data.Repositories
         {
             PagingResultModel<Project> result = new PagingResultModel<Project>();
             var queryOver = _session.QueryOver<Project>();
-            queryOver = searchParam.ProjectNumber.HasValue 
+            queryOver = searchParam.ProjectNumber.HasValue
                     ? queryOver.Where(x => x.ProjectNumber == searchParam.ProjectNumber) : queryOver;
 
             queryOver = !string.IsNullOrWhiteSpace(searchParam.ProjectName)

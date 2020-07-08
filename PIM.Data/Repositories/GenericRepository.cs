@@ -52,10 +52,6 @@ namespace PIM.Data.Repositories
                 throw (new NotFoundFromDbException(notFoundException.Message, notFoundException));
             }
         }
-        public IQueryable<T> FilterBy(Expression<Func<T, bool>> criteria)
-        {
-            return _session.Query<T>().Where(criteria);
-        }
         #endregion
 
     }

@@ -20,8 +20,6 @@ namespace PIM.Test
     public class ProjectRepositoryTest
     {
         #region Fields
-        // _projectToAddNew will be used to test Add project function
-        private static Project _projectToAddNew = new Project() { ProjectNumber = 333, ProjectName = "Viacar", Customer = "Switzerland", Status = "INV", StartDate = DateTime.Now };
         // - projectTest1 will be used to test GetById and Update function
         private static readonly Project _projectTest1 = new Project() { ProjectNumber = 111, ProjectName = "Project Test 1", Customer = "Apple", Status = "INV", StartDate = DateTime.Now };
         // - projectTest2will be used to test Delete function then will be inserted again
@@ -34,6 +32,8 @@ namespace PIM.Test
         private static readonly Project _projectTest6 = new Project() { ProjectName = "Iphone 12 2020", ProjectNumber = 999, Customer = "Apple", Status = "VAL", StartDate = DateTime.Now };
         private static readonly Project _projectTest7 = new Project() { ProjectName = "Auto Cars 2020", ProjectNumber = 666, Customer = "BMW", Status = "VAL", StartDate = DateTime.Now };
         private static readonly Project _projectTest8 = new Project() { ProjectName = "World cup 2020", ProjectNumber = 2020, Customer = "FIFO", Status = "VAL", StartDate = DateTime.Now };
+        // _projectToAddNew will be used to test Add project function
+        private static Project _projectToAddNew = new Project() { ProjectNumber = 333, ProjectName = "Viacar", Customer = "Switzerland", Status = "INV", StartDate = DateTime.Now };
 
         private static List<Project> _seedProjectsData = new List<Project>()
         {
@@ -104,12 +104,12 @@ namespace PIM.Test
         }
         #endregion
 
-        #region Test Methods     
+        #region Test Methods
         [Test]
         public void GetById__GetProjectTest1__ShouldReturnCorrectProject1Name()
         {
             // Arrange
-            int projectTest1Id = 4040404;
+            int projectTest1Id = _projectTest1.ProjectID;
             Project projectTest1FromDb;
 
             // Action
@@ -258,29 +258,6 @@ namespace PIM.Test
 
             // Assert
             Assert.Throws<ConcurrencyDbException>(() => action());
-
-        }
-        [Test]
-        public void FilterBy__SearchContainsProjectName__ShouldReturnCorrectResult()
-        {
-            // Arrange
-            string searchValue = "Test 1";
-            IList<Project> projectsResult;
-
-            // Action
-            using (IApplicationDbContext dbContext = new ApplicationDbContext())
-            {
-                using (var session = dbContext.OpenSession())
-                {
-                    IProjectRepository projectRepository = new ProjectRepository();
-                    projectRepository.SetSession(session);
-                    projectsResult = projectRepository.FilterBy((x) => x.ProjectName.Contains(searchValue)).ToList();
-                }
-            }
-
-            //Assert
-            Assert.IsNotNull(projectsResult);
-            Assert.IsTrue(projectsResult.Count() > 0);
 
         }
         [Test]
@@ -483,6 +460,120 @@ namespace PIM.Test
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(expectedFoundedRecords, result.Records.Count);
+        }
+
+        [Test]
+        public void LoadById__LoadProjectTest1__ShouldReturnCorrectProject1Name()
+        {
+            // Arrange
+            int projectTest1Id = _projectTest1.ProjectID;
+            Project projectTest1FromDb;
+
+            // Action
+            using (IApplicationDbContext dbContext = new ApplicationDbContext())
+            {
+                using (var session = dbContext.OpenSession())
+                {
+                    IProjectRepository projectRepository = new ProjectRepository();
+                    projectRepository.SetSession(session);
+                    projectTest1FromDb = projectRepository.LoadById(projectTest1Id);
+                }
+            }
+            // Assert
+            Assert.IsNotNull(projectTest1FromDb);
+            Assert.AreEqual(_projectTest1.ProjectName, projectTest1FromDb.ProjectName);
+        }
+
+        [Test]
+        public void LoadById__LoadProjectByNotExistedProjectId__ShouldThrowNotFoundFromDbException()
+        {
+            // Arrange
+            int notExistedProjectId = 0;
+
+            // Action
+            Action action = () =>
+            {
+                using (IApplicationDbContext dbContext = new ApplicationDbContext())
+                {
+                    using (var session = dbContext.OpenSession())
+                    {
+                        IProjectRepository projectRepository = new ProjectRepository();
+                        projectRepository.SetSession(session);
+                        Project result = projectRepository.LoadById(notExistedProjectId);
+                    }
+                }
+            };
+
+            // Assert
+            Assert.Throws<NotFoundFromDbException>(() => action());
+        }
+
+        [Test]
+        public void IsDuplicateProjectNumber__CheckExistedNumber_111_ProjectID_Null___ShouldReturnTrue()
+        {
+            // Arrange
+            int existedProjectNumber = 111;
+            int? newProjectId = null;
+            bool isDupplicated;
+
+            // Action
+            using (IApplicationDbContext dbContext = new ApplicationDbContext())
+            {
+                using (var session = dbContext.OpenSession())
+                {
+                    IProjectRepository projectRepository = new ProjectRepository();
+                    projectRepository.SetSession(session);
+                    isDupplicated = projectRepository.IsDuplicateProjectNumber(newProjectId, existedProjectNumber);
+                }
+            }
+
+            // Assert
+            Assert.IsTrue(isDupplicated);
+        }
+        [Test]
+        public void IsDuplicateProjectNumber__CheckExistedNumber_111_TheSameProjectId_1___ShouldReturnFalse()
+        {
+            // Arrange
+            int existedProjectNumber = _projectTest1.ProjectNumber;
+            int theSameProjectId = _projectTest1.ProjectID;
+            bool isDupplicated;
+
+            // Action
+            using (IApplicationDbContext dbContext = new ApplicationDbContext())
+            {
+                using (var session = dbContext.OpenSession())
+                {
+                    IProjectRepository projectRepository = new ProjectRepository();
+                    projectRepository.SetSession(session);
+                    isDupplicated = projectRepository.IsDuplicateProjectNumber(theSameProjectId, existedProjectNumber);
+                }
+            }
+
+            // Assert
+            Assert.IsFalse(isDupplicated);
+        }
+
+        [Test]
+        public void IsDuplicateProjectNumber__CheckNotExistedNumber_707020___ShouldReturnFalse()
+        {
+            // Arrange
+            int newProjectNumber = 707020;
+            int? newProjectId = null;
+            bool isDupplicated;
+
+            // Action
+            using (IApplicationDbContext dbContext = new ApplicationDbContext())
+            {
+                using (var session = dbContext.OpenSession())
+                {
+                    IProjectRepository projectRepository = new ProjectRepository();
+                    projectRepository.SetSession(session);
+                    isDupplicated = projectRepository.IsDuplicateProjectNumber(newProjectId, newProjectNumber);
+                }
+            }
+
+            // Assert
+            Assert.IsFalse(isDupplicated);
         }
         #endregion
         #endregion

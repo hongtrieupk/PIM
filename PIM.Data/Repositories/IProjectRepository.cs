@@ -8,6 +8,7 @@ namespace PIM.Data.Repositories
 {
     public interface IProjectRepository : IGenericRepository<Project>
     {
+        bool IsDuplicateProjectNumber(int? projectId, int newProjectNumber);
         /// <summary>
         /// search projects by Number, Name, Customer and status
         /// </summary>
