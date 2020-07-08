@@ -7,5 +7,6 @@ namespace PIM.Common.Models
         public IList<T> Records { get; set; }
         public int TotalRecords { get; set; }
         public int TotalPages { get; set; }
+        public int CurrentPage { get; set; }
     }
 }

@@ -41,22 +41,10 @@ namespace PIMWebMVC.Models.Projects
         [DisplayFormat(DataFormatString = GlobalConfigurationConstants.DATETIME_MVC_MODEL_FORMAT, ApplyFormatInEditMode = true)]
         public DateTime? EndDate { get; set; }
         public int Version { get; set; }
-        public string StatusDisplay
-        {
-            get
-            {
-                IProjectStatuesConstant projectStatues = new ProjectStatuesConstant();
-                if (this.Status != null && projectStatues.PROJECT_STATUSES.ContainsKey(this.Status))
-                {
-                    return projectStatues.PROJECT_STATUSES[this.Status];
-                }
-                return string.Empty;
-            }
-        }
         #endregion
 
         #region Methods
-        public bool IsValidMadatoryFields()
+        public bool IsValidMandatoryFields()
         {
             return ProjectNumber.HasValue
                 && !string.IsNullOrWhiteSpace(ProjectName)

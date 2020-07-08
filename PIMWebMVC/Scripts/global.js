@@ -65,6 +65,8 @@ $(document).ready(function () {
             if (defaultBtns && defaultBtns.length > 0) {
                 defaultBtns[0].click();
             }
+            let submitBtn = $("input[type='submit']");
+            submitBtn.click();
         }
     })
 });

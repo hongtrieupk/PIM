@@ -34,6 +34,7 @@ namespace PIM.Data.Repositories
             result.TotalPages = (int)Math.Ceiling((double)result.TotalRecords / searchParam.PageSize);
             int numberOfSkipItems = (searchParam.CurrentPage - 1) * searchParam.PageSize;
             result.Records = queryOver.Skip(numberOfSkipItems).Take(searchParam.PageSize).List();
+            result.CurrentPage = searchParam.CurrentPage;
 
             return result;
         }

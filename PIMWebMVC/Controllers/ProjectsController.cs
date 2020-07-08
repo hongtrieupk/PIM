@@ -27,8 +27,8 @@ namespace PIMWebMVC.Controllers
         private readonly IAppConfiguration _appConfiguration;
         private static readonly ILog _logger = LogManager.GetLogger(typeof(ProjectsController));
 
-        private const string createSuccessfullyMessageKey = "CREATE_SUCCESS_MESSAGE";
-        private const string updateSuccessfullyMessageKey = "UPDATE_SUCCESS_MASSAGE";
+        private const string CREATE_SUCCESSFULLY_MESSAGE = "CREATE_SUCCESS_MESSAGE";
+        private const string UPDATE_SUCCESSFULLY_MESSAGE = "UPDATE_SUCCESS_MASSAGE";
         #endregion
         #region Constructors
         public ProjectsController()
@@ -52,8 +52,8 @@ namespace PIMWebMVC.Controllers
         public ActionResult Index()
         {
             // the Index View will use those ViewBag's properties to show message if the Index view is redirected from Update or Create Action
-            ViewBag.CREATE_SUCCESS_MESSAGE = TempData[createSuccessfullyMessageKey];
-            ViewBag.UPDATE_SUCCESS_MASSAGE = TempData[updateSuccessfullyMessageKey];
+            ViewBag.CREATE_SUCCESS_MESSAGE = TempData[CREATE_SUCCESSFULLY_MESSAGE];
+            ViewBag.UPDATE_SUCCESS_MASSAGE = TempData[UPDATE_SUCCESSFULLY_MESSAGE];
             return View(new SearchProjectParam());
         }
         /// <summary>
@@ -90,12 +90,12 @@ namespace PIMWebMVC.Controllers
                 if (projectModel.ProjectID.HasValue) // Update project
                 {
                     _projectService.UpdateProject(project);
-                    TempData[updateSuccessfullyMessageKey] = PIMResource.MESSAGE_UPDATE_PROJECT_SUCCESS;
+                    TempData[UPDATE_SUCCESSFULLY_MESSAGE] = PIMResource.MESSAGE_UPDATE_PROJECT_SUCCESS;
                 }
                 else // Create new project
                 {
                     _projectService.CreateProject(project);
-                    TempData[createSuccessfullyMessageKey] = PIMResource.MESSAGE_CREATE_PROJECT_SUCCESS;
+                    TempData[CREATE_SUCCESSFULLY_MESSAGE] = PIMResource.MESSAGE_CREATE_PROJECT_SUCCESS;
                 }
 
                 return RedirectToAction("Index");
@@ -112,19 +112,13 @@ namespace PIMWebMVC.Controllers
         [HttpPost]
         public ActionResult SearchProjects(SearchProjectParam searchParam)
         {
-            if (!searchParam.IsValidParam || !ModelState.IsValid)
+            ProjectsPaginationResult result = new ProjectsPaginationResult();
+            if (searchParam.IsValidParam && ModelState.IsValid)
             {
-                throw new ArgumentNullException($"{PIMResource.MESSAGE_INVALID_CRITERIA}");
-            }
-            searchParam.PageSize = searchParam.PageSize > 0 ? searchParam.PageSize : _appConfiguration.DefaultPageSize;
-            PagingResultModel<Project> projectsPagingResult = _projectService.SearchProject(searchParam);
-            var result = new ProjectsPaginationResult
-            {
-                Projects = Mapper.Map<IList<ProjectModel>>(projectsPagingResult.Records),
-                CurrentPage = searchParam.CurrentPage,
-                TotalPages = projectsPagingResult.TotalPages,
-                TotalRecords = projectsPagingResult.TotalRecords,
-            };
+                searchParam.PageSize = searchParam.PageSize > 0 ? searchParam.PageSize : _appConfiguration.DefaultPageSize;
+                PagingResultModel<Project> projectsPagingResult = _projectService.SearchProject(searchParam);
+                result = Mapper.Map<ProjectsPaginationResult>(projectsPagingResult);
+            }   
             return PartialView("_ProjectsPaginationPartial", result);
         }
 
@@ -159,7 +153,7 @@ namespace PIMWebMVC.Controllers
         }
         private void ValidateMandatoryFields(ProjectModel project)
         {
-            if (project.IsValidMadatoryFields())
+            if (project.IsValidMandatoryFields())
             {
                 ModelState.Remove(ErrorsConstant.SUM_ERROR_FIELD_NAME);
             }

@@ -120,6 +120,9 @@
   <data name="BTN_CANCEL" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="BTN_DELETE" xml:space="preserve">
+    <value>Delete</value>
+  </data>
   <data name="BTN_RESET_SEARCH" xml:space="preserve">
     <value>Reset Criteria</value>
   </data>
@@ -281,5 +284,8 @@
   </data>
   <data name="PROJECT_STATUS_VAL" xml:space="preserve">
     <value>Validated</value>
+  </data>
+  <data name="PROJECT_TABLE_NUMBER_HEADER" xml:space="preserve">
+    <value>N°</value>
   </data>
 </root>

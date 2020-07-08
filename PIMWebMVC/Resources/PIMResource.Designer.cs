@@ -70,6 +70,15 @@ namespace PIMWebMVC.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        public static string BTN_DELETE {
+            get {
+                return ResourceManager.GetString("BTN_DELETE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reset Criteria.
         /// </summary>
         public static string BTN_RESET_SEARCH {
@@ -552,6 +561,15 @@ namespace PIMWebMVC.Resources {
         public static string PROJECT_STATUS_VAL {
             get {
                 return ResourceManager.GetString("PROJECT_STATUS_VAL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to N°.
+        /// </summary>
+        public static string PROJECT_TABLE_NUMBER_HEADER {
+            get {
+                return ResourceManager.GetString("PROJECT_TABLE_NUMBER_HEADER", resourceCulture);
             }
         }
     }

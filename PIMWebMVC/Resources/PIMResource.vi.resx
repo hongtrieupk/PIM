@@ -120,6 +120,9 @@
   <data name="BTN_CANCEL" xml:space="preserve">
     <value>Hủy</value>
   </data>
+  <data name="BTN_DELETE" xml:space="preserve">
+    <value>Xóa</value>
+  </data>
   <data name="BTN_RESET_SEARCH" xml:space="preserve">
     <value>Thiết lập lại</value>
   </data>
@@ -154,13 +157,13 @@
     <value>Không tìm thấy</value>
   </data>
   <data name="ERROR_SERVER_ERROR_PLEASE_CONTACT" xml:space="preserve">
-    <value>Please contact your administrator</value>
+    <value>Vui lòng liên hệ quản trị hệ thống</value>
   </data>
   <data name="ERROR_SERVER_ERROR_TITLE" xml:space="preserve">
     <value>Lỗi Server</value>
   </data>
   <data name="ERROR_SERVER_ERROR_UNEXPECTED_MESSAGE" xml:space="preserve">
-    <value>Unexpected error occurred</value>
+    <value>Lỗi không mong đợi</value>
   </data>
   <data name="LAYOUT_NAV_HELP" xml:space="preserve">
     <value>Giúp đỡ</value>
@@ -205,7 +208,7 @@
     <value>Xóa các Dự án đã chọn thành công</value>
   </data>
   <data name="MESSAGE_DUPLICATED_PROJECT_NUMBER" xml:space="preserve">
-    <value>Số Dự án đã tồn tại. vui lòng chọn Số khác</value>
+    <value>Số Dự án đã tồn tại. vui lòng chọn số khác</value>
   </data>
   <data name="MESSAGE_END_DATE_MUST_GREATER_THAN_START_DATE" xml:space="preserve">
     <value>Ngày kết thúc phải lớn hơn ngày bắt đầu</value>
@@ -262,7 +265,7 @@
     <value>Trạng thái</value>
   </data>
   <data name="PROJECT_SEARCH_PAGE_TITLE" xml:space="preserve">
-    <value>Tìm kiếm Dự Án</value>
+    <value>Tìm kiếm Dự  án</value>
   </data>
   <data name="PROJECT_STATUS_FIN" xml:space="preserve">
     <value>Đã Kết Thúc</value>
@@ -275,5 +278,8 @@
   </data>
   <data name="PROJECT_STATUS_VAL" xml:space="preserve">
     <value>Đã Duyệt</value>
+  </data>
+  <data name="PROJECT_TABLE_NUMBER_HEADER" xml:space="preserve">
+    <value>N°</value>
   </data>
 </root>

@@ -2,7 +2,7 @@
 
 namespace PIMWebMVC.Constants
 {
-    public interface IProjectStatuesConstant
+    public interface IProjectStatusesConstant
     {
         ReadOnlyDictionary<string, string> PROJECT_STATUSES { get; }
     }

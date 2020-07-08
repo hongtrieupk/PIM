@@ -7,9 +7,9 @@ namespace PIMWebMVC.Models.Projects
     {
         public ProjectsPaginationResult()
         {
-            Projects = new List<ProjectModel>();
+            Projects = new List<ProjectForViewTableModel>();
         }
-        public IList<ProjectModel> Projects { get; set; }
+        public IList<ProjectForViewTableModel> Projects { get; set; }
         public int CurrentPage { get; set; }
         public int TotalPages { get; set; }
         public int TotalRecords { get; set; }

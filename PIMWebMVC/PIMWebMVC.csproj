@@ -142,8 +142,8 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Constants\ErrorsConstant.cs" />
-    <Compile Include="Constants\IProjectStatuesConstant.cs" />
-    <Compile Include="Constants\ProjectStatuesConstant.cs" />
+    <Compile Include="Constants\IProjectStatusesConstant.cs" />
+    <Compile Include="Constants\ProjectStatusesConstant.cs" />
     <Compile Include="Constants\RegexPatternConstants.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\ProjectsController.cs" />
@@ -152,7 +152,8 @@
     </Compile>
     <Compile Include="Models\Common\ActionResultModel.cs" />
     <Compile Include="Models\Common\PaginationBarModel.cs" />
-    <Compile Include="Models\Projects\ProjectModel.cs" />
+    <Compile Include="Models\Projects\CreateOrEditProjectModel .cs" />
+    <Compile Include="Models\Projects\ProjectForViewTableModel.cs" />
     <Compile Include="Models\Projects\ProjectsPaginationResult.cs" />
     <Compile Include="Resources\PIMResource.vi.Designer.cs">
       <DependentUpon>PIMResource.vi.resx</DependentUpon>

@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 
 namespace PIMWebMVC.Constants
 {
-    public class ProjectStatuesConstant : IProjectStatuesConstant
+    public class ProjectStatusesConstant : IProjectStatusesConstant
     {
         #region Fields
         private ReadOnlyDictionary<string, string> _readOnlyProjectStatues;

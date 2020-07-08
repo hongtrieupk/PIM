@@ -4,7 +4,7 @@
 }
 @model PIMWebMVC.Models.Projects.ProjectsPaginationResult
     <div class="row">
-        <div class="col-md-2"><button id="delete-projects-btn" class="btn btn-danger" disabled>Delete</button></div>
+        <div class="col-md-2"><button id="delete-projects-btn" class="btn btn-danger" disabled>@PIMResource.BTN_DELETE</button></div>
         @Html.Partial("_PaginationBarPartial", new PIMWebMVC.Models.Common.PaginationBarModel(Model.CurrentPage, Model.TotalPages))
     </div>
 <input hidden id="total-page" value="@Model.TotalPages" />
@@ -12,7 +12,7 @@
     <thead>
         <tr>
             <th></th>
-            <th class="headerSortDown" scope="col">N°</th>
+            <th class="headerSortDown" scope="col">@PIMResource.PROJECT_TABLE_NUMBER_HEADER</th>
             <th scope="col">@PIMResource.PROJECT_LBL_NAME</th>
             <th scope="col">@PIMResource.PROJECT_LBL_STATUS</th>
             <th scope="col">@PIMResource.PROJECT_LBL_CUSTOMER</th>
@@ -31,7 +31,7 @@
             <td>@project.ProjectName</td>
             <td>@project.StatusDisplay</td>
             <td>@project.Customer</td>
-            <td>@project.StartDate.Value.ToShortDateString()</td>
+            <td>@project.StartDate.ToShortDateString()</td>
             <td hidden>@project.Version</td>
         </tr>
         }
