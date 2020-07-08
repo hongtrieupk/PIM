@@ -107,7 +107,7 @@ namespace PIMWebMVC.Controllers
 
                 return RedirectToAction("Index");
             }
-            catch(ConcurrencyDbException concurrencyException)
+            catch (ConcurrencyDbException concurrencyException)
             {
                 _logger.Error(concurrencyException.InnerException);
                 ModelState.AddModelError(ErrorsConstant.SUM_ERROR_FIELD_NAME, PIMResource.ERROR_DB_CONCURRENCY_MESSAGE);
@@ -135,10 +135,19 @@ namespace PIMWebMVC.Controllers
         }
 
         [HttpPost]
-        public ActionResult DeleteProjectByIds(IList<int> projectIds)
+        public ActionResult DeleteProjects(IList<ProjectModel> projects)
         {
-            _projectService.DeleteProjectsByIds(projectIds);
-            return Json(new ActionResultModel() { IsSuccess = true, Message = PIMResource.MESSAGE_DELETE_PROJECTS_SUCCESS });
+            try
+            {
+                IList<Project> deletedProjects = Mapper.Map<IList<Project>>(projects);
+                _projectService.DeleteProjects(deletedProjects);
+                return Json(new ActionResultModel() { IsSuccess = true, Message = PIMResource.MESSAGE_DELETE_PROJECTS_SUCCESS });
+            }
+            catch(ConcurrencyDbException concurrencyException)
+            {
+                _logger.Error(concurrencyException.InnerException);
+                return Json(new ActionResultModel() { IsSuccess = false, Message = PIMResource.ERROR_DB_CONCURRENCY_MESSAGE });
+            }
 
         }
 

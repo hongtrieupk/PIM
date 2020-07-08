@@ -14,10 +14,5 @@ namespace PIM.Data.Repositories
         /// <param name="searchParam"></param>
         /// <returns>return list projects with pagination option</returns>
         PagingResultModel<Project> SearchProject(SearchProjectParam searchParam);
-        /// <summary>
-        /// delete multiple projects by provided ProjectIds
-        /// </summary>
-        /// <param name="projectIds"></param>
-        void DeleteProjectsByIds(IList<int> projectIds);
     }
 }

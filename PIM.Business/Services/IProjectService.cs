@@ -17,6 +17,6 @@ namespace PIM.Business.Services
         PagingResultModel<Project> SearchProject(SearchProjectParam searchParam);
 
         bool IsDuplicateProjectNumber(int? projectId, int newProjectNumber);
-        void DeleteProjectsByIds(IList<int> projectIds);
+        void DeleteProjects(IList<Project> projects);
     }
 }

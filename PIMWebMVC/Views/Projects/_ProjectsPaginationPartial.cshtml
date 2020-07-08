@@ -20,6 +20,7 @@
         </tr>
     </thead>
     <tbody id="projects-table-body">
+        @*modify those html below must update getProjectModelFromHtmlTableRow() function in project-search-component*@
         @foreach (var project in Model.Projects)
         {
             <tr>
@@ -31,6 +32,7 @@
                 <td>@project.StatusDisplay</td>
                 <td>@project.Customer</td>
                 <td>@project.StartDate.Value.ToString("dd.MM.yyyy")</td>
+                <td hidden>@project.Version</td>
             </tr>
         }
     </tbody>

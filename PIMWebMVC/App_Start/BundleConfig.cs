@@ -26,10 +26,11 @@ namespace PIMWebMVC
                       "~/Scripts/bootstrap.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/projectSearch").Include(
-                      "~/Scripts/Projects/project-search.js"));
+                      "~/Scripts/Projects/project-model.js",
+                      "~/Scripts/Projects/project-search-component.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/project").Include(
-                     "~/Scripts/Projects/project.js"));
+                      "~/Scripts/Projects/project-component.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",

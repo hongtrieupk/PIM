@@ -10,8 +10,9 @@
 <hr />
 <div class="form-horizontal">
     <span hidden id="confirm-delete-message-span">@PIMResource.MESSAGE_CONFIRM_DELETE_PROJECTS</span>
-    <p id="missing-criteria-lbl" class="error display-none">@PIMResource.MESSAGE_INVALID_CRITERIA</p>
-    <p id="project-number-not-in-range-lbl" class="error display-none">@PIMResource.MESSAGE_PROJECT_NUMBER_NOT_IN_RANGE</p>
+    <p id="missing-criteria-lbl" class="text-danger display-none">@PIMResource.MESSAGE_INVALID_CRITERIA</p>
+    <p id="server-error-message-lbl" class="text-danger display-none"></p>
+    <p id="project-number-not-in-range-lbl" class="text-danger display-none">@PIMResource.MESSAGE_PROJECT_NUMBER_NOT_IN_RANGE</p>
     <div class="form-group">
         <div class="col-md-6">
             <label class="control-label col-md-4">@PIMResource.PROJECT_LBL_NUMBER</label>
@@ -19,7 +20,7 @@
         </div>
         <div class="col-md-6">
             <label class="control-label col-md-4">@PIMResource.PROJECT_LBL_CUSTOMER</label>
-            @Html.EditorFor(model => model.Customer, new { htmlAttributes = new { id = "customer-search-txt", @class = "form-control col-md-8", maxlength = "500" } })            
+            @Html.EditorFor(model => model.Customer, new { htmlAttributes = new { id = "customer-search-txt", @class = "form-control col-md-8", maxlength = "500" } })
         </div>
     </div>
     <div class="form-group">

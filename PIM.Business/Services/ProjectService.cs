@@ -6,7 +6,6 @@ using System.Linq;
 using PIM.Data.NHibernateConfiguration;
 using PIM.Data.Repositories.GenericTransactions;
 using System.Collections.Generic;
-using PIM.Common.CustomExceptions;
 
 namespace PIM.Business.Services
 {
@@ -81,21 +80,23 @@ namespace PIM.Business.Services
                 return countDuplicatedProjects > 0;
             }
         }
-        public void DeleteProjectsByIds(IList<int> projectIds)
+        public void DeleteProjects(IList<Project> projects)
         {
-            if (projectIds == null || projectIds.Count == 0)
+            if (projects == null || projects.Count == 0)
             {
-                throw new ArgumentNullException("Invalid projectIds");
+                throw new ArgumentNullException("Invalid projects input");
             }
             using (var session = _dbContext.OpenSession())
             {
                 _projectRepository.SetSession(session);
-                int countProjectsInDb = _projectRepository.FilterBy(p => projectIds.Contains(p.ProjectID)).Count();
-                if (countProjectsInDb != projectIds.Count)
+                using (IGenericTransaction transaction = _dbContext.BeginTransaction())
                 {
-                    throw new ConcurrencyDbException("List deleted projects was modified!");
-                }
-                _projectRepository.DeleteProjectsByIds(projectIds);
+                    foreach( Project project in projects)
+                    {
+                        _projectRepository.Delete(project);
+                    }
+                    transaction.Commit();
+                }                
             }
         }
         #endregion

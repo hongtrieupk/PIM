@@ -75,14 +75,6 @@ namespace PIM.Test
                         {
                             projectRepository.Add(_projectTest2);
                         }
-                        if (_projectTest3.ProjectID == 0)// after running DeleteProjectByIds__DeleteProjectId_3_4__ShouldRemovedFromDatabase
-                        {
-                            projectRepository.Add(_projectTest3);
-                        }
-                        if (_projectTest4.ProjectID == 0)// after running DeleteProjectByIds__DeleteProjectId_3_4__ShouldRemovedFromDatabase
-                        {
-                            projectRepository.Add(_projectTest4);
-                        }
                         transaction.Commit();
                     }
                 }
@@ -214,7 +206,7 @@ namespace PIM.Test
             Assert.AreEqual(updatedProjectFromDb.Customer, updatedProjectFromDb.Customer);
         }
         [Test]
-        public void Delete__DeleteAnProjectTest2__ShouldRemovedFromDatabase()
+        public void Delete__DeleteProjectTest2__ShouldRemovedFromDatabase()
         {
             // Arrange
             Project existedProject = _projectTest2;
@@ -241,13 +233,12 @@ namespace PIM.Test
             Assert.IsNull(deletedProject);
         }
         [Test]
-        public void DeleteProjectByIds__DeleteProjectId_3_4__ShouldRemovedFromDatabase()
+        public void Delete__DeleteProjectId_3_WithDifferentVersion__ShouldThrowConcurrencyDbException()
         {
             // Arrange
-            int projectId3 = _projectTest3.ProjectID, projectId4 = _projectTest4.ProjectID;
-            IList<int> projectIds = new List<int>() { projectId3, projectId4 };
-            Project deletedProject4;
-            Project deletedProject5;
+            _projectTest3.Version = 999; // simulate _projectTest3 have been concurrently updated
+            ConcurrencyDbException exception = null;
+
             // Action
             using (IApplicationDbContext dbContext = new ApplicationDbContext())
             {
@@ -257,19 +248,14 @@ namespace PIM.Test
                     projectRepository.SetSession(session);
                     using (IGenericTransaction transaction = dbContext.BeginTransaction())
                     {
-                        projectRepository.DeleteProjectsByIds(projectIds);
-                        transaction.Commit();
+                        projectRepository.Delete(_projectTest3);
+                        exception = Assert.Throws<ConcurrencyDbException>(() => transaction.Commit());
                     }
-                    deletedProject4 = projectRepository.GetById(projectId3);
-                    deletedProject5 = projectRepository.GetById(projectId4);
-                    _projectTest3.ProjectID = 0;
-                    _projectTest4.ProjectID = 0;
                 }
             }
 
             // Assert
-            Assert.IsNull(deletedProject4);
-            Assert.IsNull(deletedProject5);
+            Assert.IsNotNull(exception);
         }
         [Test]
         public void FilterBy__SearchContainsProjectName__ShouldReturnCorrectResult()
@@ -295,13 +281,13 @@ namespace PIM.Test
 
         }
         [Test]
-        public void Delete__DeleteNotExistedProject__ShouldThrowConcurrencyUpdateException()
+        public void Delete__DeleteNotExistedProject__ShouldThrowConcurrencyDbException()
         {
             // Arrange
             // a Project, which does not existed in the database
             Project notExistedProject = new Project()
             { ProjectID = 100000, ProjectName = "fake", Customer = "Fake", Status = "Fake", ProjectNumber = 123, StartDate = DateTime.Now };
-            ConcurrencyDbException staleStateException = null;
+            ConcurrencyDbException exception = null;
 
             // Action
             using (IApplicationDbContext dbContext = new ApplicationDbContext())
@@ -313,13 +299,13 @@ namespace PIM.Test
                     using (IGenericTransaction transaction = dbContext.BeginTransaction())
                     {
                         projectRepository.Delete(notExistedProject);
-                        staleStateException = Assert.Throws<ConcurrencyDbException>(() => transaction.Commit());
+                        exception = Assert.Throws<ConcurrencyDbException>(() => transaction.Commit());
                     }
                 }
             }
 
             // Assert
-            Assert.IsNotNull(staleStateException);
+            Assert.IsNotNull(exception);
         }
         [Test]
         public void Add__AddNewProject_DuplicatedProjectNumber___ShouldThrowGenericADOException()
@@ -346,7 +332,7 @@ namespace PIM.Test
             Assert.IsNotNull(genericADOException);
         }
         [Test]
-        public void Update__UpdateNotExistedProject___ShouldThrowConcurrencyUpdateException()
+        public void Update__UpdateNotExistedProject___ShouldThrowConcurrencyDbException()
         {
             // Arrange
             Project notExistedProject = new Project()
@@ -372,7 +358,7 @@ namespace PIM.Test
             Assert.IsNotNull(dbException);
         }
         [Test]
-        public void Update__UpdateWithDifferentVersion___ShouldThrowConcurrencyUpdateException()
+        public void Update__UpdateWithDifferentVersion___ShouldThrowConcurrencyDbException()
         {
             // Arrange
             Project existedProject = _projectTest1;

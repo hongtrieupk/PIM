@@ -142,12 +142,11 @@ textarea {
 }
 
 .error-global {
-    font-family: 'Love Ya Like A Sister', cursive;
     margin-top: 50px;
 }
 
     .error-global span {
-        font-size: 250px;
+        font-size: 25px;
     }
 
 .custom-validation-message {

@@ -10,11 +10,6 @@ namespace PIM.Data.Repositories
     public class ProjectRepository : GenericRepository<Project>, IProjectRepository
     {
         #region Methods
-        public void DeleteProjectsByIds(IList<int> projectIds)
-        {
-            _session.Query<Project>()
-                    .Where(p => projectIds.Contains(p.ProjectID)).Delete();
-        }
         /// <summary>
         /// search projects by Number, Name, Customer and status
         /// </summary>

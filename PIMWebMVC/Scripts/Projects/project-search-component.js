@@ -8,7 +8,7 @@
     this.isNotNullCriteria = function () {
         return this.ProjectNumber || this.ProjectName || this.Customer || this.Status;
     }
-    this.isProjectNumberInRange = function(min, max){
+    this.isProjectNumberInRange = function (min, max) {
         return min <= +this.ProjectNumber && +this.ProjectNumber <= max;
     }
 }
@@ -19,6 +19,7 @@ function ProjectSearchComponent() {
     this.resetCriteriaBtn = $("#reset-criteria-btn");
     this.searchContent = $("#projects-search-result");
     this.missingCriteriaLbl = $("#missing-criteria-lbl");
+    this.serverErrorMessageLbl = $("#server-error-message-lbl");
     this.projectNumberNotInRangeLbl = $("#project-number-not-in-range-lbl");
 
     this.numberSearchTxt = $("#number-search-txt");
@@ -33,7 +34,7 @@ function ProjectSearchComponent() {
     this.isValidComponent = false;
     this.currentPage = this.startPage;
     this.searchProjectUrl = "/Projects/SearchProjects";
-    this.deleteProjectsUrl = "/Projects/DeleteProjectByIds";
+    this.deleteProjectsUrl = "/Projects/DeleteProjects";
     this.serverErrorPage = "Error/ServerError";
     this.confirmDeleteMessage = $("#confirm-delete-message-span").text();
 
@@ -61,6 +62,7 @@ ProjectSearchComponent.prototype = {
         this.onSearching.call(this);
     },
     onSearching: function (initFromStartPage) {
+        this.serverErrorMessageLbl.hide();
         var searchParam = this.getSearchParam();
         if (!searchParam.isNotNullCriteria()) {
             this.missingCriteriaLbl.show();
@@ -72,7 +74,7 @@ ProjectSearchComponent.prototype = {
         if (!searchParam.isProjectNumberInRange(minProjectNumber, maxProjectNumber)) {
             this.projectNumberNotInRangeLbl.show();
             return;
-        }        
+        }
         this.projectNumberNotInRangeLbl.hide()
         var searchComponent = this;
         if (initFromStartPage) {
@@ -83,6 +85,10 @@ ProjectSearchComponent.prototype = {
             url: this.searchProjectUrl,
             data: searchParam,
             success: function (data) {
+                if (typeof data === "string" && data.indexOf("<html") > -1) {
+                    document.write(data);
+                    return;
+                }
                 searchComponent.renderPaginationComponent.call(searchComponent, data);
                 searchComponent.isDisplayingResult = true;
             },
@@ -126,25 +132,30 @@ ProjectSearchComponent.prototype = {
         var deleteBtn = $("#" + this.deleteButtonId);
         let searchComponent = this;
         deleteBtn.on("click", function () {
-            let selectedProjectIds = searchComponent.getSelectedProjectIdFromTable.call(searchComponent);
-            if (!selectedProjectIds || !selectedProjectIds.length) {
+            let selectedProjects = searchComponent.getSelectedProjectsFromHtmlTable.call(searchComponent);
+            console.log(selectedProjects);
+            if (!selectedProjects || !selectedProjects.length) {
                 return;
             }
             let isConfirmed = confirm(searchComponent.confirmDeleteMessage);
             if (!isConfirmed) {
                 return;
-            }          
+            }
             $.ajax({
                 type: "post",
                 url: searchComponent.deleteProjectsUrl,
-                data: { projectIds: selectedProjectIds},
+                data: { projects: selectedProjects },
                 success: function (response) {
+                    if (typeof response === "string" && response.indexOf("<html") > -1) { // server error exception was throwed
+                        document.write(response);
+                        return;
+                    }
                     if (response.IsSuccess) {
                         showSuccessNotify(response.Message);
                         searchComponent.onSearching();
                     } else {
-                        //exception was throw on the server, the response is a whole html page
-                        document.write(response);
+                        searchComponent.serverErrorMessageLbl.text(response.Message);
+                        searchComponent.serverErrorMessageLbl.show();
                     }
                 },
                 error: function () {
@@ -153,20 +164,48 @@ ProjectSearchComponent.prototype = {
             });
         });
     },
-    getSelectedProjectIdFromTable: function () {
+    getSelectedProjectsFromHtmlTable: function () {
         var tableBody = document.getElementById(this.tableBodyId);
         let rows = tableBody ? tableBody.rows : null;
         if (!rows) {
             return [];
         }
-        let selectedProjectIds = [];
+        let selectedProjects = [];
         for (let i = rows.length - 1; i >= 0; i--) {
-            let rowCheckbox = rows[i].cells[0].firstElementChild;
-            if (rowCheckbox.checked) {
-                selectedProjectIds.push(rowCheckbox.value);
+            let checkboxRow = rows[i].cells[0].firstElementChild;
+            if (checkboxRow.checked) {
+                let projectModel = this.getProjectModelFromHtmlTableRow(rows[i]);
+                selectedProjects.push(projectModel);
             }
         }
-        return selectedProjectIds;
+        return selectedProjects;
+    },
+    getProjectModelFromHtmlTableRow: function (htmlTableRow) {
+        if (!htmlTableRow || !htmlTableRow.cells || htmlTableRow.cells.length !== 7) {
+            throw "project html table was composed incorrectly";
+        }
+        let checkboxRow = htmlTableRow.cells[0].firstElementChild;
+        let projectId = checkboxRow.value;
+
+        let projectNumberRow = htmlTableRow.cells[1].firstElementChild;
+        let projectNumber = projectNumberRow.text;
+
+        let projectNameRow = htmlTableRow.cells[2];
+        let projectName = projectNameRow.textContent;
+
+        let statusRow = htmlTableRow.cells[3];
+        let status = statusRow.textContent;
+
+        let customerRow = htmlTableRow.cells[4];
+        let customer = customerRow.textContent;
+
+        let startDateRow = htmlTableRow.cells[5];
+        let startDate = startDateRow.textContent;
+
+        let versionRow = htmlTableRow.cells[6];
+        let version = versionRow.textContent;
+
+        return new ProjectModel(projectId, projectNumber, projectName, customer, status, startDate, null, version);
     },
     getSearchParam: function () {
         let number = this.numberSearchTxt.val();
@@ -221,8 +260,8 @@ ProjectSearchComponent.prototype = {
     },
     checkEnableDeleteBtn: function () {
         let deleteBtn = $("#" + this.deleteButtonId);
-        let selectedProjectIds = this.getSelectedProjectIdFromTable();
-        if (!selectedProjectIds || !selectedProjectIds.length) {
+        let selectedProjects = this.getSelectedProjectsFromHtmlTable.call(this);
+        if (!selectedProjects || !selectedProjects.length) {
             deleteBtn.prop('disabled', true);
         } else {
             deleteBtn.prop('disabled', false);

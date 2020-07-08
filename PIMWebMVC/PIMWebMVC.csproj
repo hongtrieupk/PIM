@@ -196,8 +196,9 @@
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\notify.js" />
     <Content Include="Scripts\notify.min.js" />
-    <Content Include="Scripts\Projects\project-search.js" />
-    <Content Include="Scripts\Projects\project.js" />
+    <Content Include="Scripts\Projects\project-model.js" />
+    <Content Include="Scripts\Projects\project-search-component.js" />
+    <Content Include="Scripts\Projects\project-component.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
