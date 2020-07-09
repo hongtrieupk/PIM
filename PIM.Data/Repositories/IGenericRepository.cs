@@ -16,7 +16,17 @@ namespace PIM.Data.Repositories
         object Add(T entity);
 		void Update(T entity);
         void Delete(T entity);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>return null in case of no record founded</returns>
 		T GetById(object id);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>throw ObjectNotFoundException exception in case of no record founded</returns>
         T LoadById(object id);
         #endregion
     }

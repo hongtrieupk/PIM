@@ -11,7 +11,6 @@ using PIMWebMVC.Models.Projects;
 using PIMWebMVC.Resources;
 using System;
 using System.Collections.Generic;
-using System.ServiceModel.Channels;
 using System.Web.Mvc;
 
 namespace PIMWebMVC.Controllers

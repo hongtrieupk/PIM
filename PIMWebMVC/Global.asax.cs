@@ -1,4 +1,5 @@
-﻿using PIM.Common.CustomExceptions;
+﻿using log4net;
+using PIM.Common.CustomExceptions;
 using PIMWebMVC.App_Start;
 using PIMWebMVC.Constants;
 using System;
@@ -14,6 +15,7 @@ namespace PIMWebMVC
 {
     public class MvcApplication : HttpApplication
     {
+        private static readonly ILog _logger = LogManager.GetLogger(typeof(MvcApplication));
         protected void Application_Start()
         {
             log4net.Config.XmlConfigurator.Configure();
@@ -45,6 +47,7 @@ namespace PIMWebMVC
             {
                 return;
             }
+            _logger.Error(exception);
             string action = ErrorsConstant.SERVER_ERROR_ACTION;
             if (exception is NotFoundFromDbException)
             {

@@ -133,19 +133,19 @@
     <value>Tìm</value>
   </data>
   <data name="ERROR_ACCESS_DENIED_MESSAGE" xml:space="preserve">
-    <value>You don't have permission</value>
+    <value>Bạn không có quyền truy cập lại hệ thống</value>
   </data>
   <data name="ERROR_ACCESS_DENIED_TITLE" xml:space="preserve">
-    <value>Access Denied</value>
+    <value>Truy cập bị từ chối</value>
   </data>
   <data name="ERROR_BAD_REQUEST_MESSAGE" xml:space="preserve">
-    <value>The request is not valid</value>
+    <value>Yêu cầu có thể chứa các thông tin không hợp lệ</value>
   </data>
   <data name="ERROR_BAD_REQUEST_TITLE" xml:space="preserve">
-    <value>Bad Request</value>
+    <value>Yêu cầu không hợp lệ</value>
   </data>
   <data name="ERROR_DB_CONCURRENCY_MESSAGE" xml:space="preserve">
-    <value>Đã có lỗi xảy ra trong quá trình chỉnh sửa dữ liệu. Dữ liệu của bạn có thể đã bị thay đổi bởi 1 phiên làm việc khác. Please reload and update your data again </value>
+    <value>Đã có lỗi xảy ra trong quá trình chỉnh sửa dữ liệu. Dữ liệu của bạn có thể đã bị thay đổi bởi 1 phiên làm việc khác. Vui lòng tải và cập nhật lại bản ghi.</value>
   </data>
   <data name="ERROR_DB_CONCURRENCY_TITLE" xml:space="preserve">
     <value>Lỗi chỉnh sửa đồng thời</value>
@@ -178,7 +178,7 @@
     <value>Tài Khoản</value>
   </data>
   <data name="LAYOUT_SIDE_BAR_AFFAIR" xml:space="preserve">
-    <value>Affair</value>
+    <value>Công Việc</value>
   </data>
   <data name="LAYOUT_SIDE_BAR_CUSTOMER" xml:space="preserve">
     <value>Khách hàng</value>

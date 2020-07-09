@@ -82,10 +82,6 @@ namespace PIM.Business.Services
         }
         public void DeleteProjects(IList<Project> projects)
         {
-            if(projects == null)
-            {
-                throw new ArgumentNullException("Can not pass a null projects paramater");
-            }
             using (var session = _dbContext.OpenSession())
             {
                 _projectRepository.SetSession(session);
