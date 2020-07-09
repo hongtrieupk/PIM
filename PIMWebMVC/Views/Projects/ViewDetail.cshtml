@@ -1,11 +1,9 @@
 ﻿@using PIMWebMVC.Resources
 @using PIMWebMVC.Constants
-@using System.Globalization
 
 @{
     ViewBag.Title = PIMResource.PROJECT_DETAILS_PAGE_TITLE;
-    IProjectStatusesConstant projectStatuses = new ProjectStatusesConstant();
-    string currentDateFormat = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern.Replace("M", "m").Replace("yy", "y");
+    IProjectStatusesConstant projectStatuses = new ProjectStatusesConstant();    
 }
 @model PIMWebMVC.Models.Projects.ProjectModel
 <hr />
@@ -21,8 +19,7 @@ else
 {
     @Html.AntiForgeryToken()
     <div class="form-horizontal">
-        <hr />
-        <label hidden id="currentDateFormat">@currentDateFormat</label>
+        <hr />        
         <label hidden id="form-has-error-lbl">@ViewBag.FormHasError</label>
         @Html.ValidationMessage(ErrorsConstant.SUM_ERROR_SPECIAL_CHARACTERS_FIELD_NAME, new { @class = "text-danger custom-validation-message" })
         @Html.ValidationMessage(ErrorsConstant.SUM_ERROR_FIELD_NAME, new { @class = "text-danger custom-validation-message" })

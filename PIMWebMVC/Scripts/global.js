@@ -68,5 +68,13 @@ $(document).ready(function () {
             let submitBtn = $("input[type='submit']");
             submitBtn.click();
         }
-    })
+    });
+    $(".date-picker").datepicker({
+        dateFormat: $("#currentDateFormat").text(),
+        showButtonPanel: true,
+        changeMonth: true,
+        changeYear: true,
+        showOtherMonths: true,
+        selectOtherMonths: true
+    }).keypress(function (event) { event.preventDefault(); });
 });

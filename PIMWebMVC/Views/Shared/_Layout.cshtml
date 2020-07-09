@@ -10,7 +10,12 @@
     @Scripts.Render("~/bundles/bootstrap")
 </head>
 @using PIMWebMVC.Resources
+@using System.Globalization
+@{
+    string currentDateFormat = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern.Replace("M", "m").Replace("yy", "y");
+}
 <body>
+    <label hidden id="currentDateFormat">@currentDateFormat</label>
     <div class="col-md-2 sidebar">
         <img src="/Images/elca-logo.jpg" class="img-responsive pim-logo" alt="ELCA" width="300" height="300">
         <ul class="pim-sidebar">
@@ -74,7 +79,7 @@
             </footer>
         </div>
     </div>
-    
+
     @RenderSection("scripts", required: false)
 </body>
 </html>
