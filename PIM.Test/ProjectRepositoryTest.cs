@@ -19,6 +19,7 @@ namespace PIM.Test
     public class ProjectRepositoryTest
     {
         #region Fields
+        private IProjectRepository _projectRepository;
         // - projectTest1 will be used to test GetById and Update function
         private static readonly Project _projectTest1 = new Project() { ProjectNumber = 111, ProjectName = "Project Test 1", Customer = "Apple", Status = "INV", StartDate = DateTime.Now };
         // - projectTest2will be used to test Delete function then will be inserted again
@@ -52,6 +53,7 @@ namespace PIM.Test
         [OneTimeSetUp]
         public void Init()
         {
+            _projectRepository = new ProjectRepository();
             CreateDatabase();
         }
         [TearDown]
@@ -61,18 +63,17 @@ namespace PIM.Test
             {
                 using (var session = dbContext.OpenSession())
                 {
-                    IProjectRepository projectRepository = new ProjectRepository();
-                    projectRepository.SetSession(session);
+                    _projectRepository.SetSession(session);
                     using (IGenericTransaction transaction = dbContext.BeginTransaction())
                     {
                         if (_projectToAddNew.ProjectID > 0)// after running Add__AddNewProject__ShouldStoreInDatabase
                         {
-                            projectRepository.Delete(_projectToAddNew);
+                            _projectRepository.Delete(_projectToAddNew);
                             _projectToAddNew.ProjectID = 0;
                         }
                         if (_projectTest2.ProjectID == 0)// after running Delete__DeleteAnProjectTest2__ShouldRemovedFromDatabase
                         {
-                            projectRepository.Add(_projectTest2);
+                            _projectRepository.Add(_projectTest2);
                         }
                         transaction.Commit();
                     }
@@ -86,14 +87,13 @@ namespace PIM.Test
                 new SchemaExport(dbContext.Configuration).Drop(useStdOut: false, execute: true);
                 new SchemaExport(dbContext.Configuration).Create(useStdOut: false, execute: true);
                 using (var session = dbContext.OpenSession())
-                {
-                    IProjectRepository projectRepository = new ProjectRepository();
-                    projectRepository.SetSession(session);
+                {                    
+                    _projectRepository.SetSession(session);
                     using (IGenericTransaction transaction = dbContext.BeginTransaction())
                     {
                         foreach (Project project in _seedProjectsData)
                         {
-                            projectRepository.Add(project);
+                            _projectRepository.Add(project);
                         }
                         transaction.Commit();
                     }
@@ -116,9 +116,8 @@ namespace PIM.Test
             {
                 using (var session = dbContext.OpenSession())
                 {
-                    IProjectRepository projectRepository = new ProjectRepository();
-                    projectRepository.SetSession(session);
-                    projectTest1FromDb = projectRepository.GetById(projectTest1Id);
+                    _projectRepository.SetSession(session);
+                    projectTest1FromDb = _projectRepository.GetById(projectTest1Id);
                 }
             }
             // Assert
@@ -137,9 +136,8 @@ namespace PIM.Test
             {
                 using (var session = dbContext.OpenSession())
                 {
-                    IProjectRepository projectRepository = new ProjectRepository();
-                    projectRepository.SetSession(session);
-                    projectFromDb = projectRepository.GetById(invalidProjectId);
+                    _projectRepository.SetSession(session);
+                    projectFromDb = _projectRepository.GetById(invalidProjectId);
                 }
             }
 
@@ -159,14 +157,13 @@ namespace PIM.Test
             {
                 using (var session = dbContext.OpenSession())
                 {
-                    IProjectRepository projectRepository = new ProjectRepository();
-                    projectRepository.SetSession(session);
+                    _projectRepository.SetSession(session);
                     using (IGenericTransaction transaction = dbContext.BeginTransaction())
                     {
-                        objectId = projectRepository.Add(newProject);
+                        objectId = _projectRepository.Add(newProject);
                         transaction.Commit();
                     }
-                    insertedProject = projectRepository.GetById(objectId);
+                    insertedProject = _projectRepository.GetById(objectId);
                 }
             }
 
@@ -187,15 +184,14 @@ namespace PIM.Test
             {
                 using (var session = dbContext.OpenSession())
                 {
-                    IProjectRepository projectRepository = new ProjectRepository();
-                    projectRepository.SetSession(session);
+                    _projectRepository.SetSession(session);
                     using (IGenericTransaction transaction = dbContext.BeginTransaction())
                     {
-                        projectRepository.Update(_projectTest1);
+                        _projectRepository.Update(_projectTest1);
                         transaction.Commit();
 
                     }
-                    updatedProjectFromDb = projectRepository.GetById(_projectTest1.ProjectID);
+                    updatedProjectFromDb = _projectRepository.GetById(_projectTest1.ProjectID);
                 }
             }
 
@@ -216,14 +212,13 @@ namespace PIM.Test
             {
                 using (var session = dbContext.OpenSession())
                 {
-                    IProjectRepository projectRepository = new ProjectRepository();
-                    projectRepository.SetSession(session);
+                    _projectRepository.SetSession(session);
                     using (IGenericTransaction transaction = dbContext.BeginTransaction())
                     {
-                        projectRepository.Delete(existedProject);
+                        _projectRepository.Delete(existedProject);
                         transaction.Commit();
                     }
-                    deletedProject = projectRepository.GetById(existedProject.ProjectID);
+                    deletedProject = _projectRepository.GetById(existedProject.ProjectID);
                     _projectTest2.ProjectID = 0;
                 }
             }
@@ -243,12 +238,11 @@ namespace PIM.Test
                 using (IApplicationDbContext dbContext = new ApplicationDbContext())
                 {
                     using (var session = dbContext.OpenSession())
-                    {
-                        IProjectRepository projectRepository = new ProjectRepository();
-                        projectRepository.SetSession(session);
+                    { 
+                        _projectRepository.SetSession(session);
                         using (IGenericTransaction transaction = dbContext.BeginTransaction())
                         {
-                            projectRepository.Delete(_projectTest3);
+                            _projectRepository.Delete(_projectTest3);
                             transaction.Commit();
                         }
                     }
@@ -273,11 +267,10 @@ namespace PIM.Test
                 {
                     using (var session = dbContext.OpenSession())
                     {
-                        IProjectRepository projectRepository = new ProjectRepository();
-                        projectRepository.SetSession(session);
+                        _projectRepository.SetSession(session);
                         using (IGenericTransaction transaction = dbContext.BeginTransaction())
                         {
-                            projectRepository.Delete(notExistedProject);
+                            _projectRepository.Delete(notExistedProject);
                             transaction.Commit();
                         }
                     }
@@ -300,11 +293,10 @@ namespace PIM.Test
                 {
                     using (var session = dbContext.OpenSession())
                     {
-                        IProjectRepository projectRepository = new ProjectRepository();
-                        projectRepository.SetSession(session);
+                        _projectRepository.SetSession(session);
                         using (IGenericTransaction transaction = dbContext.BeginTransaction())
                         {
-                            projectRepository.Add(newProject);
+                            _projectRepository.Add(newProject);
                             transaction.Commit();
                         }
                     }
@@ -324,16 +316,14 @@ namespace PIM.Test
             // Action
             Action action = () =>
             {
-
                 using (IApplicationDbContext dbContext = new ApplicationDbContext())
                 {
                     using (var session = dbContext.OpenSession())
                     {
-                        IProjectRepository projectRepository = new ProjectRepository();
-                        projectRepository.SetSession(session);
+                        _projectRepository.SetSession(session);
                         using (IGenericTransaction transaction = dbContext.BeginTransaction())
                         {
-                            projectRepository.Update(notExistedProject);
+                            _projectRepository.Update(notExistedProject);
                             transaction.Commit();
                         }
                     }
@@ -358,11 +348,10 @@ namespace PIM.Test
                 {
                     using (var session = dbContext.OpenSession())
                     {
-                        IProjectRepository projectRepository = new ProjectRepository();
-                        projectRepository.SetSession(session);
+                        _projectRepository.SetSession(session);
                         using (IGenericTransaction transaction = dbContext.BeginTransaction())
                         {
-                            projectRepository.Update(_projectTest1);
+                            _projectRepository.Update(_projectTest1);
                             transaction.Commit();
                         }
                     }
@@ -391,9 +380,8 @@ namespace PIM.Test
             {
                 using (var session = dbContext.OpenSession())
                 {
-                    IProjectRepository projectRepository = new ProjectRepository();
-                    projectRepository.SetSession(session);
-                    result = projectRepository.SearchProject(param);
+                    _projectRepository.SetSession(session);
+                    result = _projectRepository.SearchProject(param);
                 }
             }
 
@@ -419,9 +407,8 @@ namespace PIM.Test
             {
                 using (var session = dbContext.OpenSession())
                 {
-                    IProjectRepository projectRepository = new ProjectRepository();
-                    projectRepository.SetSession(session);
-                    result = projectRepository.SearchProject(param);
+                    _projectRepository.SetSession(session);
+                    result = _projectRepository.SearchProject(param);
                 }
             }
 
@@ -450,9 +437,8 @@ namespace PIM.Test
             {
                 using (var session = dbContext.OpenSession())
                 {
-                    IProjectRepository projectRepository = new ProjectRepository();
-                    projectRepository.SetSession(session);
-                    result = projectRepository.SearchProject(param);
+                    _projectRepository.SetSession(session);
+                    result = _projectRepository.SearchProject(param);
                 }
             }
 
@@ -472,10 +458,9 @@ namespace PIM.Test
             using (IApplicationDbContext dbContext = new ApplicationDbContext())
             {
                 using (var session = dbContext.OpenSession())
-                {
-                    IProjectRepository projectRepository = new ProjectRepository();
-                    projectRepository.SetSession(session);
-                    projectTest1FromDb = projectRepository.LoadById(projectTest1Id);
+                { 
+                    _projectRepository.SetSession(session);
+                    projectTest1FromDb = _projectRepository.LoadById(projectTest1Id);
                 }
             }
             // Assert
@@ -495,10 +480,9 @@ namespace PIM.Test
                 using (IApplicationDbContext dbContext = new ApplicationDbContext())
                 {
                     using (var session = dbContext.OpenSession())
-                    {
-                        IProjectRepository projectRepository = new ProjectRepository();
-                        projectRepository.SetSession(session);
-                        Project result = projectRepository.LoadById(notExistedProjectId);
+                    { 
+                        _projectRepository.SetSession(session);
+                        Project result = _projectRepository.LoadById(notExistedProjectId);
                     }
                 }
             };
@@ -520,9 +504,8 @@ namespace PIM.Test
             {
                 using (var session = dbContext.OpenSession())
                 {
-                    IProjectRepository projectRepository = new ProjectRepository();
-                    projectRepository.SetSession(session);
-                    isDupplicated = projectRepository.IsDuplicateProjectNumber(newProjectId, existedProjectNumber);
+                    _projectRepository.SetSession(session);
+                    isDupplicated = _projectRepository.IsDuplicateProjectNumber(newProjectId, existedProjectNumber);
                 }
             }
 
@@ -542,9 +525,8 @@ namespace PIM.Test
             {
                 using (var session = dbContext.OpenSession())
                 {
-                    IProjectRepository projectRepository = new ProjectRepository();
-                    projectRepository.SetSession(session);
-                    isDupplicated = projectRepository.IsDuplicateProjectNumber(theSameProjectId, existedProjectNumber);
+                    _projectRepository.SetSession(session);
+                    isDupplicated = _projectRepository.IsDuplicateProjectNumber(theSameProjectId, existedProjectNumber);
                 }
             }
 
@@ -564,10 +546,9 @@ namespace PIM.Test
             using (IApplicationDbContext dbContext = new ApplicationDbContext())
             {
                 using (var session = dbContext.OpenSession())
-                {
-                    IProjectRepository projectRepository = new ProjectRepository();
-                    projectRepository.SetSession(session);
-                    isDupplicated = projectRepository.IsDuplicateProjectNumber(newProjectId, newProjectNumber);
+                { 
+                    _projectRepository.SetSession(session);
+                    isDupplicated = _projectRepository.IsDuplicateProjectNumber(newProjectId, newProjectNumber);
                 }
             }
 
