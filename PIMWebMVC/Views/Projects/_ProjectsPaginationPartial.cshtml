@@ -12,11 +12,11 @@
     <thead>
         <tr>
             <th></th>
-            <th class="headerSortDown" scope="col">@PIMResource.PROJECT_TABLE_NUMBER_HEADER</th>
+            <th class="headerSortDown number-align" scope="col">@PIMResource.PROJECT_TABLE_NUMBER_HEADER</th>
             <th scope="col">@PIMResource.PROJECT_LBL_NAME</th>
             <th scope="col">@PIMResource.PROJECT_LBL_STATUS</th>
             <th scope="col">@PIMResource.PROJECT_LBL_CUSTOMER</th>
-            <th scope="col">@PIMResource.PROJECT_LBL_START_DATE</th>
+            <th scope="col" class="date-time-align">@PIMResource.PROJECT_LBL_START_DATE</th>
         </tr>
     </thead>
     <tbody id="projects-table-body">
@@ -27,11 +27,11 @@
             <td>
                 <input type="checkbox" value="@project.ProjectID" name="delete-project-checkbox" />
             </td>
-            <td><a href="/Projects/ViewDetail/@project.ProjectID">@project.ProjectNumber</a></td>
+            <td class="number-align"><a href="/Projects/ViewDetail/@project.ProjectID">@project.ProjectNumber</a></td>
             <td>@project.ProjectName</td>
             <td>@project.StatusDisplay</td>
             <td>@project.Customer</td>
-            <td>@project.StartDate.ToShortDateString()</td>
+            <td class="date-time-align">@project.StartDate.ToShortDateString()</td>
             <td hidden>@project.Version</td>
         </tr>
         }

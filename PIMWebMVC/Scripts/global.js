@@ -23,18 +23,18 @@
     }
 });
 var notifyConfig = { position: "top center", style: 'custom-notify', className: 'success', autoHideDelay: 5000 };
-window.showErrorNotify = function(message) {
+window.showErrorNotify = function (message) {
     notifyConfig.className = "error";
     $.notify(message, notifyConfig);
 }
-window.showSuccessNotify = function(message) {
+window.showSuccessNotify = function (message) {
     notifyConfig.className = "success";
     $.notify(message, notifyConfig);
 }
 window.defaulButtonName = "default-button";
 window.hasDirtyForm = false;
 
-window.preventLeavePage = function() {
+window.preventLeavePage = function () {
     $(":input").change(function () {
         if (!hasDirtyForm) {
             hasDirtyForm = true;
@@ -47,7 +47,7 @@ window.preventLeavePage = function() {
         }
     });
     $("form").submit(function (event) {
-            hasDirtyForm = false;
+        hasDirtyForm = false;
     });
     window.onbeforeunload = function (e) {
         if (hasDirtyForm) {
@@ -56,25 +56,9 @@ window.preventLeavePage = function() {
         $("input[type=submit]").prop("disabled", true);
     }
 }
+
 $(document).ready(function () {
-    $('body').keypress(function (e) {
-        var code = e.keyCode || e.which;
-        if (code === 13) {
-            e.preventDefault();
-            let defaultBtns = $("button[name='" + window.defaulButtonName + "']");
-            if (defaultBtns && defaultBtns.length > 0) {
-                defaultBtns[0].click();
-            }
-            let submitBtn = $("input[type='submit']");
-            submitBtn.click();
-        }
-    });
-    $(".date-picker").datepicker({
-        dateFormat: $("#currentDateFormat").text(),
-        showButtonPanel: true,
-        changeMonth: true,
-        changeYear: true,
-        showOtherMonths: true,
-        selectOtherMonths: true
-    }).keypress(function (event) { event.preventDefault(); });
+    let ultilityHelper = new UltilityHelper();
+    ultilityHelper.setEnterKeyPressForDefaulButton();
+    ultilityHelper.renderjQueryDatePicker();
 });

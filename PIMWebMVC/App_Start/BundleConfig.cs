@@ -9,9 +9,12 @@ namespace PIMWebMVC
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js",
-                        "~/Scripts/jquery-ui.js",
-                        "~/Scripts/notify.min.js",
+                        "~/Scripts/jQuery/jquery-{version}.js",
+                        "~/Scripts/jQuery/jquery-ui.js",
+                        "~/Scripts/jQuery/jquery-ui-i18n.min.js",
+                         "~/Scripts/jQuery/jquery-ui-i18n.extend.js",
+                        "~/Scripts/Notify/notify.min.js",
+                        "~/Scripts/ultility-helper.js",
                         "~/Scripts/global.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
@@ -37,6 +40,7 @@ namespace PIMWebMVC
                       "~/Content/bootstrap.css",
                       "~/Content/jquery-ui.css",
                       "~/Content/site.css",
+                      "~/Content/jquery-date-picker-override.css",
                       "~/Content/project-search.css"));
         }
     }

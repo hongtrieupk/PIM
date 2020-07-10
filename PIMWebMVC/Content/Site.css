@@ -63,7 +63,12 @@ textarea {
 .right-content {
     padding-right: 0px;
 }
-
+.number-align {
+    text-align: right;
+}
+.date-time-align{
+    text-align: center;
+}
 .sidebar {
 }
 
