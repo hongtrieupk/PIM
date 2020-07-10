@@ -72,7 +72,8 @@ ProjectSearchComponent.prototype = {
         }
         var searchComponent = this;
         if (initFromStartPage) {
-            searchParam.CurrentPage = searchComponent.startPage;
+            this.currentPage = searchComponent.startPage;
+            searchParam.CurrentPage = this.currentPage;
         }
         $.ajax({
             type: "post",
@@ -122,7 +123,8 @@ ProjectSearchComponent.prototype = {
         this.onSearching.call(this);
     },
     onNextPageClick: function () {
-        this.currentPage = this.currentPage < $("#" + this.totalPageInputId).val() ? this.currentPage + 1 : this.currentPage;
+        let totalPage = $("#" + this.totalPageInputId).val();
+        this.currentPage = this.currentPage < totalPage ? this.currentPage + 1 : this.currentPage;
         this.onSearching.call(this);
     },
     onPreviousPageClick: function () {
