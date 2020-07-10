@@ -199,7 +199,7 @@
     <value>Quản lý Thông tin Dự án</value>
   </data>
   <data name="MESSAGE_CONFIRM_DELETE_PROJECTS" xml:space="preserve">
-    <value>Các Dự án đã được chọn sẽ bị xóa khỏa CSDL. Xác nhận xóa?</value>
+    <value>Các Dự án đã được chọn sẽ bị xóa. Xác nhận xóa?</value>
   </data>
   <data name="MESSAGE_CREATE_PROJECT_SUCCESS" xml:space="preserve">
     <value>Tạo mới Dự án thành công</value>

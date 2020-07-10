@@ -304,7 +304,7 @@ namespace PIMWebMVC.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Selected Project(s) are going to be removed from the database. Are you sure?.
+        ///   Looks up a localized string similar to Selected Project(s) are going to be removed. Are you sure?.
         /// </summary>
         public static string MESSAGE_CONFIRM_DELETE_PROJECTS {
             get {
@@ -322,7 +322,7 @@ namespace PIMWebMVC.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New Project created successfully .
+        ///   Looks up a localized string similar to New Project was successfully created .
         /// </summary>
         public static string MESSAGE_CREATE_PROJECT_SUCCESS {
             get {

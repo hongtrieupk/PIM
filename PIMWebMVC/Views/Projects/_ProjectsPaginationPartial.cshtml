@@ -7,7 +7,7 @@
         <div class="col-md-2"><button id="delete-projects-btn" class="btn btn-danger" disabled>@PIMResource.BTN_DELETE</button></div>
         @Html.Partial("_PaginationBarPartial", new PIMWebMVC.Models.Common.PaginationBarModel(Model.CurrentPage, Model.TotalPages))
     </div>
-<input hidden id="total-page" value="@Model.TotalPages" />
+<input hidden id="total-page-val" value="@Model.TotalPages" />
 <table class="table table-striped table-bordered" cellspacing="0" cellpadding="4" rules="cols" border="1" style="border-collapse:collapse;">
     <thead>
         <tr>

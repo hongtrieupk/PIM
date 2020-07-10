@@ -24,6 +24,7 @@ function ProjectSearchComponent() {
     this.confirmDeleteModal = $("#confirm-delete-modal");
     this.deleteBtnInModal = $("#delete-projects-btn-in-modal");
 
+
     this.numberSearchTxt = $("#number-search-txt");
     this.customerSearchTxt = $("#customer-search-txt");
     this.statusSearchCbb = $("#status-search-cbb");
@@ -33,6 +34,11 @@ function ProjectSearchComponent() {
     this.pagingButtonsName = "paging-button";
     this.deleteProjectCheckboxName = "delete-project-checkbox";
     this.deleteButtonId = "delete-projects-btn";
+    this.firstPagingBtnName = "first-pagination-btn";
+    this.lastPagingBtnName = "last-pagination-btn";
+    this.nextPagingBtnName = "next-pagination-btn";
+    this.previousPagingBtnName = "previous-pagination-btn";
+    this.totalPageInputId = "total-page-val";
     this.isValidComponent = false;
     this.currentPage = this.startPage;
     this.searchProjectUrl = "/Projects/SearchProjects";
@@ -57,12 +63,6 @@ ProjectSearchComponent.prototype = {
         this.customerSearchTxt.on("keyup", this.checkEnableResetCriteriaBtn.bind(this));
         this.statusSearchCbb.on("keyup change", this.checkEnableResetCriteriaBtn.bind(this));
         this.nameSearchTxt.on("keyup", this.checkEnableResetCriteriaBtn.bind(this));
-    },
-    onPageClick: function (event) {
-        let source = event.target || event.srcElement;
-        let totalPage = $("#total-page").val();
-        this.currentPage = this.calculateCurrentPage.call(this, source.textContent, totalPage);
-        this.onSearching.call(this);
     },
     onSearching: function (initFromStartPage) {
         this.serverErrorMessageLbl.hide();
@@ -90,6 +90,7 @@ ProjectSearchComponent.prototype = {
             success: function (data) {
                 if (typeof data === "string" && data.indexOf("<html") > -1) {
                     document.write(data);
+                    // innerHtml = data;
                     return;
                 }
                 searchComponent.renderPaginationComponent.call(searchComponent, data);
@@ -119,21 +120,38 @@ ProjectSearchComponent.prototype = {
     },
     setPagingButtonsEvent: function () {
         var searchComponent = this;
-        var pagingButtons = $("button[name='" + this.pagingButtonsName + "']");
-        pagingButtons.each(function () {
-            this.onclick = searchComponent.onPageClick.bind(searchComponent);
-        });
+        $("button[name='" + searchComponent.firstPagingBtnName + "']").on("click", searchComponent.onFirstPageClick.bind(searchComponent));
+        $("button[name='" + searchComponent.nextPagingBtnName + "']").on("click", searchComponent.onNextPageClick.bind(searchComponent));
+        $("button[name='" + searchComponent.lastPagingBtnName + "']").on("click", searchComponent.onLastPageClick.bind(searchComponent));
+        $("button[name='" + searchComponent.previousPagingBtnName + "']").on("click", searchComponent.onPreviousPageClick.bind(searchComponent));
+    },
+    onFirstPageClick: function () {
+        this.currentPage = this.startPage;
+        this.onSearching.call(this);
+    },
+    onNextPageClick: function () {
+        this.currentPage = this.currentPage < $("#" + this.totalPageInputId).val() ? this.currentPage + 1 : this.currentPage;
+        this.onSearching.call(this);
+    },
+    onPreviousPageClick: function () {
+        this.currentPage = this.currentPage > this.startPage ? this.currentPage - 1 : this.currentPage;
+        this.onSearching.call(this);
+    },
+    onLastPageClick: function () {
+        let totalPage = $("#" + this.totalPageInputId).val();
+        this.currentPage = totalPage > 0 ? totalPage : this.currentPage;
+        this.onSearching.call(this);
     },
     setEventForDeleteCheckBoxes: function () {
-        var searchComponent = this;
-        var deleteCheckboxes = $("input[name='" + this.deleteProjectCheckboxName + "']");
+        let searchComponent = this;
+        let deleteCheckboxes = $("input[name='" + this.deleteProjectCheckboxName + "']");
         deleteCheckboxes.each(function () {
             this.onclick = searchComponent.checkEnableDeleteBtn.bind(searchComponent);
         });
     },
     deleteSelectedProjects: function () {
         let searchComponent = this;
-        let selectedProjects = searchComponent.getSelectedProjectsFromHtmlTable.call(searchComponent);       
+        let selectedProjects = searchComponent.getSelectedProjectsFromHtmlTable.call(searchComponent);
         $.ajax({
             type: "post",
             url: searchComponent.deleteProjectsUrl,
@@ -223,32 +241,6 @@ ProjectSearchComponent.prototype = {
             && Boolean(this.searchContent.length)
             && Boolean(this.resetCriteriaBtn.length)
         );
-    },
-    calculateCurrentPage: function (pagingBtnValue, totalPage) {
-        // button text value is defined in the PIMResource file: PAGINATION_*
-        const firstBtn = "First";
-        const previousBtn = "Previous";
-        const nextBtn = "Next";
-        const lastBtn = "Last";
-        let totalPageNumber = +totalPage;
-        totalPageNumber = totalPageNumber ? totalPageNumber : 0;
-        switch (pagingBtnValue) {
-            case firstBtn:
-                this.currentPage = this.startPage;
-                break;
-            case previousBtn:
-                this.currentPage = this.currentPage > this.startPage ? this.currentPage - 1 : this.currentPage;
-                break;
-            case nextBtn:
-                this.currentPage = this.currentPage < totalPage ? this.currentPage + 1 : this.currentPage;
-                break;
-            case lastBtn:
-                this.currentPage = totalPageNumber > 0 ? totalPageNumber : this.currentPage;
-                break;
-            default:
-                break;
-        }
-        return this.currentPage;
     },
     checkEnableResetCriteriaBtn: function () {
         let searchParam = this.getSearchParam();

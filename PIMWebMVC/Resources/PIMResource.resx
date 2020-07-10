@@ -199,13 +199,13 @@
     <value>Project Infomation Management</value>
   </data>
   <data name="MESSAGE_CONFIRM_DELETE_PROJECTS" xml:space="preserve">
-    <value>Selected Project(s) are going to be removed from the database. Are you sure?</value>
+    <value>Selected Project(s) are going to be removed. Are you sure?</value>
   </data>
   <data name="MESSAGE_CONFIRM_SAVE_PROJECT" xml:space="preserve">
     <value>Are you sure you want to save the Project?</value>
   </data>
   <data name="MESSAGE_CREATE_PROJECT_SUCCESS" xml:space="preserve">
-    <value>New Project created successfully </value>
+    <value>New Project was successfully created </value>
   </data>
   <data name="MESSAGE_DELETE_PROJECTS_SUCCESS" xml:space="preserve">
     <value>Delete selected Projects successfully</value>
