@@ -8,9 +8,6 @@
     this.isNotNullCriteria = function () {
         return this.ProjectNumber || this.ProjectName || this.Customer || this.Status;
     }
-    this.isProjectNumberInRange = function (min, max) {
-        return min <= +this.ProjectNumber && +this.ProjectNumber <= max;
-    }
 }
 
 function ProjectSearchComponent() {
@@ -73,12 +70,6 @@ ProjectSearchComponent.prototype = {
             this.missingCriteriaLbl.show();
             return;
         }
-        const minProjectNumber = 0;
-        const maxProjectNumber = 2147483647;
-        if (!searchParam.isProjectNumberInRange(minProjectNumber, maxProjectNumber)) {
-            this.projectNumberNotInRangeLbl.show();
-            return;
-        }
         var searchComponent = this;
         if (initFromStartPage) {
             searchParam.CurrentPage = searchComponent.startPage;
@@ -87,13 +78,14 @@ ProjectSearchComponent.prototype = {
             type: "post",
             url: this.searchProjectUrl,
             data: searchParam,
-            success: function (data) {
-                if (typeof data === "string" && data.indexOf("<html") > -1) {
-                    document.write(data);
-                    // innerHtml = data;
+            success: function (response) {
+                // in case of the whole exception page is returned from the server => re-write the whole current html page
+                if (searchComponent.isAnExceptionPageResponse(response)) {
+                    document.write(response);
                     return;
                 }
-                searchComponent.renderPaginationComponent.call(searchComponent, data);
+                // append html from data response to the <div id="projects-search-result">
+                searchComponent.renderPaginationComponent.call(searchComponent, response);
                 searchComponent.isDisplayingResult = true;
             },
             error: function () {
@@ -157,7 +149,7 @@ ProjectSearchComponent.prototype = {
             url: searchComponent.deleteProjectsUrl,
             data: { projects: selectedProjects },
             success: function (response) {
-                if (typeof response === "string" && response.indexOf("<html") > -1) { // server error exception was throwed
+                if (searchComponent.isAnExceptionPageResponse(response)) { // server error exception was throwed
                     document.write(response);
                     return;
                 }
@@ -258,9 +250,11 @@ ProjectSearchComponent.prototype = {
         } else {
             deleteBtn.prop('disabled', false);
         }
+    },
+    isAnExceptionPageResponse: function (serverResponse) {
+        return typeof serverResponse === "string" && serverResponse.indexOf("<html") > -1;
     }
 };
-
 
 $(document).ready(function () {
     let projectSearchComponent = new ProjectSearchComponent();

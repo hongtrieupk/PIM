@@ -302,6 +302,7 @@
     <Content Include="Scripts\Projects\project-model.js" />
     <Content Include="Scripts\Projects\project-search-component.js" />
     <Content Include="Scripts\Projects\project-component.js" />
+    <Content Include="Scripts\ultility-helper.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
